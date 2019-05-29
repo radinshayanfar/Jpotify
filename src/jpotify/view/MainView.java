@@ -1,6 +1,8 @@
 package jpotify.view;
 
+import jpotify.view.bottompanel.BottomPanelView;
 import jpotify.view.leftpanel.LeftPanelView;
+import jpotify.view.toppanel.TopPanelView;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,6 +16,8 @@ public class MainView extends JFrame {
         this.setLayout(new BorderLayout());
 
         this.add(new LeftPanelView(), BorderLayout.WEST);
+        this.add(new BottomPanelView(), BorderLayout.SOUTH);
+        this.add(new TopPanelView(), BorderLayout.NORTH);
 
         this.setSize(WIDTH, HEIGHT);
         this.setLocation((int) (Toolkit.getDefaultToolkit().getScreenSize().width / 2 - this.getSize().getWidth() / 2)

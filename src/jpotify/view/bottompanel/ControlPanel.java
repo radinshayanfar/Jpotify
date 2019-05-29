@@ -1,4 +1,4 @@
-package jpotify.view;
+package jpotify.view.bottompanel;
 
 import javax.swing.*;
 
