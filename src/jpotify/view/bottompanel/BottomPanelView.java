@@ -7,7 +7,8 @@ import java.awt.*;
 
 public class BottomPanelView extends JPanel {
     static final int HEIGHT = 100;
-    JLabel songInfo = new JLabel();
+    private SongInfoLabel songInfo = new SongInfoLabel();
+
 
     public BottomPanelView() {
         this.setLayout(new BorderLayout());
@@ -16,15 +17,11 @@ public class BottomPanelView extends JPanel {
 
         this.setPreferredSize(new Dimension(MainView.WIDTH, HEIGHT));
 
-        this.setBorder(BorderFactory.createEmptyBorder( 0, 20, 0 , 0));
-        this.setSongInfo("Moein","Tolou","TOLOU");
+//        this.setBorder(BorderFactory.createEmptyBorder( 0, 20, 0 , 0));
+        songInfo.setSongInfo("Moein","Tolou","TOLOU");
         this.add(songInfo, BorderLayout.WEST);
 
         this.setVisible(true);
     }
 
-    public void setSongInfo(String title, String artist, String album){
-
-        songInfo.setText("<html>"+title+"<br/>"+artist+"<br/>"+album+"</html>");
-    }
 }
