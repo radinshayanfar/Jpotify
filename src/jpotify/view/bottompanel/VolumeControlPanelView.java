@@ -1,4 +1,4 @@
-package jpotify.view.bottompanel.volumecontrol;
+package jpotify.view.bottompanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

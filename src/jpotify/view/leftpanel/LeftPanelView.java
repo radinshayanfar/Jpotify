@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class LeftPanelView extends JPanel {
 
-    static final int WIDTH = 200, ELEMENTS_HEIGHT = 200;
+    public static final int WIDTH = 200, ELEMENTS_HEIGHT = 200;
 
     private JPanel libraryBar;
     private JPanel playlistBar;
