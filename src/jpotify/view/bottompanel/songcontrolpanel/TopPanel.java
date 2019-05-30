@@ -16,6 +16,7 @@ public class TopPanel extends JPanel {
     public TopPanel() {
         this.setLayout(new FlowLayout(FlowLayout.CENTER));
         this.setBackground(Color.white);
+        this.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
 
 //        Previous song button
         try {
