@@ -11,7 +11,8 @@ public class LeftPanelView extends JPanel {
     public static final int WIDTH = 200, ELEMENTS_HEIGHT = 200;
 
     private JPanel libraryBar = new LibraryBar();
-    private JPanel playlistBar = new PlaylistBar(Arrays.asList("POP", "ROMANCE", "HIP-HOP", "SUMMER", "MOOD"));
+    private JPanel playlistBar = new PlaylistBar(Arrays.asList("Favourites", "Shared", "POP", "ROMANCE", "HIP-HOP"
+            , "SUMMER", "MOOD", "Ye chizi :|", "Ye chiz dige", "Zaheran khoobe!"));
     private JLabel artwork = new ArtworkLabel();
 
     public LeftPanelView() {
@@ -23,6 +24,7 @@ public class LeftPanelView extends JPanel {
         this.add(artwork);
 
         this.setPreferredSize(new Dimension(WIDTH, MainView.HEIGHT));
+        System.out.println(artwork);
 
         this.setBackground(Color.black);
         this.setVisible(true);

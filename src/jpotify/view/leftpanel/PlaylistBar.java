@@ -34,7 +34,9 @@ public class PlaylistBar extends JPanel {
         this.add(createPlaylist);
 
         playlistList.setListData(list.toArray(new String[list.size()]));
-        this.add(playlistList);
+        playlistList.setPreferredSize(new Dimension(LeftPanelView.WIDTH - 30, playlistList.getMaximumSize().height));
+        this.add(new JScrollPane(playlistList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
+//        this.add(playlistList);
 
         this.setPreferredSize(new Dimension(LeftPanelView.WIDTH, LeftPanelView.ELEMENTS_HEIGHT));
         this.setVisible(true);
