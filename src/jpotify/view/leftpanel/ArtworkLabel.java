@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class ArtworkLabel extends JLabel {
     public ArtworkLabel() {
-        int sideSize = LeftPanelView.ELEMENTS_HEIGHT - 30;
+        int sideSize = LeftPanelView.ELEMENTS_HEIGHT;
         this.setPreferredSize(new Dimension(sideSize, sideSize));
 
         try {

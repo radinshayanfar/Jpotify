@@ -20,6 +20,7 @@ public class PlaylistBar extends JPanel {
 
         this.setBackground(Color.white);
         this.setBorder(BorderFactory.createTitledBorder("Playlists"));
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         try {
             ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/Add.png")));
