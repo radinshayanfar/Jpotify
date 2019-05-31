@@ -2,11 +2,8 @@ package jpotify.view.leftpanel;
 
 import jpotify.view.MainView;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 
 public class LeftPanelView extends JPanel {
 
@@ -19,6 +16,7 @@ public class LeftPanelView extends JPanel {
     public LeftPanelView() {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
+//        this.add(new JScrollPane(libraryBar, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
         this.add(libraryBar);
         this.add(playlistBar);
         this.add(artwork);
