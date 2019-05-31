@@ -4,13 +4,14 @@ import jpotify.view.MainView;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
 
 public class LeftPanelView extends JPanel {
 
     public static final int WIDTH = 200, ELEMENTS_HEIGHT = 200;
 
     private JPanel libraryBar = new LibraryBar();
-    private JPanel playlistBar = new PlaylistBar();
+    private JPanel playlistBar = new PlaylistBar(Arrays.asList("POP", "ROMANCE", "HIP-HOP", "SUMMER", "MOOD"));
     private JLabel artwork = new ArtworkLabel();
 
     public LeftPanelView() {

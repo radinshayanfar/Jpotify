@@ -19,7 +19,6 @@ public class LibraryBar extends JPanel {
         this.setBackground(Color.white);
         this.setBorder(BorderFactory.createTitledBorder("Library"));
 //        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        this.setPreferredSize(new Dimension(LeftPanelView.WIDTH, LeftPanelView.ELEMENTS_HEIGHT));
 
         try {
             ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/Add.png")));
