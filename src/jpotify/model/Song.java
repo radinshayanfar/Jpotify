@@ -9,8 +9,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
+import java.time.Instant;
 
-public class Song implements Serializable {
+public class Song implements Serializable, Comparable<Song> {
     private File address;
     private long lastPlayed = 1L;
 //    TODO: Album
@@ -35,5 +36,15 @@ public class Song implements Serializable {
         } catch (IOException | UnsupportedTagException | InvalidDataException e) {
             e.printStackTrace();
         }
+    }
+
+    public void updateLastPlayed() {
+        lastPlayed = Instant.now().toEpochMilli();
+    }
+
+    @Override
+    public int compareTo(Song o) {
+        long diff = lastPlayed - o.lastPlayed;
+        return diff < 0 ? -1 : (diff == 0 ? 0 : 1);
     }
 }
