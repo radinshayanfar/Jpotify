@@ -4,7 +4,6 @@ import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.AudioDevice;
 import javazoom.jl.player.Player;
 
-import java.io.FileInputStream;
 import java.io.InputStream;
 
 public class PausablePlayer {
