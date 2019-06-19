@@ -7,11 +7,14 @@ import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.AudioDevice;
 import javazoom.jl.player.Player;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class CustomPlayer {
 
-    private final static int NOT_STARTED = 0;
+    private final static int NOTـSTARTED = 0;
     private final static int PLAYING = 1;
     private final static int PAUSED = 2;
     private final static int FINISHED = 3;
@@ -32,10 +35,14 @@ public class CustomPlayer {
     private final Object playerLock = new Object();
 
     // status variable what player thread is doing/supposed to do
-    private int playerStatus = NOT_STARTED;
+    private int playerStatus = NOTـSTARTED;
 
     // keeping position to invoke label updater
     private long lastInvokedTimePosition;
+
+    // play volume
+    private float gainVolume = 0.0f;
+    private boolean volumeChanged = false;
 
     public CustomPlayer(final File file) throws JavaLayerException, IOException, InvalidDataException, UnsupportedTagException {
         this(file, null);
@@ -55,7 +62,7 @@ public class CustomPlayer {
     public void play() {
         synchronized (playerLock) {
             switch (playerStatus) {
-                case NOT_STARTED:
+                case NOTـSTARTED:
                     final Runnable r = this::playInternal;
                     final Thread t = new Thread(r);
                     t.setDaemon(true);
@@ -117,12 +124,6 @@ public class CustomPlayer {
             } catch (final JavaLayerException e) {
                 break;
             }
-            int position = player.getPosition();
-            if (position - lastInvokedTimePosition >= 1000) {
-//                TODO: invoke label updater
-                lastInvokedTimePosition = position;
-//                System.err.println(lastInvokedTimePosition);
-            }
             // check if paused or terminated
             synchronized (playerLock) {
                 while (playerStatus == PAUSED) {
@@ -134,6 +135,17 @@ public class CustomPlayer {
                     }
                 }
             }
+            if (volumeChanged) {
+                player.setVolume(gainVolume);
+                volumeChanged = false;
+            }
+            int position = player.getPosition();
+            if (position - lastInvokedTimePosition >= 1000) {
+//                TODO: invoke label updater
+                lastInvokedTimePosition = position;
+//                System.err.println(lastInvokedTimePosition);
+            }
+
         }
 //        TODO: invoke song finished method
         close();
@@ -154,12 +166,22 @@ public class CustomPlayer {
     }
 
     public void changePosition(int second) throws JavaLayerException {
-        this.pause();
+        boolean wasPlaying = false;
+        if (this.playerStatus == PLAYING) {
+            wasPlaying = true;
+            this.pause();
+        }
         try {
             this.player = new Player(new FileInputStream(this.file));
         } catch (JavaLayerException | FileNotFoundException ignored) {
         }
         player.skipMilliSeconds(second * 1000);
-        this.play();
+        if (wasPlaying)
+            this.play();
+    }
+
+    public void setVolume(float volume) {
+        this.gainVolume = volume;
+        volumeChanged = true;
     }
 }
