@@ -48,4 +48,8 @@ public class Song implements Serializable, Comparable<Song> {
         long diff = lastPlayed - o.lastPlayed;
         return diff < 0 ? -1 : (diff == 0 ? 0 : 1);
     }
+
+    public File getAddress() {
+        return address;
+    }
 }

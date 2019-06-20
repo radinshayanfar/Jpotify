@@ -1,6 +1,7 @@
 package jpotify.model;
 
 import helper.FileHelper;
+import jpotify.model.Network.Server;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 public class User {
 
     private String name;
+    private Server server;
 
     {
         try {
@@ -70,5 +72,23 @@ public class User {
 
     public User(String name) {
         this.name = name;
+
+        try {
+            server = new Server(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Playlist getSharedPlaylist() {
+        return playlists.get(1);
+    }
+
+    public ArrayList<String> getIPs() {
+        return IPs;
+    }
+
+    public void stopHttpServer() {
+        server.stopServer();
     }
 }

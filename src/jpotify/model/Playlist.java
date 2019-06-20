@@ -45,5 +45,9 @@ public class Playlist implements Serializable {
         return songs;
     }
 
-
+    public void addSong(Song song) {
+        if (song != null) {
+            songs.add(song);
+        }
+    }
 }
