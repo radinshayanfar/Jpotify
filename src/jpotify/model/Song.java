@@ -15,8 +15,9 @@ public class Song implements Serializable, Comparable<Song> {
     private static final long serialVersionUID = -8475149752149561117L;
     private File address;
     private long lastPlayed = 1L;
-//    TODO: Album
-    private byte[] artwork;
+    //    TODO: Album
+    private transient byte[] artwork;
+    private boolean playing = false;
 
     public Song(File address) throws FileNotFoundException {
 
@@ -33,10 +34,18 @@ public class Song implements Serializable, Comparable<Song> {
             if (mp3file.hasId3v2Tag()) {
                 ID3v2 id3v2Tag = mp3file.getId3v2Tag();
                 artwork = id3v2Tag.getAlbumImage();
+            } else {
+//                TODO: use default artwork
             }
         } catch (IOException | UnsupportedTagException | InvalidDataException e) {
             e.printStackTrace();
         }
+    }
+
+    public byte[] getArtwork() {
+        if (artwork == null)
+            processArtwork();
+        return artwork;
     }
 
     public void updateLastPlayed() {
@@ -51,5 +60,13 @@ public class Song implements Serializable, Comparable<Song> {
 
     public File getAddress() {
         return address;
+    }
+
+    public boolean isPlaying() {
+        return playing;
+    }
+
+    public void setPlaying(boolean playing) {
+        this.playing = playing;
     }
 }

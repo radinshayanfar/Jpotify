@@ -10,6 +10,10 @@ public class Playlist implements Serializable {
     private String name;
     private List<Song> songs = new ArrayList<>();
 
+    public Playlist(boolean changeable) {
+        this.changeable = changeable;
+    }
+
     public Playlist(String name) {
         this.name = name;
     }

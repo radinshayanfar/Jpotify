@@ -10,6 +10,7 @@ public class User {
 
     private String name;
     private Server server;
+    private Playlist recentlyPlayed = new Playlist(false);
 
     {
         try {
@@ -86,6 +87,10 @@ public class User {
 
     public ArrayList<String> getIPs() {
         return IPs;
+    }
+
+    public Playlist getRecentlyPlayed() {
+        return recentlyPlayed;
     }
 
     public void stopHttpServer() {

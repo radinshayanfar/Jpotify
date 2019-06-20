@@ -9,11 +9,11 @@ import jpotify.model.User;
 import java.io.*;
 import java.util.Map;
 
-public class GetHandler implements HttpHandler {
+public class getSongHandler implements HttpHandler {
 
     private User user;
 
-    public GetHandler(User user) {
+    public getSongHandler(User user) {
         this.user = user;
     }
 
@@ -43,7 +43,7 @@ public class GetHandler implements HttpHandler {
                 e.printStackTrace();
             }
         }
-        exchange.sendResponseHeaders(400, 0);
+        exchange.sendResponseHeaders(403, 0);
         exchange.close();
     }
 }
