@@ -15,7 +15,8 @@ public class Server {
     public Server(User user) throws IOException {
         this.user = user;
         server = HttpServer.create(new InetSocketAddress(3245), 0);
-        server.createContext("/getSharedList", new getSharedListHandler(user));
+        server.createContext("/getSharedList", new getListHandler(user, user::getSharedPlaylist));
+        server.createContext("/getRecentlyPlayedList", new getListHandler(user, user::getRecentlyPlayed));
         server.createContext("/getSong", new getSongHandler(user));
         server.setExecutor(Executors.newCachedThreadPool()); // creates a default executor
         server.start();

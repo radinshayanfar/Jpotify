@@ -2,16 +2,20 @@ package jpotify.model.Network;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import jpotify.model.Playlist;
 import jpotify.model.User;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.function.Supplier;
 
-public class getSharedListHandler implements HttpHandler {
+public class getListHandler implements HttpHandler {
     private User user;
+    private Supplier<Playlist> playlistSupplier;
 
-    public getSharedListHandler(User user) {
+    public getListHandler(User user, Supplier<Playlist> playlistSupplier) {
         this.user = user;
+        this.playlistSupplier = playlistSupplier;
     }
 
     @Override
@@ -21,7 +25,7 @@ public class getSharedListHandler implements HttpHandler {
                 // ok, we are ready to send the response.
                 exchange.sendResponseHeaders(200, 0);
                 ObjectOutputStream out = new ObjectOutputStream(exchange.getResponseBody());
-                out.writeObject(user.getSharedPlaylist());
+                out.writeObject(playlistSupplier.get());
                 out.close();
             } catch (Exception e) {
                 exchange.sendResponseHeaders(400, 0);

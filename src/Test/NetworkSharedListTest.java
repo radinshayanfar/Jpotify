@@ -10,7 +10,7 @@ import java.net.URLConnection;
 
 public class NetworkSharedListTest {
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-        URL url = new URL("http://localhost:3245/getSharedList");
+        URL url = new URL("http://localhost:3245/getRecentlyPlayedList");
         URLConnection connection = url.openConnection();
         ObjectInputStream in = new ObjectInputStream(connection.getInputStream());
         Playlist playlist = (Playlist) in.readObject();
