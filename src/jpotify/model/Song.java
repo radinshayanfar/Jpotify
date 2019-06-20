@@ -12,6 +12,7 @@ import java.io.Serializable;
 import java.time.Instant;
 
 public class Song implements Serializable, Comparable<Song> {
+    private static final long serialVersionUID = -8475149752149561117L;
     private File address;
     private long lastPlayed = 1L;
 //    TODO: Album
