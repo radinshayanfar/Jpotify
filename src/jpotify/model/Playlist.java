@@ -2,6 +2,7 @@ package jpotify.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Playlist implements Serializable {
@@ -50,8 +51,22 @@ public class Playlist implements Serializable {
     }
 
     public void addSong(Song song) {
-        if (song != null) {
+        if (song != null && !songs.contains(song)) {
             songs.add(song);
         }
+    }
+
+    public void moveUp(int index) {
+        if (index > 0)
+            Collections.swap(songs, index, index - 1);
+    }
+
+    public void moveDown(int index) {
+        if (index < songs.size() - 1)
+            Collections.swap(songs, index, index + 1);
+    }
+
+    protected void doSort() {
+        Collections.sort(songs);
     }
 }

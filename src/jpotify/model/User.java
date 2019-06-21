@@ -3,14 +3,24 @@ package jpotify.model;
 import helper.FileHelper;
 import jpotify.model.Network.Server;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 
 public class User {
 
     private String name;
     private Server server;
-    private Playlist recentlyPlayed = new Playlist(false);
+    private transient RecentlyPlayedPlaylist recentlyPlayed = new RecentlyPlayedPlaylist(false);
+    private ArrayList<String> IPs;
+    private ArrayList<Song> library;
+    private ArrayList<Playlist> playlists;
+    private HashMap<String, Album> albums;
 
     {
         try {
@@ -20,7 +30,6 @@ public class User {
         }
     }
 
-    private ArrayList<String> IPs;
     {
         try {
             IPs = FileHelper.fileToArrayList("ip_list.txt");
@@ -30,7 +39,6 @@ public class User {
         }
     }
 
-    private ArrayList<Song> library;
     {
         try {
             ObjectInputStream in = new ObjectInputStream(new FileInputStream("data/lib.jdf"));
@@ -43,7 +51,6 @@ public class User {
         }
     }
 
-    private ArrayList<Playlist> playlists;
     {
         try {
             ObjectInputStream in = new ObjectInputStream(new FileInputStream("data/playlists.jdf"));
@@ -58,13 +65,12 @@ public class User {
         }
     }
 
-    private ArrayList<Album> albums;
     {
         try {
             ObjectInputStream in = new ObjectInputStream(new FileInputStream("data/albums.jdf"));
-            albums = (ArrayList<Album>) in.readObject();
+            albums = (HashMap<String, Album>) in.readObject();
         } catch (IOException e) {
-            albums = new ArrayList<>();
+            albums = new HashMap<>();
 //            e.printStackTrace();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -89,11 +95,67 @@ public class User {
         return IPs;
     }
 
-    public Playlist getRecentlyPlayed() {
+    public RecentlyPlayedPlaylist getRecentlyPlayed() {
+        if (recentlyPlayed == null)
+            recentlyPlayed = new RecentlyPlayedPlaylist(false);
         return recentlyPlayed;
     }
 
     public void stopHttpServer() {
         server.stopServer();
+    }
+
+    public Song playSong(int index) {
+        Song ret = library.get(index);
+        ret.updateLastPlayed();
+        recentlyPlayed.setCurrentSong(ret);
+        return ret;
+    }
+
+    public void stopSong() {
+        recentlyPlayed.removeCurrentSong();
+    }
+
+    public void addSong(Song song) {
+        if (library.contains(song)) return;
+        library.add(song);
+        String album = song.getAlbum();
+        if (album == null) return;
+        Album albumReference;
+        if (albums.containsKey(album)) {
+            albumReference = albums.get(album);
+            albumReference.addSong(song);
+        } else {
+            albumReference = new Album(song);
+            albums.put(album, albumReference);
+        }
+        song.setAlbumReference(albumReference);
+    }
+
+    public void removeSong() {
+//        TODO: implement method
+    }
+
+    public ArrayList<Song> getLibrary() {
+        Collections.sort(library);
+        return library;
+    }
+
+    public Collection<Album> getAlbums() {
+        return albums.values();
+    }
+
+    public Playlist newPlaylist(String name) {
+        Playlist ret = new Playlist(name, true);
+        playlists.add(ret);
+        return ret;
+    }
+
+    public void removePlaylist() {
+//        TODO: implement method
+    }
+
+    public ArrayList<Playlist> getPlaylists() {
+        return playlists;
     }
 }

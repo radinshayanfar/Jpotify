@@ -6,35 +6,38 @@ import java.util.Collections;
 import java.util.List;
 
 public class Album implements Serializable, Comparable<Album> {
-    private String name;
     private List<Song> songs = new ArrayList<>();
-    private long lastPlayed = 1L;
 
-    public Album(String name, Song song) {
-        this.name = name;
+    public Album(Song song) {
         songs.add(song);
     }
 
     @Override
     public int compareTo(Album o) {
-        long diff = lastPlayed - o.lastPlayed;
+        long diff = getLastPlayed() - o.getLastPlayed();
         return diff < 0 ? -1 : (diff == 0 ? 0 : 1);
     }
 
     public long getLastPlayed() {
-        return lastPlayed;
-    }
-
-    public void setLastPlayed(long lastPlayed) {
-        this.lastPlayed = lastPlayed;
+        doSort();
+        return songs.get(0).getLastPlayed();
     }
 
     public String getName() {
-        return name;
+        return songs.get(0).getAlbum();
     }
 
     public void addSong(Song song) {
         songs.add(song);
+    }
+
+    public List<Song> getSongs() {
+        doSort();
+        return songs;
+    }
+
+    public byte[] getArtwork() {
+        return songs.get(0).getArtwork();
     }
 
     public void doSort() {
