@@ -24,7 +24,7 @@ public class NetworkSharedListTest {
             String fileName = FileHelper.downloadSongToTemporaryDirectory("localhost", 3245, i);
 
             CustomPlayer cs = new CustomPlayer(new File(fileName));
-            cs.setVolume(6f);
+            cs.setVolume(-10f);
             cs.play();
             Thread.sleep(10_000);
             cs.stop();

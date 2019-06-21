@@ -42,26 +42,45 @@ public class TestUser {
             System.out.println(a.getName());
         }
         System.out.println(user.getRecentlyPlayed().getCurrentSong().getTitle());
-        user.stopSong();
+//        user.stopSong();
         System.out.println(user.getRecentlyPlayed().getCurrentSong());
 
         System.out.println("----------------");
 
-        Playlist p = user.newPlaylist("Best of Moein");
-        p.addSong(s4); // 0 sharab
-        p.addSong(s6); // 1 shoghe safar
-        p.addSong(s7); // 2 bahaneh
-        p.addSong(s5); // 3 jodaee
+        Playlist playlist = user.newPlaylist("Best of Moein");
+        playlist.addSong(s4); // 0 sharab
+        playlist.addSong(s6); // 1 shoghe safar
+        playlist.addSong(s7); // 2 bahaneh
+        playlist.addSong(s5); // 3 jodaee
 
-        p.moveDown(3);
-        p.moveUp(0);
-        p.moveDown(0);
-        p.moveUp(3);
+        playlist.moveDown(3);
+        playlist.moveUp(0);
+        playlist.moveDown(0);
+        playlist.moveUp(3);
 
         for (Song s :
-                p.getSongs()) {
+                playlist.getSongs()) {
             System.out.println(s.getTitle());
         }
+
+        for (Playlist p:
+                user.getPlaylists()) {
+            System.out.println(p.getName());
+        }
+
+        user.getSharedPlaylist().addSong(s1);
+        user.getSharedPlaylist().addSong(s2);
+        user.getSharedPlaylist().addSong(s3);
+        user.getSharedPlaylist().addSong(s4);
+        user.getSharedPlaylist().addSong(s5);
+        user.getSharedPlaylist().addSong(s6);
+        user.getSharedPlaylist().addSong(s7);
+        user.getSharedPlaylist().moveUp(3);
+        user.getSharedPlaylist().moveUp(2);
+        user.getSharedPlaylist().moveUp(1);
+        user.getSharedPlaylist().moveUp(0);
+
+        Thread.sleep(120_000);
 
         user.stopHttpServer();
     }
