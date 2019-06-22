@@ -6,15 +6,13 @@ import javax.swing.*;
 import java.awt.*;
 
 public class TopPanelView extends JPanel {
-    static final int HEIGHT = 50;
+    static final int HEIGHT = 40;
 
     public TopPanelView() {
         this.setLayout(new BorderLayout());
 
-        this.setBackground(Color.cyan);
-
+        this.setBackground(Color.WHITE);
         this.setPreferredSize(new Dimension(MainView.WIDTH, HEIGHT));
-
         this.setVisible(true);
     }
 

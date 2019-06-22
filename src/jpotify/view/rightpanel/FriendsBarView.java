@@ -11,7 +11,7 @@ public class FriendsBarView extends JPanel {
     public FriendsBarView() {
         this.setPreferredSize(new Dimension(WIDTH, MainView.HEIGHT));
 
-        this.setBackground(Color.GREEN);
+        this.setBackground(Color.BLACK);
 
         this.setVisible(true);
     }

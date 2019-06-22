@@ -25,6 +25,7 @@ public class NetworkSharedListTest {
 
             CustomPlayer cs = new CustomPlayer(new File(fileName));
             cs.setVolume(-10f);
+            cs.changePosition(50);
             cs.play();
             Thread.sleep(10_000);
             cs.stop();
