@@ -24,12 +24,12 @@ public class Song implements Serializable, Comparable<Song> {
         if (!address.exists() || !address.isFile()) throw new FileNotFoundException();
         this.address = address;
 
-        processId3v1Tags();
+        processId3Tags();
         processArtwork();
 
     }
 
-    private void processId3v1Tags() {
+    private void processId3Tags() {
         try {
             Mp3File mp3file = new Mp3File(address);
             if (mp3file.hasId3v2Tag()) {
@@ -70,7 +70,7 @@ public class Song implements Serializable, Comparable<Song> {
 
     public byte[] getArtwork() {
         if (artwork == null) {
-            processId3v1Tags();
+            processId3Tags();
             processArtwork();
         }
         return artwork;

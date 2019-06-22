@@ -3,21 +3,19 @@ package jpotify.model;
 import helper.FileHelper;
 import jpotify.model.Network.Server;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 
-public class User {
+public class User implements Serializable {
 
+    private static final long serialVersionUID = 4879049040173323873L;
     private String name;
-    private Server server;
+    private static transient Server server;
     private transient RecentlyPlayedPlaylist recentlyPlayed = new RecentlyPlayedPlaylist(false);
-    private ArrayList<String> IPs;
+    private transient ArrayList<String> IPs;
     private ArrayList<Song> library;
     private ArrayList<Playlist> playlists;
     private HashMap<String, Album> albums;
@@ -28,63 +26,25 @@ public class User {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
 
-    {
         try {
             IPs = FileHelper.fileToArrayList("ip_list.txt");
         } catch (FileNotFoundException e) {
             IPs = new ArrayList<>();
 //            e.printStackTrace();
         }
-    }
 
-    {
-        try {
-            ObjectInputStream in = new ObjectInputStream(new FileInputStream("data/lib.jdf"));
-            library = (ArrayList<Song>) in.readObject();
-        } catch (IOException e) {
-            library = new ArrayList<>();
-//            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
+        library = new ArrayList<>();
 
-    {
-        try {
-            ObjectInputStream in = new ObjectInputStream(new FileInputStream("data/playlists.jdf"));
-            playlists = (ArrayList<Playlist>) in.readObject();
-        } catch (IOException e) {
-            playlists = new ArrayList<>();
-            playlists.add(new Playlist("Favorites", false));
-            playlists.add(new Playlist("Shared", false));
-//            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
+        playlists = new ArrayList<>();
+        playlists.add(new Playlist("Favorites", false));
+        playlists.add(new Playlist("Shared", false));
 
-    {
-        try {
-            ObjectInputStream in = new ObjectInputStream(new FileInputStream("data/albums.jdf"));
-            albums = (HashMap<String, Album>) in.readObject();
-        } catch (IOException e) {
-            albums = new HashMap<>();
-//            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        albums = new HashMap<>();
     }
 
     public User(String name) {
         this.name = name;
-
-        try {
-            server = new Server(this);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public Playlist getSharedPlaylist() {
@@ -92,6 +52,13 @@ public class User {
     }
 
     public ArrayList<String> getIPs() {
+        if (IPs == null)
+            try {
+                IPs = FileHelper.fileToArrayList("ip_list.txt");
+            } catch (FileNotFoundException e) {
+                IPs = new ArrayList<>();
+//            e.printStackTrace();
+            }
         return IPs;
     }
 
@@ -99,6 +66,18 @@ public class User {
         if (recentlyPlayed == null)
             recentlyPlayed = new RecentlyPlayedPlaylist(false);
         return recentlyPlayed;
+    }
+
+    public void startHttpServer() {
+        if (server == null) {
+            try {
+                server = new Server(this);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            server.changeUser(this);
+        }
     }
 
     public void stopHttpServer() {

@@ -1,9 +1,9 @@
 package helper;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import jpotify.model.User;
+import jpotify.model.Users;
+
+import java.io.*;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
@@ -36,6 +36,16 @@ final public class FileHelper {
 
     public static void deleteTemporaryDirectory() {
         Arrays.stream(Objects.requireNonNull(new File("data/tmp").listFiles())).forEach(File::delete);
+    }
+
+    public static void saveUsers(Users users) throws IOException {
+        ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("data/users.jdf"));
+        out.writeObject(users);
+    }
+
+    public static Users loadUsers() throws IOException, ClassNotFoundException {
+        ObjectInputStream in = new ObjectInputStream(new FileInputStream("data/users.jdf"));
+        return (Users) in.readObject();
     }
 
     public static String downloadSongToTemporaryDirectory(String host, int port, int index) throws IOException {

@@ -22,6 +22,10 @@ public class Server {
         server.start();
     }
 
+    public void changeUser(User user) {
+        this.user = user;
+    }
+
     public void stopServer() {
         server.stop(0);
     }
