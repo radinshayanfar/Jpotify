@@ -24,18 +24,6 @@ public class CenterPanelView extends JPanel {
         center.setBackground(Color.BLACK);
         this.add(center, BorderLayout.CENTER);
 
-        /*center.addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                center.setBackground(Color.GREEN);
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                center.setBackground(Color.PINK);
-            }
-        });*/
-
         //borders
         JPanel border1 = new JPanel();
         JPanel border2 = new JPanel();
