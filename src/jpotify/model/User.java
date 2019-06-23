@@ -20,6 +20,7 @@ public class User implements Serializable {
     private HashMap<String, Album> albums;
     private transient SongList currentList;
     private transient SongList currentSelectedListInGUI;
+    private transient Playlist shuffledOriginal;
     private RepeatRule repeatRule = RepeatRule.OFF;
 
     {
@@ -151,6 +152,19 @@ public class User implements Serializable {
 
     public void setCurrentList() {
         currentList = currentSelectedListInGUI;
+    }
+
+    public void shuffleCurrentSelected() {
+        if (currentList instanceof Playlist) {
+            shuffledOriginal = (Playlist) currentList;
+            currentList = ((Playlist) currentList).getShuffled();
+        }
+    }
+
+    public void unshuffleCurrentSelected() {
+        if (currentList instanceof Playlist && shuffledOriginal != null) {
+            currentList = shuffledOriginal;
+        }
     }
 
     public void setRepeatRule(RepeatRule repeatRule) {

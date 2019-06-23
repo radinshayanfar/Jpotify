@@ -28,6 +28,10 @@ public class Playlist extends SongList {
         this.changeable = changeable;
     }
 
+    public Playlist(List<Song> songs) {
+        this.songs = songs;
+    }
+
     public void setSongs(List<Song> songs) {
         this.songs = songs;
     }
@@ -63,5 +67,12 @@ public class Playlist extends SongList {
     public void moveDown(int index) {
         if (index < songs.size() - 1)
             Collections.swap(songs, index, index + 1);
+    }
+
+    public Playlist getShuffled() {
+        Playlist ret = new Playlist(new ArrayList<>(songs));
+        Collections.shuffle(ret.songs);
+        ret.current = this.current;
+        return ret;
     }
 }
