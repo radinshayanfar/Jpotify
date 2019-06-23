@@ -11,8 +11,8 @@ public class NetworkPlaylist extends Playlist {
     private String host;
     private int port;
 
-    public NetworkPlaylist(List<Song> songs, String host, int port) {
-        super(songs);
+    public NetworkPlaylist(Playlist playlist, String host, int port) {
+        super(playlist.getSongs());
         this.host = host;
         this.port = port;
     }
