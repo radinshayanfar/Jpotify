@@ -95,6 +95,7 @@ public class User implements Serializable {
     }
 
     public Song playSong(int index) {
+        if (currentList instanceof NetworkPlaylist) throw new Error("Don't use this method over network!");
         Song ret = currentList.songs.get(index);
         ret.updateLastPlayed();
         if (getSharedPlaylist().getSongs().contains(ret))
@@ -104,6 +105,7 @@ public class User implements Serializable {
     }
 
     public Song playSongFromNetwork(int index, String host, int port) throws IOException {
+        currentList.current = currentList.songs.get(index);
         return new Song(new File(FileHelper.downloadSongToTemporaryDirectory(host, port, index)));
     }
 
@@ -111,7 +113,6 @@ public class User implements Serializable {
         song.updateLastPlayed();
         if (getSharedPlaylist().getSongs().contains(song))
             getRecentlyPlayed().setCurrentSong(song);
-        currentList.current = song;
     }
 
     public void stopSong() {
