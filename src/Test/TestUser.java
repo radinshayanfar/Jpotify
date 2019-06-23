@@ -1,16 +1,20 @@
 package Test;
 
-import jpotify.model.Album;
-import jpotify.model.Playlist;
-import jpotify.model.Song;
-import jpotify.model.User;
+import helper.FileHelper;
+import jpotify.model.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class TestUser {
-    public static void main(String[] args) throws FileNotFoundException, InterruptedException {
-        User user = new User("Maryam");
+    public static void main(String[] args) throws IOException, InterruptedException {
+        User user;
+        try {
+            user = FileHelper.loadUsers().getUsers().get(0);
+        } catch (IOException | ClassNotFoundException e) {
+            user = new User("Maryam");
+        }
 
         Song s0 = new Song(new File("/home/radin/Downloads/musics/Babak-Jahanbakhsh-Sheydaei.mp3"));
         Song s1 = new Song(new File("/home/radin/Downloads/musics/Bijan-Mortazavi-Lavand.mp3"));
@@ -36,8 +40,8 @@ public class TestUser {
         user.playSong(4);
         Thread.sleep(10);
 
-        for (Album a:
-             user.getAlbums()) {
+        for (Album a :
+                user.getAlbums()) {
 //            System.out.println(s.getAlbumReference());
             System.out.println(a.getName());
         }
@@ -63,7 +67,7 @@ public class TestUser {
             System.out.println(s.getTitle());
         }
 
-        for (Playlist p:
+        for (Playlist p :
                 user.getPlaylists()) {
             System.out.println(p.getName());
         }
@@ -80,8 +84,12 @@ public class TestUser {
         user.getSharedPlaylist().moveUp(1);
         user.getSharedPlaylist().moveUp(0);
 
-        Thread.sleep(120_000);
+        Users users = new Users();
+        users.addUser(user);
+        FileHelper.saveUsers(users);
 
+        user.startHttpServer();
+        Thread.sleep(120_000);
         user.stopHttpServer();
     }
 }

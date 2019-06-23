@@ -3,22 +3,24 @@ package jpotify.model;
 import helper.FileHelper;
 import jpotify.model.Network.Server;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.*;
 
 public class User implements Serializable {
 
     private static final long serialVersionUID = 4879049040173323873L;
     private String name;
     private static transient Server server;
-    private transient RecentlyPlayedPlaylist recentlyPlayed = new RecentlyPlayedPlaylist(false);
+    private transient RecentlyPlayedPlaylist recentlyPlayed = new RecentlyPlayedPlaylist();
     private transient ArrayList<String> IPs;
-    private ArrayList<Song> library;
+    private SongList library;
     private ArrayList<Playlist> playlists;
     private HashMap<String, Album> albums;
+    private transient SongList currentList;
+    private transient SongList currentSelectedListInGUI;
+    private RepeatRule repeatRule = RepeatRule.OFF;
 
     {
         try {
@@ -34,7 +36,7 @@ public class User implements Serializable {
 //            e.printStackTrace();
         }
 
-        library = new ArrayList<>();
+        library = new SongList();
 
         playlists = new ArrayList<>();
         playlists.add(new Playlist("Favorites", false));
@@ -64,7 +66,7 @@ public class User implements Serializable {
 
     public RecentlyPlayedPlaylist getRecentlyPlayed() {
         if (recentlyPlayed == null)
-            recentlyPlayed = new RecentlyPlayedPlaylist(false);
+            recentlyPlayed = new RecentlyPlayedPlaylist();
         return recentlyPlayed;
     }
 
@@ -85,19 +87,24 @@ public class User implements Serializable {
     }
 
     public Song playSong(int index) {
-        Song ret = library.get(index);
+        Song ret = library.songs.get(index);
         ret.updateLastPlayed();
-        recentlyPlayed.setCurrentSong(ret);
+        getRecentlyPlayed().setCurrentSong(ret);
         return ret;
     }
 
+    public void playSong(Song song) {
+        song.updateLastPlayed();
+        getRecentlyPlayed().setCurrentSong(song);
+    }
+
     public void stopSong() {
-        recentlyPlayed.removeCurrentSong();
+        getRecentlyPlayed().removeCurrentSong();
     }
 
     public void addSong(Song song) {
-        if (library.contains(song)) return;
-        library.add(song);
+        if (library.songs.contains(song)) return;
+        library.songs.add(song);
         String album = song.getAlbum();
         if (album == null) return;
         Album albumReference;
@@ -115,9 +122,9 @@ public class User implements Serializable {
 //        TODO: implement method
     }
 
-    public ArrayList<Song> getLibrary() {
-        Collections.sort(library);
-        return library;
+    public List<Song> getLibrary() {
+        Collections.sort(library.songs);
+        return library.songs;
     }
 
     public Collection<Album> getAlbums() {
@@ -136,5 +143,29 @@ public class User implements Serializable {
 
     public ArrayList<Playlist> getPlaylists() {
         return playlists;
+    }
+
+    public void setCurrentSelectedListInGUI(SongList currentSelectedListInGUI) {
+        this.currentSelectedListInGUI = currentSelectedListInGUI;
+    }
+
+    public void setCurrentList() {
+        currentList = currentSelectedListInGUI;
+    }
+
+    public void setRepeatRule(RepeatRule repeatRule) {
+        this.repeatRule = repeatRule;
+    }
+
+    public Song next() {
+        return currentList.next(repeatRule);
+    }
+
+    public Song forceNext() {
+        return currentList.next(repeatRule == RepeatRule.REPEAT_ONE ? RepeatRule.REPEAT : repeatRule);
+    }
+
+    public Song previous() {
+        return currentList.previous(repeatRule);
     }
 }

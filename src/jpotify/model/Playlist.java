@@ -5,11 +5,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Playlist implements Serializable {
+public class Playlist extends SongList {
     private static final long serialVersionUID = 4264242358501632849L;
     private boolean changeable = true;
     private String name;
-    private List<Song> songs = new ArrayList<>();
 
     public Playlist(boolean changeable) {
         this.changeable = changeable;
@@ -64,9 +63,5 @@ public class Playlist implements Serializable {
     public void moveDown(int index) {
         if (index < songs.size() - 1)
             Collections.swap(songs, index, index + 1);
-    }
-
-    protected void doSort() {
-        Collections.sort(songs);
     }
 }
