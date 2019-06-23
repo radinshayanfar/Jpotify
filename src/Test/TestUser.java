@@ -24,6 +24,7 @@ public class TestUser {
         Song s5 = new Song(new File("/home/radin/Downloads/musics/Moein-Jodaee.mp3"));
         Song s6 = new Song(new File("/home/radin/Downloads/musics/Moein-Shoghe-Safar.mp3"));
         Song s7 = new Song(new File("/home/radin/Downloads/musics/06 Bahaneh.mp3"));
+        Song s8 = new Song(new File("/home/radin/Downloads/musics/Moein-Vaghti-To-Ba-Man-Nisti.mp3"));
         user.addSong(s0);
         user.addSong(s1);
         user.addSong(s2);
@@ -32,6 +33,7 @@ public class TestUser {
         user.addSong(s5);
         user.addSong(s6);
         user.addSong(s7);
+        user.addSong(s8);
 
         user.playSong(5);
         Thread.sleep(10);

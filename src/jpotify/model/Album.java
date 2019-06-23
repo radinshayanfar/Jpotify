@@ -40,7 +40,7 @@ public class Album extends SongList implements Comparable<Album> {
         return songs.get(0).getArtwork();
     }
 
-    public void doSort() {
+    private void doSort() {
         Collections.sort(songs);
     }
 }

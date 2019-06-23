@@ -127,8 +127,8 @@ public class User implements Serializable {
         return library.songs;
     }
 
-    public Collection<Album> getAlbums() {
-        return albums.values();
+    public List<Album> getAlbums() {
+        return new ArrayList<>(albums.values());
     }
 
     public Playlist newPlaylist(String name) {
