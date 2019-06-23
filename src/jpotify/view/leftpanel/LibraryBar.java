@@ -10,28 +10,19 @@ public class LibraryBar extends JPanel {
     private JButton addSong = new JButton();
     private JButton songs = new JButton();
     private JButton albums = new JButton();
-    private JPanel libraryBar = new JPanel(); //TODO may be public
 
     public LibraryBar() {
 
         //overall sets
-        this.setLayout(new BorderLayout());
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setBackground(Color.BLACK);
         this.setPreferredSize(new Dimension(LeftPanelView.WIDTH, LeftPanelView.ELEMENTS_HEIGHT));
-//        libraryBar.setPreferredSize(new Dimension(this.getWidth(), this.getHeight()));
-//        libraryBar.setLayout(new BorderLayout());
 
-        //border
-        JPanel border = new JPanel();
-        border.setPreferredSize(new Dimension(190, 1));
-        border.setBackground(Color.white);
-        this.add(border, BorderLayout.NORTH);
-
-        JPanel test = new JPanel();
-        test.setPreferredSize(new Dimension(this.getWidth(), this.getHeight()));
-        test.setBackground(Color.blue);
-        this.add(test);
-
+        albums.setText("Albums");
+        albums.setBackground(Color.BLACK);
+        albums.setForeground(Color.lightGray);
+        this.add(albums);
+        albums.setBorder(BorderFactory.createMatteBorder(10, 40, 10, 0, Color.BLACK));
 
 //        this.setBackground(Color.white);
 //        this.setBorder(BorderFactory.createTitledBorder("Library"));

@@ -21,17 +21,29 @@ public class LeftPanelView extends JPanel {
 
     public LeftPanelView() {
 
-        this.setLayout(new BorderLayout());
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        Border border1 = BorderFactory.createMatteBorder(2,15,4,15, Color.BLACK);
-        Border border2 = BorderFactory.createMatteBorder(0,0,1,0, Color.lightGray);
+        Border outerB = BorderFactory.createMatteBorder(2,15,10,0, Color.black);
+        Border whiteLineB = BorderFactory.createMatteBorder(0,0,1,0, Color.lightGray);
+        Border inerB = BorderFactory.createMatteBorder(0,0,5,0, Color.black);
+        Border complexB = BorderFactory.createCompoundBorder(whiteLineB, inerB);
 
         //home
-        JLabel home = new JLabel("Home");
-        home.setFont(new Font("Arial", Font.PLAIN, 24));
+        JLabel home = new JLabel("Home                ");
+        home.setFont(new Font("Tahoma", Font.PLAIN, 20));
         home.setForeground(Color.white);
-        home.setBorder(BorderFactory.createCompoundBorder(border1, border2));
-        this.add(home, BorderLayout.NORTH);
+        home.setBorder(BorderFactory.createCompoundBorder(outerB, complexB));
+        this.add(home);
+
+        libraryBar = new LibraryBar();
+        this.add(libraryBar);
+
+        //playlists
+        JLabel playlist = new JLabel("Playlists              ");
+        playlist.setFont(new Font("Arial", Font.PLAIN, 20));
+        playlist.setForeground(Color.white);
+        playlist.setBorder(BorderFactory.createCompoundBorder(outerB, complexB));
+        this.add(playlist);
 
 
 //        this.add(new JScrollPane(libraryBar, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
