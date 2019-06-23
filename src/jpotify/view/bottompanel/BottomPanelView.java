@@ -1,6 +1,7 @@
 package jpotify.view.bottompanel;
 
 import jpotify.view.MainView;
+import jpotify.view.MyBorder;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,9 +16,7 @@ public class BottomPanelView extends JPanel {
         this.setLayout(new BorderLayout());
 
         //white border on top
-        JPanel border = new JPanel();
-        border.setPreferredSize(new Dimension(this.getWidth(), 1));
-        border.setBackground(Color.white);
+        MyBorder border = new MyBorder(this.getWidth(), MyBorder.HORIZONTAL_BORDER , Color.WHITE);
         this.add(border, BorderLayout.NORTH);
 
         this.setBackground(Color.black);

@@ -1,6 +1,7 @@
 package jpotify.view.centerpanel;
 
 import jpotify.view.MainView;
+import jpotify.view.MyBorder;
 import jpotify.view.toppanel.TopPanelView;
 
 import javax.swing.*;
@@ -25,13 +26,9 @@ public class CenterPanelView extends JPanel {
         this.add(center, BorderLayout.CENTER);
 
         //borders
-        JPanel border1 = new JPanel();
-        JPanel border2 = new JPanel();
-        border1.setPreferredSize(new Dimension(1, this.getHeight()));
-        border1.setBackground(Color.white);
+        MyBorder border1 = new MyBorder(this.getHeight(), MyBorder.VERTICAL_BORDER , Color.WHITE);
+        MyBorder border2 = new MyBorder(this.getHeight(), MyBorder.VERTICAL_BORDER , Color.WHITE);
         this.add(border1, BorderLayout.WEST);
-        border2.setPreferredSize(new Dimension(1, this.getHeight()));
-        border2.setBackground(Color.white);
         this.add(border2, BorderLayout.EAST);
 
         setVisible(true);
