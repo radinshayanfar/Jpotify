@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Album implements Serializable, Comparable<Album> {
-    private List<Song> songs = new ArrayList<>();
+public class Album extends SongList implements Comparable<Album> {
+    private static final long serialVersionUID = 8033087536317087108L;
 
     public Album(Song song) {
         songs.add(song);
