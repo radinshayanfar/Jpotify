@@ -1,10 +1,7 @@
 package Test;
 
 import helper.FileHelper;
-import jpotify.model.Album;
-import jpotify.model.Playlist;
-import jpotify.model.Song;
-import jpotify.model.User;
+import jpotify.model.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -93,7 +90,7 @@ public class TestUser {
 //        FileHelper.saveUsers(users);
 
         user.startHttpServer();
-        Thread.sleep(120_000);
+        Thread.sleep(1200_000);
         user.stopHttpServer();
     }
 }

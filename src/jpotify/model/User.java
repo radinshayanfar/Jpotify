@@ -95,9 +95,11 @@ public class User implements Serializable {
     }
 
     public Song playSong(int index) {
-        Song ret = library.songs.get(index);
+        Song ret = currentList.songs.get(index);
         ret.updateLastPlayed();
-        getRecentlyPlayed().setCurrentSong(ret);
+        if (getSharedPlaylist().getSongs().contains(ret))
+            getRecentlyPlayed().setCurrentSong(ret);
+        currentList.current = ret;
         return ret;
     }
 
@@ -109,6 +111,7 @@ public class User implements Serializable {
         song.updateLastPlayed();
         if (getSharedPlaylist().getSongs().contains(song))
             getRecentlyPlayed().setCurrentSong(song);
+        currentList.current = song;
     }
 
     public void stopSong() {

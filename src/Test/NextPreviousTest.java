@@ -24,21 +24,34 @@ public class NextPreviousTest {
         }
 
         user.setCurrentList();
-        user.turnShuffleOn();
+//        user.turnShuffleOn();
 
         user.setRepeatRule(RepeatRule.REPEAT);
         if(user.isShuffled())
             user.shuffleCurrentSelected();
 //        user.unshuffleCurrentSelected();
 
-        for (int i = 0; i < 5; i++) {
-            Song song = user.next();
-            user.playSong(song);
-            CustomPlayer cs = new CustomPlayer(song.getAddress());
+        {
+            user.playSong(2);
+            CustomPlayer cs = new CustomPlayer(user.getPlaylists().get(2).getSongs().get(2).getAddress());
+            cs.play();
+            Thread.sleep(10_000);
+            cs.stop();
+            Song next = user.next();
+            user.playSong(next);
+            cs = new CustomPlayer(next.getAddress());
             cs.play();
             Thread.sleep(10_000);
             cs.stop();
         }
+//        for (int i = 0; i < 5; i++) {
+//            Song song = user.next();
+//            user.playSong(song);
+//            CustomPlayer cs = new CustomPlayer(song.getAddress());
+//            cs.play();
+//            Thread.sleep(10_000);
+//            cs.stop();
+//        }
 
         System.out.println("-----------");
         for (Song s :

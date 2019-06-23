@@ -128,4 +128,12 @@ public class Song implements Serializable, Comparable<Song> {
     }
 
 //    TODO: change album if changed
+
+
+    @Override
+    public String toString() {
+        return "Song{" +
+                "title='" + title + '\'' +
+                '}';
+    }
 }

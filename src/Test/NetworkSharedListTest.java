@@ -18,7 +18,7 @@ public class NetworkSharedListTest {
         URLConnection connection = url.openConnection();
         ObjectInputStream in = new ObjectInputStream(connection.getInputStream());
         String name = (String) in.readObject();
-        Playlist playlist = (Playlist) in.readObject();
+        Playlist playlist = (NetworkPlaylist) new NetworkPlaylist(((Playlist) in.readObject()).getSongs(), "192.168.1.2", 3245);
 
         User user;
         try {
@@ -27,7 +27,7 @@ public class NetworkSharedListTest {
             user = new User("Maryam");
         }
 
-        user.addSharedPlaylist(new NetworkPlaylist(playlist, "192.168.1.2", 3245));
+        user.addSharedPlaylist((NetworkPlaylist) playlist);
 
         user.setCurrentSelectedListInGUI(playlist);
         for (Song s :
