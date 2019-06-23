@@ -2,7 +2,6 @@ package jpotify.view.leftpanel;
 
 import jpotify.view.MainView;
 import jpotify.view.MyBorder;
-import jpotify.view.toppanel.JpotifyTitleBox;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,14 +19,25 @@ public class LeftPanelView extends JPanel {
     private LibraryBar libraryBar;
     private PlaylistBar playlistBar;
     private ArtworkPanel artworkPanel;
-    private JpotifyTitleBox titleBox;
+    private JPanel libraryBarAlignment;
+    private JPanel leftpanel = new JPanel();
 
     public LeftPanelView() {
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        //title Box
-        titleBox = new JpotifyTitleBox();
-        this.add(titleBox);
+        this.setLayout(new BorderLayout());
+
+        //home
+        JLabel home = new JLabel("Home");
+        home.setFont(new Font("Arial", Font.PLAIN, 24));
+        home.setForeground(Color.white);
+        this.add(home, BorderLayout.NORTH);
+
+        libraryBarAlignment = new JPanel();
+        libraryBarAlignment.setPreferredSize(new Dimension(WIDTH, ELEMENTS_HEIGHT));
+        libraryBarAlignment.setBackground(Color.BLACK);
+        libraryBar = new LibraryBar();
+        libraryBarAlignment.add(libraryBar, BorderLayout.CENTER);
+
 
 
 //        this.add(new JScrollPane(libraryBar, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));

@@ -1,36 +1,23 @@
 package jpotify.view.centerpanel;
 
 import jpotify.view.MainView;
-import jpotify.view.MyBorder;
 import jpotify.view.toppanel.TopPanelView;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 
 public class CenterPanelView extends JPanel {
     public static final int WIDTH = 700;
     private TopPanelView topPanelView = new TopPanelView();
-    private JPanel center = new JPanel(); //mainFrame
 
     public CenterPanelView() {
         setPreferredSize(new Dimension(WIDTH, MainView.HEIGHT));
         setLayout(new BorderLayout());
-        setBackground(Color.BLACK);
-
-        //search bar and username
-        this.add(topPanelView, BorderLayout.NORTH);
-
-        //center (main part)
-        center.setPreferredSize(new Dimension(this.getWidth(), this.getHeight()));
-        center.setBackground(Color.BLACK);
-        this.add(center, BorderLayout.CENTER);
-
-        //borders
-        MyBorder border1 = new MyBorder(this.getHeight(), MyBorder.VERTICAL_BORDER , Color.WHITE);
-        MyBorder border2 = new MyBorder(this.getHeight(), MyBorder.VERTICAL_BORDER , Color.WHITE);
-        this.add(border1, BorderLayout.WEST);
-        this.add(border2, BorderLayout.EAST);
-
+        this.setBackground(new Color(14,14, 14));
+        Border border1 = BorderFactory.createMatteBorder(10,10,10,10, new Color(14,14,14));
+        Border border2 = BorderFactory.createMatteBorder(1,0,0,0, Color.lightGray);
+        this.setBorder(BorderFactory.createCompoundBorder(border1, border2));
         setVisible(true);
     }
 }

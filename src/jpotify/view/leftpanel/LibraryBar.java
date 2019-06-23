@@ -1,7 +1,5 @@
 package jpotify.view.leftpanel;
 
-import jpotify.view.MyBorder;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -9,18 +7,31 @@ public class LibraryBar extends JPanel {
 
     private static final int ELEMENTS_SIZE = 10;
 
-//    private JButton addSong = new JButton();
-//    private JButton songs = new JButton();
-//    private JButton albums = new JButton();
-
-    private MyBorder border;
+    private JButton addSong = new JButton();
+    private JButton songs = new JButton();
+    private JButton albums = new JButton();
+    private JPanel libraryBar = new JPanel(); //TODO may be public
 
     public LibraryBar() {
 
         //overall sets
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.setLayout(new BorderLayout());
         this.setBackground(Color.BLACK);
         this.setPreferredSize(new Dimension(LeftPanelView.WIDTH, LeftPanelView.ELEMENTS_HEIGHT));
+//        libraryBar.setPreferredSize(new Dimension(this.getWidth(), this.getHeight()));
+//        libraryBar.setLayout(new BorderLayout());
+
+        //border
+        JPanel border = new JPanel();
+        border.setPreferredSize(new Dimension(190, 1));
+        border.setBackground(Color.white);
+        this.add(border, BorderLayout.NORTH);
+
+        JPanel test = new JPanel();
+        test.setPreferredSize(new Dimension(this.getWidth(), this.getHeight()));
+        test.setBackground(Color.blue);
+        this.add(test);
+
 
 //        this.setBackground(Color.white);
 //        this.setBorder(BorderFactory.createTitledBorder("Library"));
