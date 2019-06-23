@@ -1,10 +1,12 @@
 package Test;
 
 import helper.FileHelper;
-import jpotify.model.*;
+import jpotify.model.Album;
+import jpotify.model.Playlist;
+import jpotify.model.Song;
+import jpotify.model.User;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class TestUser {
@@ -86,9 +88,9 @@ public class TestUser {
         user.getSharedPlaylist().moveUp(1);
         user.getSharedPlaylist().moveUp(0);
 
-        Users users = new Users();
-        users.addUser(user);
-        FileHelper.saveUsers(users);
+//        Users users = new Users();
+//        users.addUser(user);
+//        FileHelper.saveUsers(users);
 
         user.startHttpServer();
         Thread.sleep(120_000);

@@ -18,8 +18,10 @@ public class NetworkSharedListTest {
         URL url = new URL("http://localhost:3245/getSharedList");
         URLConnection connection = url.openConnection();
         ObjectInputStream in = new ObjectInputStream(connection.getInputStream());
+        String name = (String) in.readObject();
         Playlist playlist = (Playlist) in.readObject();
 
+        System.out.println(name);
         for (int i = 0; i < playlist.getSongs().size(); i++) {
             String fileName = FileHelper.downloadSongToTemporaryDirectory("localhost", 3245, i);
 

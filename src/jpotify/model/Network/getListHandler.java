@@ -25,6 +25,7 @@ public class getListHandler implements HttpHandler {
                 // ok, we are ready to send the response.
                 exchange.sendResponseHeaders(200, 0);
                 ObjectOutputStream out = new ObjectOutputStream(exchange.getResponseBody());
+                out.writeObject(user.getName());
                 out.writeObject(playlistSupplier.get());
                 out.close();
             } catch (Exception e) {

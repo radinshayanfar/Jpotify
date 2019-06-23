@@ -24,15 +24,19 @@ public class NextPreviousTest {
         }
 
         user.setCurrentList();
+        user.turnShuffleOn();
 
-        user.setRepeatRule(RepeatRule.REPEAT_ONE);
+        user.setRepeatRule(RepeatRule.REPEAT);
+        if(user.isShuffled())
+            user.shuffleCurrentSelected();
+//        user.unshuffleCurrentSelected();
 
         for (int i = 0; i < 5; i++) {
-            Song song = user.forceNext();
+            Song song = user.next();
             user.playSong(song);
             CustomPlayer cs = new CustomPlayer(song.getAddress());
             cs.play();
-            Thread.sleep(1_000);
+            Thread.sleep(10_000);
             cs.stop();
         }
 

@@ -17,11 +17,13 @@ public class User implements Serializable {
     private transient ArrayList<String> IPs;
     private SongList library;
     private ArrayList<Playlist> playlists;
+    private ArrayList<Playlist> SharedPlaylists;
     private HashMap<String, Album> albums;
     private transient SongList currentList;
     private transient SongList currentSelectedListInGUI;
     private transient Playlist shuffledOriginal;
     private RepeatRule repeatRule = RepeatRule.OFF;
+    private transient boolean shuffled = false;
 
     {
         try {
@@ -48,6 +50,10 @@ public class User implements Serializable {
 
     public User(String name) {
         this.name = name;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public Playlist getSharedPlaylist() {
@@ -96,7 +102,8 @@ public class User implements Serializable {
 
     public void playSong(Song song) {
         song.updateLastPlayed();
-        getRecentlyPlayed().setCurrentSong(song);
+        if (getSharedPlaylist().getSongs().contains(song))
+            getRecentlyPlayed().setCurrentSong(song);
     }
 
     public void stopSong() {
@@ -165,6 +172,20 @@ public class User implements Serializable {
         if (currentList instanceof Playlist && shuffledOriginal != null) {
             currentList = shuffledOriginal;
         }
+    }
+
+    public boolean turnShuffleOn() {
+        if (currentList instanceof Playlist)
+            return shuffled = true;
+        return false;
+    }
+
+    public void turnShuffleOff() {
+        shuffled = false;
+    }
+
+    public boolean isShuffled() {
+        return shuffled;
     }
 
     public void setRepeatRule(RepeatRule repeatRule) {

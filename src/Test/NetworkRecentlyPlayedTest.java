@@ -13,8 +13,10 @@ public class NetworkRecentlyPlayedTest {
         URL url = new URL("http://localhost:3245/getRecentlyPlayedList");
         URLConnection connection = url.openConnection();
         ObjectInputStream in = new ObjectInputStream(connection.getInputStream());
+        String name = (String) in.readObject();
         RecentlyPlayedPlaylist playlist = (RecentlyPlayedPlaylist) in.readObject();
 
+        System.out.println(name);
         for (Song s :
                 playlist.getSongs()) {
             System.out.println(s.getTitle());
