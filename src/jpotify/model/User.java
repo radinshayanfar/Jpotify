@@ -3,6 +3,7 @@ package jpotify.model;
 import helper.FileHelper;
 import jpotify.model.Network.Server;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
@@ -98,6 +99,10 @@ public class User implements Serializable {
         ret.updateLastPlayed();
         getRecentlyPlayed().setCurrentSong(ret);
         return ret;
+    }
+
+    public Song playSongFromNetwork(int index, String host, int port) throws IOException {
+        return new Song(new File(FileHelper.downloadSongToTemporaryDirectory(host, port, index)));
     }
 
     public void playSong(Song song) {
