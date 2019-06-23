@@ -18,7 +18,7 @@ public class User implements Serializable {
     private transient ArrayList<String> IPs;
     private SongList library;
     private ArrayList<Playlist> playlists;
-    private ArrayList<Playlist> sharedPlaylists;
+    private transient ArrayList<NetworkPlaylist> sharedPlaylists = new ArrayList<>();
     private HashMap<String, Album> albums;
     private transient SongList currentList;
     private transient SongList currentSelectedListInGUI;
@@ -150,15 +150,21 @@ public class User implements Serializable {
         return ret;
     }
 
-    public void addSharedPlaylist(Playlist playlist) {
+    public void addSharedPlaylist(NetworkPlaylist playlist) {
+        if (sharedPlaylists == null)
+            sharedPlaylists = new ArrayList<>();
         sharedPlaylists.add(playlist);
     }
 
     public void removeSharedPlaylist(int index) {
+        if (sharedPlaylists == null)
+            sharedPlaylists = new ArrayList<>();
         sharedPlaylists.remove(index);
     }
 
-    public ArrayList<Playlist> getSharedPlaylists() {
+    public ArrayList<NetworkPlaylist> getSharedPlaylists() {
+        if (sharedPlaylists == null)
+            sharedPlaylists = new ArrayList<>();
         return sharedPlaylists;
     }
 

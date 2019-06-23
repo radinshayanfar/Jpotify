@@ -27,6 +27,8 @@ public class NetworkSharedListTest {
             user = new User("Maryam");
         }
 
+        user.addSharedPlaylist(playlist);
+
         user.setCurrentSelectedListInGUI(playlist);
         for (Song s :
                 playlist.getSongs()) {
