@@ -4,10 +4,9 @@ import helper.FileHelper;
 import helper.StringHelper;
 import jpotify.model.Network.Server;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.Serializable;
+import java.io.*;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.*;
 
 public class User implements Serializable {
@@ -110,22 +109,6 @@ public class User implements Serializable {
         othersRecentlyPlayed.put(remoteClient, otherList);
     }
 
-    public void startHttpServer(int port) {
-        if (server == null) {
-            try {
-                server = new Server(this, port);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            server.changeUser(this);
-        }
-    }
-
-    public void stopHttpServer() {
-        server.stopServer();
-    }
-
     public Song playSong(int index) {
         if (currentList instanceof NetworkPlaylist) throw new Error("Don't use this method over network!");
         Song ret = currentList.songs.get(index);
@@ -222,6 +205,8 @@ public class User implements Serializable {
         return playlists;
     }
 
+//    Shuffle, Repeat, Next and Previous, Set current list
+
     public void setCurrentSelectedListInGUI(SongList currentSelectedListInGUI) {
         this.currentSelectedListInGUI = currentSelectedListInGUI;
     }
@@ -271,5 +256,72 @@ public class User implements Serializable {
 
     public Song previous() {
         return currentList.previous(repeatRule);
+    }
+
+//    Network methods
+
+    public void startHttpServer(int port) {
+        if (server == null) {
+            try {
+                server = new Server(this, port);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            server.changeUser(this);
+        }
+        startConnectionToOthers();
+    }
+
+    public void stopHttpServer() {
+        server.stopServer();
+    }
+
+    private void tellOthersAboutMyRecent() {
+        for (RemoteClient r :
+                remoteClients) {
+            try {
+                URL url = new URL("http://" + r.getHost() + ":" + r.getPort() + "/updateRecent");
+                URLConnection connection = url.openConnection();
+                ObjectOutputStream out = new ObjectOutputStream(connection.getOutputStream());
+                out.writeInt(r.getPort());
+                out.writeObject(getRecentlyPlayed());
+            } catch (IOException e) {
+//                e.printStackTrace();
+            }
+        }
+    }
+
+    private void tellOthersAboutMyShared() {
+        for (RemoteClient r :
+                remoteClients) {
+            try {
+                URL url = new URL("http://" + r.getHost() + ":" + r.getPort() + "/updatePlaylist");
+                URLConnection connection = url.openConnection();
+                ObjectOutputStream out = new ObjectOutputStream(connection.getOutputStream());
+                out.writeInt(r.getPort());
+                out.writeObject(playlists.get(1));
+            } catch (IOException e) {
+//                e.printStackTrace();
+            }
+        }
+    }
+
+    private void startConnectionToOthers() {
+        for (RemoteClient r :
+                remoteClients) {
+            try {
+                URL url = new URL("http://" + r.getHost() + ":" + r.getPort() + "/connect");
+                URLConnection connection = url.openConnection();
+                ObjectOutputStream out = new ObjectOutputStream(connection.getOutputStream());
+                out.writeInt(r.getPort());
+                out.writeObject(getRecentlyPlayed());
+                ObjectInputStream in = new ObjectInputStream(connection.getInputStream());
+                this.addSharedPlaylist((NetworkPlaylist) in.readObject());
+                this.addOthersRecentlyPlayed(r, (RecentlyPlayedPlaylist) in.readObject());
+            } catch (IOException | ClassNotFoundException e) {
+//                e.printStackTrace();
+            }
+        }
     }
 }
