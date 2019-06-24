@@ -9,21 +9,28 @@ import java.util.concurrent.Executors;
 
 public class Server {
 
-    private User user;
     private HttpServer server;
 
-    public Server(User user) throws IOException {
-        this.user = user;
-        server = HttpServer.create(new InetSocketAddress(3245), 0);
-        server.createContext("/getSharedList", new getListHandler(user, user::getSharedPlaylist));
-        server.createContext("/getRecentlyPlayedList", new getListHandler(user, user::getRecentlyPlayed));
-        server.createContext("/getSong", new getSongHandler(user));
+    private getListHandler getSharedList;
+    private getListHandler getRecentlyPlayedList;
+    private getSongHandler getSong;
+
+    public Server(User user, int port) throws IOException {
+        server = HttpServer.create(new InetSocketAddress(port), 0);
+        getSharedList = new getListHandler(user, user::getSharedPlaylist);
+        getRecentlyPlayedList = new getListHandler(user, user::getRecentlyPlayed);
+        getSong = new getSongHandler(user);
+        server.createContext("/getSharedList", getSharedList);
+        server.createContext("/getRecentlyPlayedList", getRecentlyPlayedList);
+        server.createContext("/getSong", getSong);
         server.setExecutor(Executors.newCachedThreadPool()); // creates a default executor
         server.start();
     }
 
     public void changeUser(User user) {
-        this.user = user;
+        getSharedList.changeUser(user, user::getSharedPlaylist);
+        getRecentlyPlayedList.changeUser(user, user::getRecentlyPlayed);
+        getSong.changeUser(user);
     }
 
     public void stopServer() {

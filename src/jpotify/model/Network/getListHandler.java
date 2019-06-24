@@ -18,11 +18,15 @@ public class getListHandler implements HttpHandler {
         this.playlistSupplier = playlistSupplier;
     }
 
+    public void changeUser(User user, Supplier<SongList> playlistSupplier) {
+        this.user = user;
+        this.playlistSupplier = playlistSupplier;
+    }
+
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        if (user.getIPs().contains(exchange.getRemoteAddress().getHostString())) {
+        if (user.getHosts().contains(exchange.getRemoteAddress().getHostString())) {
             try {
-                // ok, we are ready to send the response.
                 exchange.sendResponseHeaders(200, 0);
                 ObjectOutputStream out = new ObjectOutputStream(exchange.getResponseBody());
                 out.writeObject(user.getName());

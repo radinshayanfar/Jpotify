@@ -68,6 +68,10 @@ public class Song implements Serializable, Comparable<Song> {
         }
     }
 
+    public void useDefaultArtwork() {
+//        TODO: use default artwork
+    }
+
     public byte[] getArtwork() {
         if (artwork == null) {
             processId3Tags();

@@ -15,7 +15,7 @@ public class User implements Serializable {
     private String name;
     private static transient Server server;
     private transient RecentlyPlayedPlaylist recentlyPlayed = new RecentlyPlayedPlaylist();
-    private transient ArrayList<String> IPs;
+    private transient ArrayList<RemoteClient> remoteClients;
     private SongList library;
     private ArrayList<Playlist> playlists;
     private transient ArrayList<NetworkPlaylist> sharedPlaylists = new ArrayList<>();
@@ -34,9 +34,9 @@ public class User implements Serializable {
         }
 
         try {
-            IPs = FileHelper.fileToArrayList("ip_list.txt");
+            remoteClients = FileHelper.ipFileToArrayList("ip_list.txt");
         } catch (FileNotFoundException e) {
-            IPs = new ArrayList<>();
+            remoteClients = new ArrayList<>();
 //            e.printStackTrace();
         }
 
@@ -61,15 +61,31 @@ public class User implements Serializable {
         return playlists.get(1);
     }
 
-    public ArrayList<String> getIPs() {
-        if (IPs == null)
+    public ArrayList<RemoteClient> getRemoteClients() {
+        if (remoteClients == null)
             try {
-                IPs = FileHelper.fileToArrayList("ip_list.txt");
+                remoteClients = FileHelper.ipFileToArrayList("ip_list.txt");
             } catch (FileNotFoundException e) {
-                IPs = new ArrayList<>();
+                remoteClients = new ArrayList<>();
 //            e.printStackTrace();
             }
-        return IPs;
+        return remoteClients;
+    }
+
+    public ArrayList<String> getHosts() {
+        if (remoteClients == null)
+            try {
+                remoteClients = FileHelper.ipFileToArrayList("ip_list.txt");
+            } catch (FileNotFoundException e) {
+                remoteClients = new ArrayList<>();
+//            e.printStackTrace();
+            }
+        ArrayList<String> ret = new ArrayList<>();
+        for (RemoteClient rc :
+                remoteClients) {
+            ret.add(rc.getHost());
+        }
+        return ret;
     }
 
     public RecentlyPlayedPlaylist getRecentlyPlayed() {
@@ -78,10 +94,10 @@ public class User implements Serializable {
         return recentlyPlayed;
     }
 
-    public void startHttpServer() {
+    public void startHttpServer(int port) {
         if (server == null) {
             try {
-                server = new Server(this);
+                server = new Server(this, port);
             } catch (IOException e) {
                 e.printStackTrace();
             }

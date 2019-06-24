@@ -17,10 +17,14 @@ public class getSongHandler implements HttpHandler {
         this.user = user;
     }
 
+    public void changeUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         Map<String, String> params = StringHelper.queryToMap(exchange.getRequestURI().getQuery());
-        if (params.containsKey("i") && user.getIPs().contains(exchange.getRemoteAddress().getHostString())) {
+        if (params.containsKey("i") && user.getHosts().contains(exchange.getRemoteAddress().getHostString())) {
             int index = Integer.valueOf(params.get("i"));
             Headers h = exchange.getResponseHeaders();
             h.add("Content-Type", "audio/mpeg");

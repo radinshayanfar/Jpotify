@@ -34,21 +34,21 @@ public class TestUser {
         user.addSong(s7);
         user.addSong(s8);
 
-        user.playSong(5);
-        Thread.sleep(10);
-        user.playSong(2);
-        Thread.sleep(10);
-        user.playSong(4);
-        Thread.sleep(10);
+//        user.playSong(5);
+//        Thread.sleep(10);
+//        user.playSong(2);
+//        Thread.sleep(10);
+//        user.playSong(4);
+//        Thread.sleep(10);
 
         for (Album a :
                 user.getAlbums()) {
 //            System.out.println(s.getAlbumReference());
             System.out.println(a.getName());
         }
-        System.out.println(user.getRecentlyPlayed().getCurrentSong().getTitle());
+//        System.out.println(user.getRecentlyPlayed().getCurrentSong().getTitle());
 //        user.stopSong();
-        System.out.println(user.getRecentlyPlayed().getCurrentSong());
+//        System.out.println(user.getRecentlyPlayed().getCurrentSong());
 
         System.out.println("----------------");
 
@@ -89,7 +89,7 @@ public class TestUser {
 //        users.addUser(user);
 //        FileHelper.saveUsers(users);
 
-        user.startHttpServer();
+        user.startHttpServer(3245);
         Thread.sleep(1200_000);
         user.stopHttpServer();
     }

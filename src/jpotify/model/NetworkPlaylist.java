@@ -23,6 +23,10 @@ public class NetworkPlaylist extends Playlist {
         this.host = host;
         this.port = port;
         this.shuffledOriginal = shuffledOriginal;
+        for (Song s :
+                songs) {
+            s.useDefaultArtwork();
+        }
     }
 
     @Override
