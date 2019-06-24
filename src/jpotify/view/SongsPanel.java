@@ -1,7 +1,6 @@
 package jpotify.view;
 
 import jpotify.view.centerpanel.CenterPanelView;
-import jpotify.view.leftpanel.ArtworkPanel;
 
 import javax.swing.*;
 import java.awt.*;
