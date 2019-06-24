@@ -37,6 +37,7 @@ public class connectHandler implements HttpHandler, ChangeableUser {
             }
             user.addSharedPlaylist(playlist);
             in.close();
+            exchange.sendResponseHeaders(200, 0);
             ObjectOutputStream out = new ObjectOutputStream(exchange.getResponseBody());
             out.writeObject(user.getSharedPlaylist());
             out.writeObject(user.getRecentlyPlayed());

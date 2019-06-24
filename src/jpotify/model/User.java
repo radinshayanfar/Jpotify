@@ -104,6 +104,8 @@ public class User implements Serializable {
     public void addOthersRecentlyPlayed(RemoteClient remoteClient, RecentlyPlayedPlaylist otherList) {
         if (otherList == null)
             return;
+        if (othersRecentlyPlayed == null)
+            othersRecentlyPlayed = new HashMap<>();
         othersRecentlyPlayed.put(remoteClient, otherList);
     }
 
@@ -268,54 +270,63 @@ public class User implements Serializable {
         } else {
             server.changeUser(this);
         }
-        startConnectionToOthers();
+        startConnectionToOthers(port);
     }
 
     public void stopHttpServer() {
         server.stopServer();
     }
 
-    private void tellOthersAboutMyRecent() {
+    public void tellOthersAboutMyRecent() {
         for (RemoteClient r :
                 getRemoteClients()) {
             try {
                 URL url = new URL("http://" + r.getHost() + ":" + r.getPort() + "/updateRecent");
                 URLConnection connection = url.openConnection();
+                connection.setDoOutput(true);
                 ObjectOutputStream out = new ObjectOutputStream(connection.getOutputStream());
                 out.writeInt(r.getPort());
                 out.writeObject(getRecentlyPlayed());
+                out.flush();
+                out.close();
             } catch (IOException e) {
 //                e.printStackTrace();
             }
         }
     }
 
-    private void tellOthersAboutMyShared() {
+    public void tellOthersAboutMyShared() {
         for (RemoteClient r :
                 getRemoteClients()) {
             try {
                 URL url = new URL("http://" + r.getHost() + ":" + r.getPort() + "/updatePlaylist");
                 URLConnection connection = url.openConnection();
+                connection.setDoOutput(true);
                 ObjectOutputStream out = new ObjectOutputStream(connection.getOutputStream());
                 out.writeInt(r.getPort());
-                out.writeObject(playlists.get(1));
+                out.writeObject(getSharedPlaylist());
+                out.flush();
+                out.close();
             } catch (IOException e) {
 //                e.printStackTrace();
             }
         }
     }
 
-    private void startConnectionToOthers() {
+    private void startConnectionToOthers(int port) {
         for (RemoteClient r :
                 getRemoteClients()) {
             try {
                 URL url = new URL("http://" + r.getHost() + ":" + r.getPort() + "/connect");
                 URLConnection connection = url.openConnection();
+                connection.setDoOutput(true);
                 ObjectOutputStream out = new ObjectOutputStream(connection.getOutputStream());
-                out.writeInt(r.getPort());
-                out.writeObject(getRecentlyPlayed());
+                out.writeInt(port);
+                out.writeObject(getSharedPlaylist());
+                out.flush();
+                out.close();
                 ObjectInputStream in = new ObjectInputStream(connection.getInputStream());
-                this.addSharedPlaylist((NetworkPlaylist) in.readObject());
+                this.addSharedPlaylist(new NetworkPlaylist(((Playlist) in.readObject()).getSongs(), r.getHost(), r.getPort()));
                 this.addOthersRecentlyPlayed(r, (RecentlyPlayedPlaylist) in.readObject());
             } catch (IOException | ClassNotFoundException e) {
 //                e.printStackTrace();

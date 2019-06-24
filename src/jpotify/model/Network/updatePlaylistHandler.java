@@ -32,6 +32,7 @@ public class updatePlaylistHandler implements HttpHandler, ChangeableUser {
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
+            System.out.println(playlist.getSongs());
             user.addSharedPlaylist(playlist);
             exchange.sendResponseHeaders(200, 0);
             exchange.close();
