@@ -5,6 +5,7 @@ import jpotify.view.Listeners.PanelChangeListener;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -93,6 +94,8 @@ public class LibraryBar extends JPanel {
         public void actionPerformed(ActionEvent e) {
             if (e.getSource().equals(addSong)){
                 System.out.println("works correctly");
+                FileNameExtensionFilter filter = new FileNameExtensionFilter("Mp3 File", "mp3");
+                fileChooser.setFileFilter(filter);
                 fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
                 fileChooser.setMultiSelectionEnabled(true);
                 int f = fileChooser.showOpenDialog(null);
