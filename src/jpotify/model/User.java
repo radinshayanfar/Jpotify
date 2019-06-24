@@ -289,6 +289,7 @@ public class User implements Serializable {
                 out.writeObject(getRecentlyPlayed());
                 out.flush();
                 out.close();
+                connection.getInputStream().close();
             } catch (IOException e) {
 //                e.printStackTrace();
             }
@@ -307,6 +308,7 @@ public class User implements Serializable {
                 out.writeObject(getSharedPlaylist());
                 out.flush();
                 out.close();
+                connection.getInputStream().close();
             } catch (IOException e) {
 //                e.printStackTrace();
             }
@@ -328,6 +330,7 @@ public class User implements Serializable {
                 ObjectInputStream in = new ObjectInputStream(connection.getInputStream());
                 this.addSharedPlaylist(new NetworkPlaylist(((Playlist) in.readObject()).getSongs(), r.getHost(), r.getPort()));
                 this.addOthersRecentlyPlayed(r, (RecentlyPlayedPlaylist) in.readObject());
+                in.close();
             } catch (IOException | ClassNotFoundException e) {
 //                e.printStackTrace();
             }
