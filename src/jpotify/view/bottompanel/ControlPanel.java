@@ -12,13 +12,13 @@ import java.util.ArrayList;
 
 
 public class ControlPanel extends JPanel {
-    private static final int ICON = 45;
+    private static final int ICON = 40;
     private JButton play = new JButton();
     private JButton next = new JButton();
     private JButton previous = new JButton();
     private JButton like = new JButton();
     private JButton shuffle = new JButton();
-    private JScrollPane controlBar = new JScrollPane();
+    private JSlider controlBar = new JSlider(JSlider.HORIZONTAL, 100, 0);
     private ButtonPanel btnPanel = new ButtonPanel();
 
     public ControlPanel() {
@@ -29,6 +29,8 @@ public class ControlPanel extends JPanel {
         this.add(btnPanel, BorderLayout.NORTH);
 //        JPanel panel = new JPanel();
 //        panel.setBackground(new Color(34,34,34));
+        controlBar.setBackground(new Color(34,34,34));
+        controlBar.setPreferredSize(new Dimension(CenterPanelView.WIDTH - 100 , 20));
         this.setVisible(true);
     }
 
@@ -39,7 +41,7 @@ public class ControlPanel extends JPanel {
             this.setBackground(new Color(34,34,34));
             try {
                 ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/icons/play.png")));
-                play.setIcon(new ImageIcon(icon.getImage().getScaledInstance(ICON + 5 , ICON + 5, Image.SCALE_AREA_AVERAGING)));
+                play.setIcon(new ImageIcon(icon.getImage().getScaledInstance(ICON + 15 , ICON + 15, Image.SCALE_AREA_AVERAGING)));
             } catch (IOException e) {
                 e.printStackTrace();
             }

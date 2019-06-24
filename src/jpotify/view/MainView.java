@@ -3,11 +3,13 @@ package jpotify.view;
 import jpotify.view.bottompanel.BottomPanelView;
 import jpotify.view.centerpanel.CenterPanelView;
 import jpotify.view.leftpanel.LeftPanelView;
+import jpotify.view.rightpanel.Friend;
 import jpotify.view.rightpanel.FriendsBarView;
 import jpotify.view.toppanel.TopPanelView;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class MainView extends JFrame {
 
@@ -29,6 +31,17 @@ public class MainView extends JFrame {
         this.add(friendsBarView, BorderLayout.EAST);
         this.add(bottomPanelView, BorderLayout.SOUTH);
         this.add(centerPanelView, BorderLayout.CENTER);
+
+        ArrayList<Friend> friends = new ArrayList<>();
+        Friend f1 = new Friend("maryam","offline");
+        Friend f2 = new Friend("Mohammaf", "online");
+        Friend f3 = new Friend("f","nazi","omid","online");
+        friends.add(f1);
+        friends.add(f2);
+        friends.add(f3);
+//        friendsBarView.setFriends(friends);
+//        friendsBarView.revalidate();
+
         this.setVisible(true);
     }
 

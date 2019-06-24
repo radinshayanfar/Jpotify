@@ -48,6 +48,7 @@ public class CenterPanelView extends JPanel implements PanelChangeListener {
     @Override
     public void DisplayPanel(String panelName) {
         if (panelName.equals("songs")){
+            System.out.println("song");
             this.invalidate();
             this.remove(albumsPanel);
             this.remove(playlistPanel);
@@ -58,6 +59,7 @@ public class CenterPanelView extends JPanel implements PanelChangeListener {
             this.revalidate();
         }
         else if (panelName.equals("albums")){
+            System.out.println("album");
             this.invalidate();
             this.remove(albumsPanel);
             this.remove(playlistPanel);
@@ -68,6 +70,7 @@ public class CenterPanelView extends JPanel implements PanelChangeListener {
             this.revalidate();
         }
         else{
+            System.out.println("playlist");
             this.invalidate();
             this.remove(albumsPanel);
             this.remove(playlistPanel);

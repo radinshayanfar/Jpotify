@@ -12,7 +12,7 @@ public class VolumeControlPanelView extends JPanel {
 
     private JButton mute = new JButton();
     private JLabel volumeDown = new JLabel();
-    private JLabel volumeUp= new JLabel();
+    private JLabel volumeUp= new  JLabel();
     private JSlider volumeSlider = new JSlider(JSlider.HORIZONTAL, 100, 0);
 
     public VolumeControlPanelView() {

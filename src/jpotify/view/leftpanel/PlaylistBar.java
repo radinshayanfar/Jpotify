@@ -43,7 +43,7 @@ public class PlaylistBar extends JPanel {
 
         try {
             ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/Add.png")));
-            addPlaylist.setIcon(new ImageIcon(icon.getImage().getScaledInstance(MainView.ICON, MainView.ICON, Image.SCALE_AREA_AVERAGING)));
+            addPlaylist.setIcon(new ImageIcon(icon.getImage().getScaledInstance(MainView.ICON + 30, MainView.ICON + 30, Image.SCALE_AREA_AVERAGING)));
         } catch (IOException e) {
             e.printStackTrace();
         }
