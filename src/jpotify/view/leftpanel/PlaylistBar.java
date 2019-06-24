@@ -22,7 +22,7 @@ public class PlaylistBar extends JPanel {
         this.setLayout(new BorderLayout());
         this.setVisible(true);
 
-        Border outerB = BorderFactory.createMatteBorder(0,15,5,0, Color.BLACK);
+        Border outerB = BorderFactory.createMatteBorder(50,15,5,0, Color.BLACK);
         Border whiteLineB = BorderFactory.createMatteBorder(0,0,1,0, Color.lightGray);
         Border inerB = BorderFactory.createMatteBorder(0,0,5,0, Color.BLACK);
         Border complexB = BorderFactory.createCompoundBorder(whiteLineB, inerB);
@@ -39,10 +39,10 @@ public class PlaylistBar extends JPanel {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        addPlaylist.setText("Add Song");
+        addPlaylist.setText("Create a New Playlist");
         addPlaylist.setBackground(Color.BLACK);
         addPlaylist.setForeground(Color.lightGray);
-        addPlaylist.setBorder(BorderFactory.createMatteBorder(5, 20, 0, 0, Color.BLACK));
+        addPlaylist.setBorder(BorderFactory.createMatteBorder(5, 0, 10, 0, Color.BLACK));
         this.add(addPlaylist, BorderLayout.SOUTH);
 
         refreshList("Favorites");

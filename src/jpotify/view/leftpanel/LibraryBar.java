@@ -25,7 +25,7 @@ public class LibraryBar extends JPanel {
 
         //overall sets
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        this.setBackground(Color.red);
+        this.setBackground(Color.black);
         this.setPreferredSize(new Dimension(LeftPanelView.WIDTH, LeftPanelView.ELEMENTS_HEIGHT + 50));
 
         Border outerB = BorderFactory.createMatteBorder(0,15,5,0, Color.black);
@@ -47,7 +47,7 @@ public class LibraryBar extends JPanel {
             e.printStackTrace();
         }
         addSong.setText("Add Song");
-        addSong.setBackground(Color.WHITE);
+        addSong.setBackground(Color.BLACK);
         addSong.setForeground(Color.lightGray);
         addSong.setBorder(BorderFactory.createMatteBorder(5, 20, 0, 0, Color.BLACK));
 //        addSong.addActionListener(buttonListener);
