@@ -11,7 +11,7 @@ public class ArtworkPanel extends JPanel {
 
     private BufferedImage image;
 
-    ArtworkPanel() {
+    public ArtworkPanel() {
         int sideSize = LeftPanelView.ELEMENTS_HEIGHT;
         this.setPreferredSize(new Dimension(sideSize, sideSize));
         try {

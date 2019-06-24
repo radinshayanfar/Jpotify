@@ -1,6 +1,8 @@
 package jpotify.view.centerpanel;
 
+import jpotify.view.AlbumsPanel;
 import jpotify.view.MainView;
+import jpotify.view.SongsPanel;
 import jpotify.view.toppanel.TopPanelView;
 
 import javax.swing.*;
@@ -10,6 +12,8 @@ import java.awt.*;
 public class CenterPanelView extends JPanel {
     public static final int WIDTH = 700;
     private TopPanelView topPanelView = new TopPanelView();
+    private SongsPanel songsPanel = new SongsPanel();
+    private AlbumsPanel albumsPanel = new AlbumsPanel();
 
     public CenterPanelView() {
         setPreferredSize(new Dimension(WIDTH, MainView.HEIGHT));
@@ -21,6 +25,15 @@ public class CenterPanelView extends JPanel {
         Border border2 = BorderFactory.createMatteBorder(1,0,0,0, Color.lightGray);
         this.setBorder(BorderFactory.createCompoundBorder(border1, border2));
 
+        this.add(songsPanel, BorderLayout.CENTER);
+
         setVisible(true);
+    }
+
+    public void setSongsPanel(SongsPanel s){
+        songsPanel = s;
+    }
+    public void setAlbumsPanel(AlbumsPanel a){
+        albumsPanel = a;
     }
 }

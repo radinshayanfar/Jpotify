@@ -30,7 +30,7 @@ public class LeftPanelView extends JPanel {
 
         //home
         JLabel home = new JLabel("Home                ");
-        home.setFont(new Font("Tahoma", Font.PLAIN, 20));
+        home.setFont(new Font("Arial", Font.PLAIN, 20));
         home.setForeground(Color.white);
         home.setBorder(BorderFactory.createCompoundBorder(outerB, complexB));
         this.add(home);
@@ -45,6 +45,12 @@ public class LeftPanelView extends JPanel {
         playlist.setBorder(BorderFactory.createCompoundBorder(outerB, complexB));
         this.add(playlist);
 
+//        playlistBar = new PlaylistBar();
+//        playlistBar.addListElements(list);
+//        this.add(playlistBar);
+
+        artworkPanel = new ArtworkPanel();
+        this.add(artworkPanel);
 
 //        this.add(new JScrollPane(libraryBar, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
         this.setPreferredSize(new Dimension(WIDTH, MainView.HEIGHT));
