@@ -1,6 +1,7 @@
 package jpotify.model;
 
 import helper.FileHelper;
+import helper.StringHelper;
 import jpotify.model.Network.Server;
 
 import java.io.File;
@@ -13,18 +14,20 @@ public class User implements Serializable {
 
     private static final long serialVersionUID = 4879049040173323873L;
     private String name;
+    private final String uniqueIdentifier;
     private static transient Server server;
     private transient RecentlyPlayedPlaylist recentlyPlayed = new RecentlyPlayedPlaylist();
     private transient ArrayList<RemoteClient> remoteClients;
     private SongList library;
     private ArrayList<Playlist> playlists;
-    private transient ArrayList<NetworkPlaylist> sharedPlaylists = new ArrayList<>();
     private HashMap<String, Album> albums;
     private transient SongList currentList;
     private transient SongList currentSelectedListInGUI;
     private transient Playlist shuffledOriginal;
     private RepeatRule repeatRule = RepeatRule.OFF;
     private transient boolean shuffled = false;
+    private transient ArrayList<NetworkPlaylist> othersSharedPlaylists = new ArrayList<>();
+    private transient HashMap<RemoteClient, RecentlyPlayedPlaylist> othersRecentlyPlayed = new HashMap<>();
 
     {
         try {
@@ -51,6 +54,7 @@ public class User implements Serializable {
 
     public User(String name) {
         this.name = name;
+        uniqueIdentifier = name + StringHelper.randomString(20);
     }
 
     public String getName() {
@@ -92,6 +96,18 @@ public class User implements Serializable {
         if (recentlyPlayed == null)
             recentlyPlayed = new RecentlyPlayedPlaylist();
         return recentlyPlayed;
+    }
+
+    public ArrayList<RecentlyPlayedPlaylist> getOthersRecentlyPlayed() {
+        if (othersRecentlyPlayed == null)
+            othersRecentlyPlayed = new HashMap<>();
+        return new ArrayList<>(othersRecentlyPlayed.values());
+    }
+
+    public void addOthersRecentlyPlayed(RemoteClient remoteClient, RecentlyPlayedPlaylist otherList) {
+        if (otherList == null)
+            return;
+        othersRecentlyPlayed.put(remoteClient, otherList);
     }
 
     public void startHttpServer(int port) {
@@ -171,21 +187,31 @@ public class User implements Serializable {
     }
 
     public void addSharedPlaylist(NetworkPlaylist playlist) {
-        if (sharedPlaylists == null)
-            sharedPlaylists = new ArrayList<>();
-        sharedPlaylists.add(playlist);
+        if (playlist == null)
+            return;
+        int i = getOthersSharedPlaylists().indexOf(playlist);
+        if (i == -1)
+            othersSharedPlaylists.add(playlist);
+        else
+            othersSharedPlaylists.set(i, playlist);
     }
 
     public void removeSharedPlaylist(int index) {
-        if (sharedPlaylists == null)
-            sharedPlaylists = new ArrayList<>();
-        sharedPlaylists.remove(index);
+        if (othersSharedPlaylists == null)
+            othersSharedPlaylists = new ArrayList<>();
+        othersSharedPlaylists.remove(index);
     }
 
-    public ArrayList<NetworkPlaylist> getSharedPlaylists() {
-        if (sharedPlaylists == null)
-            sharedPlaylists = new ArrayList<>();
-        return sharedPlaylists;
+    public void removeSharedPlaylist(NetworkPlaylist playlist) {
+        if (othersSharedPlaylists == null)
+            othersSharedPlaylists = new ArrayList<>();
+        othersSharedPlaylists.remove(playlist);
+    }
+
+    public ArrayList<NetworkPlaylist> getOthersSharedPlaylists() {
+        if (othersSharedPlaylists == null)
+            othersSharedPlaylists = new ArrayList<>();
+        return othersSharedPlaylists;
     }
 
     public void removePlaylist() {

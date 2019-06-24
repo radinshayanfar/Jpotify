@@ -9,7 +9,7 @@ import jpotify.model.User;
 import java.io.*;
 import java.util.Map;
 
-public class getSongHandler implements HttpHandler {
+public class getSongHandler implements HttpHandler, ChangeableUser {
 
     private User user;
 
@@ -17,6 +17,7 @@ public class getSongHandler implements HttpHandler {
         this.user = user;
     }
 
+    @Override
     public void changeUser(User user) {
         this.user = user;
     }

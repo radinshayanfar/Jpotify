@@ -11,26 +11,30 @@ public class Server {
 
     private HttpServer server;
 
-    private getListHandler getSharedList;
-    private getListHandler getRecentlyPlayedList;
-    private getSongHandler getSong;
+    private connectHandler connectHandler;
+    private updateRecentHandler updateRecentHandler;
+    private updatePlaylistHandler updatePlaylistHandler;
+    private getSongHandler getSongHandler;
 
     public Server(User user, int port) throws IOException {
         server = HttpServer.create(new InetSocketAddress(port), 0);
-        getSharedList = new getListHandler(user, user::getSharedPlaylist);
-        getRecentlyPlayedList = new getListHandler(user, user::getRecentlyPlayed);
-        getSong = new getSongHandler(user);
-        server.createContext("/getSharedList", getSharedList);
-        server.createContext("/getRecentlyPlayedList", getRecentlyPlayedList);
-        server.createContext("/getSong", getSong);
+        connectHandler = new connectHandler(user);
+        updateRecentHandler = new updateRecentHandler(user);
+        updatePlaylistHandler = new updatePlaylistHandler(user);
+        getSongHandler = new getSongHandler(user);
+        server.createContext("/connect", connectHandler);
+        server.createContext("/updateRecent", updateRecentHandler);
+        server.createContext("/updatePlaylist", updatePlaylistHandler);
+        server.createContext("/getSong", getSongHandler);
         server.setExecutor(Executors.newCachedThreadPool()); // creates a default executor
         server.start();
     }
 
     public void changeUser(User user) {
-        getSharedList.changeUser(user, user::getSharedPlaylist);
-        getRecentlyPlayedList.changeUser(user, user::getRecentlyPlayed);
-        getSong.changeUser(user);
+        for (ChangeableUser handler :
+                new ChangeableUser[]{connectHandler, updateRecentHandler, updatePlaylistHandler, getSongHandler}) {
+            handler.changeUser(user);
+        }
     }
 
     public void stopServer() {

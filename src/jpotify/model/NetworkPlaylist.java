@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class NetworkPlaylist extends Playlist {
     private static final long serialVersionUID = 5262883635031145552L;
@@ -58,5 +59,19 @@ public class NetworkPlaylist extends Playlist {
         Collections.shuffle(ret.songs);
         ret.current = this.current;
         return ret;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        NetworkPlaylist that = (NetworkPlaylist) o;
+        return port == that.port &&
+                host.equals(that.host);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(host, port);
     }
 }
