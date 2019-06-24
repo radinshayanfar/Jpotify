@@ -31,4 +31,24 @@ public class MainView extends JFrame {
         this.add(centerPanelView, BorderLayout.CENTER);
         this.setVisible(true);
     }
+
+    public BottomPanelView getBottomPanelView() {
+        return bottomPanelView;
+    }
+
+    public LeftPanelView getLeftPanelView() {
+        return leftPanelView;
+    }
+
+    public FriendsBarView getFriendsBarView() {
+        return friendsBarView;
+    }
+
+    public CenterPanelView getCenterPanelView() {
+        return centerPanelView;
+    }
+
+    public TopPanelView getTopPanelView() {
+        return topPanelView;
+    }
 }

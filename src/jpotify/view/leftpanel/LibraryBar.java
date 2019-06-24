@@ -1,5 +1,7 @@
 package jpotify.view.leftpanel;
 
+import jpotify.view.Listeners.PanelChangeListener;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -11,11 +13,12 @@ import java.io.IOException;
 public class LibraryBar extends JPanel {
 
     private static final int ELEMENTS_SIZE = 10;
-
+    private PanelChangeListener panelChangeListener;
     private JButton addSong = new JButton();
     private JButton songs = new JButton();
     private JButton albums = new JButton();
     private JFileChooser fileChooser = new JFileChooser();
+    private ButtonListener buttonListener = new ButtonListener();
 
     public LibraryBar() {
 
@@ -34,12 +37,7 @@ public class LibraryBar extends JPanel {
         addSong.setBackground(Color.WHITE);
         addSong.setForeground(Color.lightGray);
         addSong.setBorder(BorderFactory.createMatteBorder(5, 20, 0, 0, Color.BLACK));
-        addSong.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-//                fileChooser.showOpenDialog();
-            }
-        });
+//        addSong.addActionListener(buttonListener);
         this.add(addSong);
 
         try {
@@ -52,6 +50,7 @@ public class LibraryBar extends JPanel {
         songs.setBackground(Color.BLACK);
         songs.setForeground(Color.lightGray);
         this.add(songs);
+        songs.addActionListener(buttonListener);
         songs.setBorder(BorderFactory.createMatteBorder(5, 30, 0, 0, Color.BLACK));
 
         try {
@@ -64,9 +63,30 @@ public class LibraryBar extends JPanel {
         albums.setBackground(Color.BLACK);
         albums.setForeground(Color.lightGray);
         this.add(albums);
+        albums.addActionListener(buttonListener);
         albums.setBorder(BorderFactory.createMatteBorder(5, 30, 60, 0, Color.BLACK));
 
         this.setPreferredSize(new Dimension(LeftPanelView.WIDTH, LeftPanelView.ELEMENTS_HEIGHT));
         this.setVisible(true);
+    }
+
+    public void setPanelChangeListener(PanelChangeListener pl){
+        this.panelChangeListener = pl;
+    }
+
+    private class ButtonListener implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource().equals(addSong)){
+//                panelChangeListener.DisplayPanel("");
+            }
+            if (e.getSource().equals(songs)){
+                panelChangeListener.DisplayPanel("songs");
+            }
+            if (e.getSource().equals(albums)){
+                panelChangeListener.DisplayPanel("albums");
+            }
+        }
     }
 }

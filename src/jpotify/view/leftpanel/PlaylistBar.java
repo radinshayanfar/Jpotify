@@ -15,12 +15,13 @@ public class PlaylistBar extends JPanel {
     private JList<String> playlistList = new JList<>();
 
     public PlaylistBar() {
+
 //        this.list = list;
         this.setBackground(Color.BLACK);
 //        this.setBorder(BorderFactory.createTitledBorder("Playlists"));
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 //        playlistList.setListData(list.toArray(new String[list.size()]));
-        playlistList.setPreferredSize(new Dimension(LeftPanelView.WIDTH - 30, playlistList.getMaximumSize().height));
+        playlistList.setPreferredSize(new Dimension(100, 75));
         this.add(new JScrollPane(playlistList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
         playlistList.setBackground(Color.BLACK);
         this.add(playlistList);

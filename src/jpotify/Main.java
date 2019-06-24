@@ -5,7 +5,8 @@ import jpotify.view.MainView;
 public class Main {
 
     public static void main(String[] args) {
-        new MainView();
+        MainView mainView = new MainView();
+        mainView.getLeftPanelView().getLibraryBar().setPanelChangeListener(mainView.getCenterPanelView());
     }
 
 }

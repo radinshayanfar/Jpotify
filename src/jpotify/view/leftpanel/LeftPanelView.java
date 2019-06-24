@@ -5,6 +5,7 @@ import jpotify.view.MainView;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.util.Arrays;
 
 public class LeftPanelView extends JPanel {
 
@@ -45,17 +46,27 @@ public class LeftPanelView extends JPanel {
         playlist.setBorder(BorderFactory.createCompoundBorder(outerB, complexB));
         this.add(playlist);
 
-//        playlistBar = new PlaylistBar();
-//        playlistBar.addListElements(list);
+        playlistBar = new PlaylistBar();
+        playlistBar.addListElements(Arrays.asList("Favourites", "Shared", "POP", "ROMANCE", "HIP-HOP"
+                , "SUMMER", "MOOD", "Ye chizi :|", "Ye chiz dige", "Zaheran khoobe!"));
 //        this.add(playlistBar);
-
-        artworkPanel = new ArtworkPanel();
-        this.add(artworkPanel);
 
 //        this.add(new JScrollPane(libraryBar, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
         this.setPreferredSize(new Dimension(WIDTH, MainView.HEIGHT));
         this.setBackground(Color.black);
-        this.setVisible(true);
 
+        this.setVisible(true);
+    }
+
+    public LibraryBar getLibraryBar() {
+        return libraryBar;
+    }
+
+    public PlaylistBar getPlaylistBar() {
+        return playlistBar;
+    }
+
+    public ArtworkPanel getArtworkPanel() {
+        return artworkPanel;
     }
 }

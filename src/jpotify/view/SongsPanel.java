@@ -1,6 +1,7 @@
 package jpotify.view;
 
 import jpotify.view.centerpanel.CenterPanelView;
+import jpotify.view.leftpanel.ArtworkPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,12 +18,13 @@ public class SongsPanel extends JPanel {
 
 //        for (Jsong song : songs){
 //            this.add(song);
-////        }
+//            song.setVisible(true);
+//        }
 
-//        ArtworkPanel artworkPanel = new ArtworkPanel();
-//        Jsong song = new Jsong("test", artworkPanel);
-//        song.setVisible(true);
-//        this.add(song);
+        ArtworkPanel artworkPanel = new ArtworkPanel();
+        Jsong song = new Jsong("test", artworkPanel);
+        song.setVisible(true);
+        this.add(song);
 
         setVisible(true);
     }
