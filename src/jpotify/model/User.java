@@ -13,7 +13,6 @@ public class User implements Serializable {
 
     private static final long serialVersionUID = 4879049040173323873L;
     private String name;
-    private final String uniqueIdentifier;
     private static transient Server server;
     private transient RecentlyPlayedPlaylist recentlyPlayed = new RecentlyPlayedPlaylist();
     private transient ArrayList<RemoteClient> remoteClients;
@@ -53,7 +52,6 @@ public class User implements Serializable {
 
     public User(String name) {
         this.name = name;
-        uniqueIdentifier = name + StringHelper.randomString(20);
     }
 
     public String getName() {
