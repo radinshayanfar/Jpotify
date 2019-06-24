@@ -6,7 +6,7 @@ import java.io.RandomAccessFile;
 import java.nio.charset.StandardCharsets;
 
 public class TagReader {
-    public static final String HEADER = "TAG";
+    private static final String HEADER = "TAG";
 
     private String title;
     private String artist;
@@ -22,7 +22,7 @@ public class TagReader {
 
     /**
      * Reads ID3v1 tags from song file
-     * @throws IOException
+     * @throws IOException if file not found
      */
     private void readTags() throws IOException {
         if (tagExists(songFile)) {
@@ -54,7 +54,7 @@ public class TagReader {
                 long seekPos = raf.length() - 128;
                 raf.seek(seekPos);
 
-                byte buffer[] = new byte[3];
+                byte[] buffer = new byte[3];
 
                 if (raf.read(buffer, 0, 3) != 3) {
                     throw new IOException("Read beyond end of file");
