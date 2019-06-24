@@ -1,6 +1,7 @@
 package jpotify.view.leftpanel;
 
 import jpotify.view.Listeners.PanelChangeListener;
+import jpotify.view.MainView;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -43,7 +44,7 @@ public class LibraryBar extends JPanel {
 
         try {
             ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/Add.png")));
-            addSong.setIcon(new ImageIcon(icon.getImage().getScaledInstance(ELEMENTS_SIZE, ELEMENTS_SIZE, Image.SCALE_AREA_AVERAGING)));
+            addSong.setIcon(new ImageIcon(icon.getImage().getScaledInstance(MainView.ICON, MainView.ICON, Image.SCALE_AREA_AVERAGING)));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -56,7 +57,7 @@ public class LibraryBar extends JPanel {
 
         try {
             ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/Music Note.png")));
-            songs.setIcon(new ImageIcon(icon.getImage().getScaledInstance(ELEMENTS_SIZE, ELEMENTS_SIZE, Image.SCALE_AREA_AVERAGING)));
+            songs.setIcon(new ImageIcon(icon.getImage().getScaledInstance(MainView.ICON, MainView.ICON, Image.SCALE_AREA_AVERAGING)));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -69,7 +70,7 @@ public class LibraryBar extends JPanel {
 
         try {
             ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/Album.png")));
-            albums.setIcon(new ImageIcon(icon.getImage().getScaledInstance(ELEMENTS_SIZE, ELEMENTS_SIZE, Image.SCALE_AREA_AVERAGING)));
+            albums.setIcon(new ImageIcon(icon.getImage().getScaledInstance(MainView.ICON, MainView.ICON, Image.SCALE_AREA_AVERAGING)));
         } catch (IOException e) {
             e.printStackTrace();
         }

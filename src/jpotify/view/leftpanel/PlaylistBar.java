@@ -1,6 +1,7 @@
 package jpotify.view.leftpanel;
 
 import jpotify.view.Listeners.PanelChangeListener;
+import jpotify.view.MainView;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -42,7 +43,7 @@ public class PlaylistBar extends JPanel {
 
         try {
             ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/Add.png")));
-            addPlaylist.setIcon(new ImageIcon(icon.getImage().getScaledInstance(ELEMENTS_SIZE, ELEMENTS_SIZE, Image.SCALE_AREA_AVERAGING)));
+            addPlaylist.setIcon(new ImageIcon(icon.getImage().getScaledInstance(MainView.ICON, MainView.ICON, Image.SCALE_AREA_AVERAGING)));
         } catch (IOException e) {
             e.printStackTrace();
         }

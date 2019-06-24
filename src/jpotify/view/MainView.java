@@ -11,7 +11,7 @@ import java.awt.*;
 
 public class MainView extends JFrame {
 
-    public static final int WIDTH = 1200, HEIGHT = 750;
+    public static final int WIDTH = 1200, HEIGHT = 750, ICON = 15;
     private LeftPanelView leftPanelView =  new LeftPanelView();
     private FriendsBarView friendsBarView = new FriendsBarView();
     private BottomPanelView bottomPanelView = new BottomPanelView();
