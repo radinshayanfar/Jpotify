@@ -4,7 +4,6 @@ import jpotify.view.ImagePanel;
 import jpotify.view.MainView;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 
 public class LeftPanelView extends JPanel {
@@ -24,27 +23,9 @@ public class LeftPanelView extends JPanel {
 
 //        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setLayout(new BorderLayout());
-        Border outerB = BorderFactory.createMatteBorder(2,15,10,0, Color.pink);
-        Border whiteLineB = BorderFactory.createMatteBorder(0,0,1,0, Color.lightGray);
-        Border inerB = BorderFactory.createMatteBorder(0,0,5,0, Color.blue);
-        Border complexB = BorderFactory.createCompoundBorder(whiteLineB, inerB);
-
-        //home
-//        JLabel home = new JLabel("Home                ");
-//        home.setFont(new Font("Arial", Font.PLAIN, 20));
-//        home.setForeground(Color.white);
-//        home.setBorder(BorderFactory.createCompoundBorder(outerB, complexB));
-//        this.add(home);
 
         libraryBar = new LibraryBar();
         this.add(libraryBar, BorderLayout.NORTH);
-
-        //playlists
-        JLabel playlist = new JLabel("Playlists              ");
-        playlist.setFont(new Font("Arial", Font.PLAIN, 20));
-        playlist.setForeground(Color.white);
-        playlist.setBorder(BorderFactory.createCompoundBorder(outerB, complexB));
-//        this.add(playlist, BorderLayout.CENTER);
 
         playlistBar = new PlaylistBar();
         this.add(playlistBar, BorderLayout.CENTER);
@@ -57,7 +38,7 @@ public class LeftPanelView extends JPanel {
 //        this.add(new ArtworkPanel());
 
         this.setPreferredSize(new Dimension(WIDTH, MainView.HEIGHT));
-        this.setBackground(Color.white);
+        this.setBackground(Color.BLACK);
         this.setVisible(true);
     }
 

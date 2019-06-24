@@ -1,53 +1,72 @@
 package jpotify.view.leftpanel;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.Vector;
 
 public class PlaylistBar extends JPanel {
 
     private static final int ELEMENTS_SIZE = 10;
-
-//    private JButton createPlaylist = new JButton();
-//    private JList<String> playlistList = new JList<>();
-//
-//    public PlaylistBar() {
-//
-////        this.list = list;
-//        this.setBackground(Color.BLACK);
-////        this.setBorder(BorderFactory.createTitledBorder("Playlists"));
-//        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-////        playlistList.setListData(list.toArray(new String[list.size()]));
-//        playlistList.setPreferredSize(new Dimension(100, 75));
-//        this.add(new JScrollPane(playlistList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
-//        playlistList.setBackground(Color.BLACK);
-//        this.add(playlistList);
-//
-//        try {
-//            ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/Add.png")));
-//            createPlaylist.setIcon(new ImageIcon(icon.getImage().getScaledInstance(10,10, Image.SCALE_AREA_AVERAGING)));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        createPlaylist.setText("Create playlist");
-////        createPlaylist.setHorizontalAlignment(SwingConstants.LEFT);
-//        createPlaylist.setPreferredSize(new Dimension(LeftPanelView.WIDTH , 30));
-//        createPlaylist.setBackground(Color.white);
-//        createPlaylist.setBorder(BorderFactory.createMatteBorder(10,20,10,20, Color.white));
-//        this.add(createPlaylist);
-//
-//        this.setPreferredSize(new Dimension(LeftPanelView.WIDTH, LeftPanelView.ELEMENTS_HEIGHT));
-//        this.setVisible(true);
-//    }
-//
-//    public void addListElements(List<String> list){
-//        playlistList.setListData(list.toArray(new String[list.size()]));
-//    }
     private JScrollPane scrollPane = new JScrollPane();
+    private JComboBox playLists;
+    private Vector<Object> items = new Vector<>();
+    private JButton addPlaylist = new JButton();
 
     public PlaylistBar(){
         this.setPreferredSize(new Dimension(LeftPanelView.WIDTH, LeftPanelView.ELEMENTS_HEIGHT));
-        this.setBackground(Color.cyan);
+        this.setBackground(Color.BLACK);
         this.setLayout(new BorderLayout());
         this.setVisible(true);
+
+        Border outerB = BorderFactory.createMatteBorder(0,15,5,0, Color.BLACK);
+        Border whiteLineB = BorderFactory.createMatteBorder(0,0,1,0, Color.lightGray);
+        Border inerB = BorderFactory.createMatteBorder(0,0,5,0, Color.BLACK);
+        Border complexB = BorderFactory.createCompoundBorder(whiteLineB, inerB);
+        //playlist label
+        JLabel playlistLabel = new JLabel("Playlists              ");
+        playlistLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+        playlistLabel.setForeground(Color.white);
+        playlistLabel.setBorder(BorderFactory.createCompoundBorder(outerB, complexB));
+        this.add(playlistLabel, BorderLayout.NORTH);
+
+        try {
+            ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/Add.png")));
+            addPlaylist.setIcon(new ImageIcon(icon.getImage().getScaledInstance(ELEMENTS_SIZE, ELEMENTS_SIZE, Image.SCALE_AREA_AVERAGING)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        addPlaylist.setText("Add Song");
+        addPlaylist.setBackground(Color.BLACK);
+        addPlaylist.setForeground(Color.lightGray);
+        addPlaylist.setBorder(BorderFactory.createMatteBorder(5, 20, 0, 0, Color.BLACK));
+        this.add(addPlaylist, BorderLayout.SOUTH);
+
+        refreshList("Favorites");
+        refreshList("Shared");
+        JPanel panel = new JPanel();
+        panel.setBackground(Color.black);
+        this.add(panel, BorderLayout.CENTER);
+        panel.setLayout(new BorderLayout());
+        panel.add(playLists , BorderLayout.NORTH);
+
+        this.setVisible(true);
+    }
+
+    public void refreshList(Object newItem){
+        items.add(newItem);
+        playLists = new JComboBox(items);
+        playLists.setForeground(Color.white);
+        playLists.setBackground(Color.black);
+        playLists.setPreferredSize(new Dimension(LeftPanelView.WIDTH, 30));
+        this.revalidate();
+    }
+
+    public void refreshList(Object [] newItem){
+        for ( Object o : newItem )
+            refreshList(o);
     }
 }
