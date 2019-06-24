@@ -10,7 +10,7 @@ import java.util.Vector;
 
 public class PlaylistBar extends JPanel {
 
-    private static final int ELEMENTS_SIZE = 10;
+    private static final int ELEMENTS_SIZE = 15;
     private JScrollPane scrollPane = new JScrollPane();
     private JComboBox playLists;
     private Vector<Object> items = new Vector<>();
@@ -27,7 +27,7 @@ public class PlaylistBar extends JPanel {
         Border inerB = BorderFactory.createMatteBorder(0,0,5,0, Color.BLACK);
         Border complexB = BorderFactory.createCompoundBorder(whiteLineB, inerB);
         //playlist label
-        JLabel playlistLabel = new JLabel("Playlists              ");
+        JLabel playlistLabel = new JLabel("Playlists         ");
         playlistLabel.setFont(new Font("Arial", Font.PLAIN, 20));
         playlistLabel.setForeground(Color.white);
         playlistLabel.setBorder(BorderFactory.createCompoundBorder(outerB, complexB));
