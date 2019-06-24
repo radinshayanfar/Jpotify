@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class Jsong extends JPanel {
 
-    public Jsong(String title , ArtworkPanel artwork) {
+    public Jsong(String title , ImagePanel artwork) {
         this.setLayout(new BorderLayout());
         this.setPreferredSize(new Dimension(100, 100));
         this.setBackground(Color.BLACK);

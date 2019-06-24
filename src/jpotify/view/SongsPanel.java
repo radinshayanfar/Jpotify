@@ -14,21 +14,18 @@ public class SongsPanel extends JPanel {
         this.setSize(CenterPanelView.WIDTH, CenterPanelView.HEIGHT);
         this.setBackground(new Color(14,14,14));
         this.setLayout(new FlowLayout(FlowLayout.LEFT));
-
-//        for (Jsong song : songs){
-//            this.add(song);
-//            song.setVisible(true);
-//        }
-
-        ArtworkPanel artworkPanel = new ArtworkPanel();
-        Jsong song = new Jsong("test", artworkPanel);
-        song.setVisible(true);
-        this.add(song);
-
+        refresh(new Jsong("My songs", new ImagePanel("./assets/sample.png", ImagePanel.ICON_MODE)));
         setVisible(true);
     }
 
-//    public void addSong(Jsong song){
-//
-//    }
+    public void refresh(Jsong song){
+        songs.add(song);
+        for (Jsong s : songs)
+            this.add(s);
+        revalidate();
+    }
+    public void refresh(Jsong[] songs){
+        for (Jsong s : songs)
+            refresh(s);
+    }
 }

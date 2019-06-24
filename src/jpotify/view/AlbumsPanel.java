@@ -4,24 +4,28 @@ import jpotify.view.centerpanel.CenterPanelView;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class AlbumsPanel extends JPanel {
+    private ArrayList<Jsong> albums = new ArrayList<>();
+
     public AlbumsPanel() {
         this.setSize(CenterPanelView.WIDTH, CenterPanelView.HEIGHT);
         this.setBackground(new Color(14,14,14));
         this.setLayout(new FlowLayout(FlowLayout.LEFT));
-
-//        for (Jsong song : songs){
-//            this.add(song);
-//            song.setVisible(true);
-//        }
-
-        ArtworkPanel artworkPanel = new ArtworkPanel();
-        Jsong song = new Jsong("test", artworkPanel);
-        song.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.red));
-        song.setVisible(true);
-        this.add(song);
-
+//        refresh(new Jsong("My albums", new ImagePanel("./assets/sampleAlbum.png", ImagePanel.ICON_MODE)));
+        this.add(new Jsong("My albums", new ImagePanel("./assets/sampleAlbum.png", ImagePanel.ICON_MODE)));
         setVisible(true);
+    }
+
+    public void refresh(Jsong song){
+        albums.add(song);
+        for (Jsong s : albums)
+            this.add(s);
+        revalidate();
+    }
+    public void refresh(Jsong[] songs){
+        for (Jsong s : songs)
+            refresh(s);
     }
 }

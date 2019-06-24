@@ -10,14 +10,9 @@ public class LeftPanelView extends JPanel {
 
     public static final int WIDTH = 200, ELEMENTS_HEIGHT = 200;
 
-//    private JPanel libraryBar = new LibraryBar();
-//    private JPanel playlistBar = new PlaylistBar(Arrays.asList("Favourites", "Shared", "POP", "ROMANCE", "HIP-HOP"
-//            , "SUMMER", "MOOD", "Ye chizi :|", "Ye chiz dige", "Zaheran khoobe!"));
-//    private ArtworkPanel artwork = new ArtworkPanel();
-
     private LibraryBar libraryBar;
     private PlaylistBar playlistBar;
-    private ArtworkPanel artworkPanel;
+    private ImagePanel artworkPanel;
 
     public LeftPanelView() {
 
@@ -34,7 +29,7 @@ public class LeftPanelView extends JPanel {
 //        this.add(playlistBar);
 
 //        this.add(new JScrollPane(libraryBar, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
-        this.add(new ImagePanel("./assets/test_song_artwork.jpg"), BorderLayout.SOUTH);
+        this.add(new ImagePanel("./assets/test_song_artwork.jpg", ImagePanel.ARTWORK_MODE), BorderLayout.SOUTH);
 //        this.add(new ArtworkPanel());
 
         this.setPreferredSize(new Dimension(WIDTH, MainView.HEIGHT));
@@ -50,7 +45,14 @@ public class LeftPanelView extends JPanel {
         return playlistBar;
     }
 
-    public ArtworkPanel getArtworkPanel() {
+    public ImagePanel getArtworkPanel() {
         return artworkPanel;
+    }
+
+    public void changeArtworkPanel(String address){
+        this.invalidate();
+        this.remove(artworkPanel);
+        this.add(new ImagePanel(address, ImagePanel.ARTWORK_MODE), BorderLayout.SOUTH);
+        this.revalidate();
     }
 }

@@ -1,9 +1,13 @@
 package jpotify.view.leftpanel;
 
+import jpotify.view.Listeners.PanelChangeListener;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.Vector;
@@ -15,6 +19,9 @@ public class PlaylistBar extends JPanel {
     private JComboBox playLists;
     private Vector<Object> items = new Vector<>();
     private JButton addPlaylist = new JButton();
+    private PlayListHandler playListHandler;
+    private PanelChangeListener panelChangeListener;
+//    private NewPlaylistHandler nplh = new NewPlaylistHandler();
 
     public PlaylistBar(){
         this.setPreferredSize(new Dimension(LeftPanelView.WIDTH, LeftPanelView.ELEMENTS_HEIGHT));
@@ -53,6 +60,8 @@ public class PlaylistBar extends JPanel {
         panel.setLayout(new BorderLayout());
         panel.add(playLists , BorderLayout.NORTH);
 
+        playLists.addActionListener(new PlayListHandler());
+
         this.setVisible(true);
     }
 
@@ -69,4 +78,16 @@ public class PlaylistBar extends JPanel {
         for ( Object o : newItem )
             refreshList(o);
     }
+
+    public void setPanelChangeListener(PanelChangeListener panelChangeListener) {
+        this.panelChangeListener = panelChangeListener;
+    }
+
+    private class PlayListHandler implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            panelChangeListener.DisplayPanel((String)playLists.getSelectedItem());
+        }
+    }
+
 }
