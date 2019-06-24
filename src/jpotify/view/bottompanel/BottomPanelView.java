@@ -22,6 +22,9 @@ public class BottomPanelView extends JPanel {
 
         this.setBackground(new Color(34, 34, 34));
         this.setPreferredSize(new Dimension(MainView.WIDTH, HEIGHT));
+
+
+
 //        this.add(songInfo, BorderLayout.WEST);
 //        this.add(volumeControlPanelView, BorderLayout.EAST);
 //        this.add(songControlPanelView, BorderLayout.CENTER);

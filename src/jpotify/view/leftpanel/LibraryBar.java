@@ -50,7 +50,7 @@ public class LibraryBar extends JPanel {
         addSong.setBackground(Color.BLACK);
         addSong.setForeground(Color.lightGray);
         addSong.setBorder(BorderFactory.createMatteBorder(5, 20, 0, 0, Color.BLACK));
-//        addSong.addActionListener(buttonListener);
+        addSong.addActionListener(buttonListener);
         this.add(addSong);
 
         try {
@@ -92,7 +92,15 @@ public class LibraryBar extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             if (e.getSource().equals(addSong)){
-//                panelChangeListener.DisplayPanel("");
+                System.out.println("works correctly");
+                fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+                fileChooser.setMultiSelectionEnabled(true);
+                int f = fileChooser.showOpenDialog(null);
+                if (f == JFileChooser.CANCEL_OPTION){
+                }
+                else if (f == JFileChooser.APPROVE_OPTION){
+                    File [] file = fileChooser.getSelectedFiles();
+                }
             }
             if (e.getSource().equals(songs)){
                 panelChangeListener.DisplayPanel("songs");

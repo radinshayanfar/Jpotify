@@ -29,7 +29,7 @@ public class LeftPanelView extends JPanel {
 //        this.add(playlistBar);
 
 //        this.add(new JScrollPane(libraryBar, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
-        this.add(new ImagePanel("./assets/test_song_artwork.jpg", ImagePanel.ARTWORK_MODE), BorderLayout.SOUTH);
+        this.add(new ImagePanel("./assets/sample.png", ImagePanel.ARTWORK_MODE), BorderLayout.SOUTH);
 //        this.add(new ArtworkPanel());
 
         this.setPreferredSize(new Dimension(WIDTH, MainView.HEIGHT));
