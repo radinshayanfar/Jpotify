@@ -1,11 +1,11 @@
 package jpotify.view.leftpanel;
 
+import jpotify.view.ImagePanel;
 import jpotify.view.MainView;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
-import java.util.Arrays;
 
 public class LeftPanelView extends JPanel {
 
@@ -22,39 +22,42 @@ public class LeftPanelView extends JPanel {
 
     public LeftPanelView() {
 
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
-        Border outerB = BorderFactory.createMatteBorder(2,15,10,0, Color.black);
+//        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.setLayout(new BorderLayout());
+        Border outerB = BorderFactory.createMatteBorder(2,15,10,0, Color.pink);
         Border whiteLineB = BorderFactory.createMatteBorder(0,0,1,0, Color.lightGray);
-        Border inerB = BorderFactory.createMatteBorder(0,0,5,0, Color.black);
+        Border inerB = BorderFactory.createMatteBorder(0,0,5,0, Color.blue);
         Border complexB = BorderFactory.createCompoundBorder(whiteLineB, inerB);
 
         //home
-        JLabel home = new JLabel("Home                ");
-        home.setFont(new Font("Arial", Font.PLAIN, 20));
-        home.setForeground(Color.white);
-        home.setBorder(BorderFactory.createCompoundBorder(outerB, complexB));
-        this.add(home);
+//        JLabel home = new JLabel("Home                ");
+//        home.setFont(new Font("Arial", Font.PLAIN, 20));
+//        home.setForeground(Color.white);
+//        home.setBorder(BorderFactory.createCompoundBorder(outerB, complexB));
+//        this.add(home);
 
         libraryBar = new LibraryBar();
-        this.add(libraryBar);
+        this.add(libraryBar, BorderLayout.NORTH);
 
         //playlists
         JLabel playlist = new JLabel("Playlists              ");
         playlist.setFont(new Font("Arial", Font.PLAIN, 20));
         playlist.setForeground(Color.white);
         playlist.setBorder(BorderFactory.createCompoundBorder(outerB, complexB));
-        this.add(playlist);
+//        this.add(playlist, BorderLayout.CENTER);
 
         playlistBar = new PlaylistBar();
-        playlistBar.addListElements(Arrays.asList("Favourites", "Shared", "POP", "ROMANCE", "HIP-HOP"
-                , "SUMMER", "MOOD", "Ye chizi :|", "Ye chiz dige", "Zaheran khoobe!"));
+        this.add(playlistBar, BorderLayout.CENTER);
+//        playlistBar.addListElements(Arrays.asList("Favourites", "Shared", "POP", "ROMANCE", "HIP-HOP"
+//                , "SUMMER", "MOOD", "Ye chizi :|", "Ye chiz dige", "Zaheran khoobe!"));
 //        this.add(playlistBar);
 
 //        this.add(new JScrollPane(libraryBar, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
-        this.setPreferredSize(new Dimension(WIDTH, MainView.HEIGHT));
-        this.setBackground(Color.black);
+        this.add(new ImagePanel("./assets/test_song_artwork.jpg"), BorderLayout.SOUTH);
+//        this.add(new ArtworkPanel());
 
+        this.setPreferredSize(new Dimension(WIDTH, MainView.HEIGHT));
+        this.setBackground(Color.white);
         this.setVisible(true);
     }
 

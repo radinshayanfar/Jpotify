@@ -4,6 +4,7 @@ import jpotify.view.Listeners.PanelChangeListener;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,7 +13,7 @@ import java.io.IOException;
 
 public class LibraryBar extends JPanel {
 
-    private static final int ELEMENTS_SIZE = 10;
+    private static final int ELEMENTS_SIZE = 15;
     private PanelChangeListener panelChangeListener;
     private JButton addSong = new JButton();
     private JButton songs = new JButton();
@@ -24,8 +25,20 @@ public class LibraryBar extends JPanel {
 
         //overall sets
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        this.setBackground(Color.BLACK);
+        this.setBackground(Color.red);
         this.setPreferredSize(new Dimension(LeftPanelView.WIDTH, LeftPanelView.ELEMENTS_HEIGHT));
+
+        Border outerB = BorderFactory.createMatteBorder(2,15,10,0, Color.green);
+        Border whiteLineB = BorderFactory.createMatteBorder(0,0,1,0, Color.lightGray);
+        Border inerB = BorderFactory.createMatteBorder(0,0,5,0, Color.blue);
+        Border complexB = BorderFactory.createCompoundBorder(whiteLineB, inerB);
+
+        //home
+        JLabel home = new JLabel("Home                ");
+        home.setFont(new Font("Arial", Font.PLAIN, 20));
+        home.setForeground(Color.white);
+        home.setBorder(BorderFactory.createCompoundBorder(outerB, complexB));
+        this.add(home);
 
         try {
             ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/Add.png")));
@@ -64,9 +77,9 @@ public class LibraryBar extends JPanel {
         albums.setForeground(Color.lightGray);
         this.add(albums);
         albums.addActionListener(buttonListener);
-        albums.setBorder(BorderFactory.createMatteBorder(5, 30, 60, 0, Color.BLACK));
+        albums.setBorder(BorderFactory.createMatteBorder(5, 30, 0, 0, Color.BLACK));
 
-        this.setPreferredSize(new Dimension(LeftPanelView.WIDTH, LeftPanelView.ELEMENTS_HEIGHT));
+        this.setPreferredSize(new Dimension(LeftPanelView.WIDTH,100));
         this.setVisible(true);
     }
 
