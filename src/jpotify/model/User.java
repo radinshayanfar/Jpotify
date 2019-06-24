@@ -277,7 +277,7 @@ public class User implements Serializable {
 
     private void tellOthersAboutMyRecent() {
         for (RemoteClient r :
-                remoteClients) {
+                getRemoteClients()) {
             try {
                 URL url = new URL("http://" + r.getHost() + ":" + r.getPort() + "/updateRecent");
                 URLConnection connection = url.openConnection();
@@ -292,7 +292,7 @@ public class User implements Serializable {
 
     private void tellOthersAboutMyShared() {
         for (RemoteClient r :
-                remoteClients) {
+                getRemoteClients()) {
             try {
                 URL url = new URL("http://" + r.getHost() + ":" + r.getPort() + "/updatePlaylist");
                 URLConnection connection = url.openConnection();
@@ -307,7 +307,7 @@ public class User implements Serializable {
 
     private void startConnectionToOthers() {
         for (RemoteClient r :
-                remoteClients) {
+                getRemoteClients()) {
             try {
                 URL url = new URL("http://" + r.getHost() + ":" + r.getPort() + "/connect");
                 URLConnection connection = url.openConnection();
