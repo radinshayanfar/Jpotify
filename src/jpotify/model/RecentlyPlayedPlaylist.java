@@ -21,4 +21,6 @@ public class RecentlyPlayedPlaylist extends SongList {
     public Song getCurrentSong() {
         return this.current;
     }
+
+
 }

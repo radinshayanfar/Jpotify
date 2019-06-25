@@ -1,5 +1,6 @@
 package helper;
 
+import jpotify.model.RemoteClient;
 import jpotify.model.User;
 import jpotify.model.Users;
 
@@ -19,11 +20,13 @@ final public class FileHelper {
     private FileHelper() {
     }
 
-    public static ArrayList<String> fileToArrayList(String address) throws FileNotFoundException {
-        ArrayList<String> ret = new ArrayList<>();
+    public static ArrayList<RemoteClient> ipFileToArrayList(String address) throws FileNotFoundException {
+        ArrayList<RemoteClient> ret = new ArrayList<>();
         try (Scanner sc = new Scanner(new File(address))) {
             while (sc.hasNext()) {
-                ret.add(sc.next());
+                String host = sc.next();
+                int port = sc.nextInt();
+                ret.add(new RemoteClient(host, port));
             }
         }
         return ret;

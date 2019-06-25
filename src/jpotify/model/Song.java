@@ -1,6 +1,7 @@
 package jpotify.model;
 
 import com.mpatric.mp3agic.*;
+import helper.TagReader;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -37,11 +38,16 @@ public class Song implements Serializable, Comparable<Song> {
                 title = id3v2Tag.getTitle();
                 album = id3v2Tag.getAlbum();
                 artist = id3v2Tag.getArtist();
-            } else if (mp3file.hasId3v1Tag()) {
+            } /*else if (mp3file.hasId3v1Tag()) {
                 ID3v1 id3v1Tag = mp3file.getId3v1Tag();
                 title = id3v1Tag.getTitle();
                 album = id3v1Tag.getAlbum();
                 artist = id3v1Tag.getArtist();
+            }*/ else if (TagReader.tagExists(address)) {
+                TagReader tag = new TagReader(address);
+                title = tag.getTitle();
+                album = tag.getAlbum();
+                artist = tag.getArtist();
             } else {
                 String name = address.getName();
                 title = name.substring(0, name.lastIndexOf('.'));
@@ -66,6 +72,10 @@ public class Song implements Serializable, Comparable<Song> {
         } catch (IOException | UnsupportedTagException | InvalidDataException e) {
             e.printStackTrace();
         }
+    }
+
+    public void useDefaultArtwork() {
+//        TODO: use default artwork
     }
 
     public byte[] getArtwork() {

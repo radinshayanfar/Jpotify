@@ -34,21 +34,21 @@ public class TestUser {
         user.addSong(s7);
         user.addSong(s8);
 
-        user.playSong(5);
-        Thread.sleep(10);
-        user.playSong(2);
-        Thread.sleep(10);
-        user.playSong(4);
-        Thread.sleep(10);
+//        user.playSong(5);
+//        Thread.sleep(10);
+//        user.playSong(2);
+//        Thread.sleep(10);
+//        user.playSong(4);
+//        Thread.sleep(10);
 
         for (Album a :
                 user.getAlbums()) {
 //            System.out.println(s.getAlbumReference());
             System.out.println(a.getName());
         }
-        System.out.println(user.getRecentlyPlayed().getCurrentSong().getTitle());
+//        System.out.println(user.getRecentlyPlayed().getCurrentSong().getTitle());
 //        user.stopSong();
-        System.out.println(user.getRecentlyPlayed().getCurrentSong());
+//        System.out.println(user.getRecentlyPlayed().getCurrentSong());
 
         System.out.println("----------------");
 
@@ -84,12 +84,24 @@ public class TestUser {
         user.getSharedPlaylist().moveUp(2);
         user.getSharedPlaylist().moveUp(1);
         user.getSharedPlaylist().moveUp(0);
+        System.out.println(user.getSharedPlaylist().getSongs());
 
 //        Users users = new Users();
 //        users.addUser(user);
 //        FileHelper.saveUsers(users);
 
-        user.startHttpServer();
+        user.startHttpServer(3245);
+
+//        System.out.println(user.getOthersSharedPlaylists().get(0).getSongs());
+//        System.out.println(user.getOthersSharedPlaylists().get(1).getSongs());
+
+        Thread.sleep(10_000);
+//        System.out.println(user.getOthersSharedPlaylists().get(0).getSongs());
+//        System.out.println(user.getOthersSharedPlaylists().get(1).getSongs());
+        user.getSharedPlaylist().moveDown(2);
+        System.out.println(user.getSharedPlaylist().getSongs());
+        user.tellOthersAboutMyShared();
+
         Thread.sleep(1200_000);
         user.stopHttpServer();
     }

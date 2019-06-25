@@ -9,7 +9,7 @@ import jpotify.model.User;
 import java.io.*;
 import java.util.Map;
 
-public class getSongHandler implements HttpHandler {
+public class getSongHandler implements HttpHandler, ChangeableUser {
 
     private User user;
 
@@ -18,9 +18,14 @@ public class getSongHandler implements HttpHandler {
     }
 
     @Override
+    public void changeUser(User user) {
+        this.user = user;
+    }
+
+    @Override
     public void handle(HttpExchange exchange) throws IOException {
         Map<String, String> params = StringHelper.queryToMap(exchange.getRequestURI().getQuery());
-        if (params.containsKey("i") && user.getIPs().contains(exchange.getRemoteAddress().getHostString())) {
+        if (params.containsKey("i") && user.getHosts().contains(exchange.getRemoteAddress().getHostString())) {
             int index = Integer.valueOf(params.get("i"));
             Headers h = exchange.getResponseHeaders();
             h.add("Content-Type", "audio/mpeg");

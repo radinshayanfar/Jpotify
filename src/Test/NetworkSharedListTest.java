@@ -43,14 +43,28 @@ public class NetworkSharedListTest {
             user.shuffleCurrentSelected();
 //        user.unshuffleCurrentSelected();
 
-        for (int i = 0; i < 5; i++) {
-            Song song = user.next();
-            user.playSong(song);
+        {
+            Song song = user.playSongFromNetwork(2, "192.168.1.2", 3245);
             CustomPlayer cs = new CustomPlayer(song.getAddress());
             cs.play();
             Thread.sleep(10_000);
             cs.stop();
+            Song next = user.next();
+            user.playSong(next);
+            cs = new CustomPlayer(next.getAddress());
+            cs.play();
+            Thread.sleep(10_000);
+            cs.stop();
         }
+
+//        for (int i = 0; i < 5; i++) {
+//            Song song = user.next();
+//            user.playSong(song);
+//            CustomPlayer cs = new CustomPlayer(song.getAddress());
+//            cs.play();
+//            Thread.sleep(10_000);
+//            cs.stop();
+//        }
 
 //        System.out.println(name);
 //        for (int i = 0; i < playlist.getSongs().size(); i++) {

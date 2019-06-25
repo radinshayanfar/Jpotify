@@ -1,30 +1,33 @@
 package jpotify.model;
 
 import helper.FileHelper;
+import helper.StringHelper;
 import jpotify.model.Network.Server;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.Serializable;
+import java.io.*;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.*;
 
 public class User implements Serializable {
 
     private static final long serialVersionUID = 4879049040173323873L;
     private String name;
-    private static transient Server server;
-    private transient RecentlyPlayedPlaylist recentlyPlayed = new RecentlyPlayedPlaylist();
-    private transient ArrayList<String> IPs;
+
     private SongList library;
     private ArrayList<Playlist> playlists;
-    private transient ArrayList<NetworkPlaylist> sharedPlaylists = new ArrayList<>();
     private HashMap<String, Album> albums;
     private transient SongList currentList;
     private transient SongList currentSelectedListInGUI;
     private transient Playlist shuffledOriginal;
+    private transient RecentlyPlayedPlaylist recentlyPlayed = new RecentlyPlayedPlaylist();
     private RepeatRule repeatRule = RepeatRule.OFF;
     private transient boolean shuffled = false;
+
+    private static transient Server server;
+    private transient ArrayList<RemoteClient> remoteClients;
+    private transient ArrayList<NetworkPlaylist> othersSharedPlaylists = new ArrayList<>();
+    private transient HashMap<RemoteClient, RecentlyPlayedPlaylist> othersRecentlyPlayed = new HashMap<>();
 
     {
         try {
@@ -34,9 +37,9 @@ public class User implements Serializable {
         }
 
         try {
-            IPs = FileHelper.fileToArrayList("ip_list.txt");
+            remoteClients = FileHelper.ipFileToArrayList("ip_list.txt");
         } catch (FileNotFoundException e) {
-            IPs = new ArrayList<>();
+            remoteClients = new ArrayList<>();
 //            e.printStackTrace();
         }
 
@@ -61,15 +64,31 @@ public class User implements Serializable {
         return playlists.get(1);
     }
 
-    public ArrayList<String> getIPs() {
-        if (IPs == null)
+    public ArrayList<RemoteClient> getRemoteClients() {
+        if (remoteClients == null)
             try {
-                IPs = FileHelper.fileToArrayList("ip_list.txt");
+                remoteClients = FileHelper.ipFileToArrayList("ip_list.txt");
             } catch (FileNotFoundException e) {
-                IPs = new ArrayList<>();
+                remoteClients = new ArrayList<>();
 //            e.printStackTrace();
             }
-        return IPs;
+        return remoteClients;
+    }
+
+    public ArrayList<String> getHosts() {
+        if (remoteClients == null)
+            try {
+                remoteClients = FileHelper.ipFileToArrayList("ip_list.txt");
+            } catch (FileNotFoundException e) {
+                remoteClients = new ArrayList<>();
+//            e.printStackTrace();
+            }
+        ArrayList<String> ret = new ArrayList<>();
+        for (RemoteClient rc :
+                remoteClients) {
+            ret.add(rc.getHost());
+        }
+        return ret;
     }
 
     public RecentlyPlayedPlaylist getRecentlyPlayed() {
@@ -78,44 +97,48 @@ public class User implements Serializable {
         return recentlyPlayed;
     }
 
-    public void startHttpServer() {
-        if (server == null) {
-            try {
-                server = new Server(this);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            server.changeUser(this);
-        }
+    public ArrayList<RecentlyPlayedPlaylist> getOthersRecentlyPlayed() {
+        if (othersRecentlyPlayed == null)
+            othersRecentlyPlayed = new HashMap<>();
+        return new ArrayList<>(othersRecentlyPlayed.values());
     }
 
-    public void stopHttpServer() {
-        server.stopServer();
+    public void addOthersRecentlyPlayed(RemoteClient remoteClient, RecentlyPlayedPlaylist otherList) {
+        if (otherList == null)
+            return;
+        if (othersRecentlyPlayed == null)
+            othersRecentlyPlayed = new HashMap<>();
+        othersRecentlyPlayed.put(remoteClient, otherList);
     }
 
     public Song playSong(int index) {
+        if (currentList instanceof NetworkPlaylist) throw new Error("Don't use this method over network!");
         Song ret = currentList.songs.get(index);
         ret.updateLastPlayed();
-        if (getSharedPlaylist().getSongs().contains(ret))
+        if (getSharedPlaylist().getSongs().contains(ret)) {
             getRecentlyPlayed().setCurrentSong(ret);
+            tellOthersAboutMyRecent();
+        }
         currentList.current = ret;
         return ret;
     }
 
     public Song playSongFromNetwork(int index, String host, int port) throws IOException {
+        currentList.current = currentList.songs.get(index);
         return new Song(new File(FileHelper.downloadSongToTemporaryDirectory(host, port, index)));
     }
 
     public void playSong(Song song) {
         song.updateLastPlayed();
-        if (getSharedPlaylist().getSongs().contains(song))
+        if (getSharedPlaylist().getSongs().contains(song)) {
             getRecentlyPlayed().setCurrentSong(song);
-        currentList.current = song;
+            tellOthersAboutMyRecent();
+        }
     }
 
     public void stopSong() {
         getRecentlyPlayed().removeCurrentSong();
+        tellOthersAboutMyRecent();
     }
 
     public void addSong(Song song) {
@@ -154,21 +177,31 @@ public class User implements Serializable {
     }
 
     public void addSharedPlaylist(NetworkPlaylist playlist) {
-        if (sharedPlaylists == null)
-            sharedPlaylists = new ArrayList<>();
-        sharedPlaylists.add(playlist);
+        if (playlist == null)
+            return;
+        int i = getOthersSharedPlaylists().indexOf(playlist);
+        if (i == -1)
+            othersSharedPlaylists.add(playlist);
+        else
+            othersSharedPlaylists.set(i, playlist);
     }
 
     public void removeSharedPlaylist(int index) {
-        if (sharedPlaylists == null)
-            sharedPlaylists = new ArrayList<>();
-        sharedPlaylists.remove(index);
+        if (othersSharedPlaylists == null)
+            othersSharedPlaylists = new ArrayList<>();
+        othersSharedPlaylists.remove(index);
     }
 
-    public ArrayList<NetworkPlaylist> getSharedPlaylists() {
-        if (sharedPlaylists == null)
-            sharedPlaylists = new ArrayList<>();
-        return sharedPlaylists;
+    public void removeSharedPlaylist(NetworkPlaylist playlist) {
+        if (othersSharedPlaylists == null)
+            othersSharedPlaylists = new ArrayList<>();
+        othersSharedPlaylists.remove(playlist);
+    }
+
+    public ArrayList<NetworkPlaylist> getOthersSharedPlaylists() {
+        if (othersSharedPlaylists == null)
+            othersSharedPlaylists = new ArrayList<>();
+        return othersSharedPlaylists;
     }
 
     public void removePlaylist() {
@@ -178,6 +211,8 @@ public class User implements Serializable {
     public ArrayList<Playlist> getPlaylists() {
         return playlists;
     }
+
+//    Shuffle, Repeat, Next and Previous, Set current list
 
     public void setCurrentSelectedListInGUI(SongList currentSelectedListInGUI) {
         this.currentSelectedListInGUI = currentSelectedListInGUI;
@@ -228,5 +263,84 @@ public class User implements Serializable {
 
     public Song previous() {
         return currentList.previous(repeatRule);
+    }
+
+//    Network methods
+
+    public void startHttpServer(int port) {
+        if (server == null) {
+            try {
+                server = new Server(this, port);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            server.changeUser(this);
+        }
+        startConnectionToOthers(port);
+    }
+
+    public void stopHttpServer() {
+        server.stopServer();
+    }
+
+    private void tellOthersAboutMyRecent() {
+        for (RemoteClient r :
+                getRemoteClients()) {
+            try {
+                URL url = new URL("http://" + r.getHost() + ":" + r.getPort() + "/updateRecent");
+                URLConnection connection = url.openConnection();
+                connection.setDoOutput(true);
+                ObjectOutputStream out = new ObjectOutputStream(connection.getOutputStream());
+                out.writeInt(r.getPort());
+                out.writeObject(getRecentlyPlayed());
+                out.flush();
+                out.close();
+                connection.getInputStream().close();
+            } catch (IOException e) {
+//                e.printStackTrace();
+            }
+        }
+    }
+
+    public void tellOthersAboutMyShared() {
+        for (RemoteClient r :
+                getRemoteClients()) {
+            try {
+                URL url = new URL("http://" + r.getHost() + ":" + r.getPort() + "/updatePlaylist");
+                URLConnection connection = url.openConnection();
+                connection.setDoOutput(true);
+                ObjectOutputStream out = new ObjectOutputStream(connection.getOutputStream());
+                out.writeInt(r.getPort());
+                out.writeObject(getSharedPlaylist());
+                out.flush();
+                out.close();
+                connection.getInputStream().close();
+            } catch (IOException e) {
+//                e.printStackTrace();
+            }
+        }
+    }
+
+    private void startConnectionToOthers(int port) {
+        for (RemoteClient r :
+                getRemoteClients()) {
+            try {
+                URL url = new URL("http://" + r.getHost() + ":" + r.getPort() + "/connect");
+                URLConnection connection = url.openConnection();
+                connection.setDoOutput(true);
+                ObjectOutputStream out = new ObjectOutputStream(connection.getOutputStream());
+                out.writeInt(port);
+                out.writeObject(getSharedPlaylist());
+                out.flush();
+                out.close();
+                ObjectInputStream in = new ObjectInputStream(connection.getInputStream());
+                this.addSharedPlaylist(new NetworkPlaylist(((Playlist) in.readObject()).getSongs(), r.getHost(), r.getPort()));
+                this.addOthersRecentlyPlayed(r, (RecentlyPlayedPlaylist) in.readObject());
+                in.close();
+            } catch (IOException | ClassNotFoundException e) {
+//                e.printStackTrace();
+            }
+        }
     }
 }
