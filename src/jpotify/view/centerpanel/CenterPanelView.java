@@ -8,7 +8,7 @@ import javax.swing.border.Border;
 import java.awt.*;
 
 public class CenterPanelView extends JPanel implements PanelChangeListener {
-    public static final int WIDTH = 700, ELEMENTS =600;
+    public static final int WIDTH = 800, ELEMENTS =210;
 //    private TopPanelView topPanelView = new TopPanelView();
     private SongsPanel songsPanel = new SongsPanel();
     private AlbumsPanel albumsPanel = new AlbumsPanel();
@@ -23,10 +23,6 @@ public class CenterPanelView extends JPanel implements PanelChangeListener {
         Border border1 = BorderFactory.createMatteBorder(5,15,10,15, new Color(14,14,14));
         Border border2 = BorderFactory.createMatteBorder(1,0,0,0, Color.lightGray);
         this.setBorder(BorderFactory.createCompoundBorder(border1, border2));
-
-//        playlistPanel = new PlaylistPanel();
-        songsPanel = new SongsPanel();
-        albumsPanel = new AlbumsPanel();
 
         setVisible(true);
 
