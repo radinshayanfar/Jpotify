@@ -13,17 +13,19 @@ public class User implements Serializable {
 
     private static final long serialVersionUID = 4879049040173323873L;
     private String name;
-    private static transient Server server;
-    private transient RecentlyPlayedPlaylist recentlyPlayed = new RecentlyPlayedPlaylist();
-    private transient ArrayList<RemoteClient> remoteClients;
+
     private SongList library;
     private ArrayList<Playlist> playlists;
     private HashMap<String, Album> albums;
     private transient SongList currentList;
     private transient SongList currentSelectedListInGUI;
     private transient Playlist shuffledOriginal;
+    private transient RecentlyPlayedPlaylist recentlyPlayed = new RecentlyPlayedPlaylist();
     private RepeatRule repeatRule = RepeatRule.OFF;
     private transient boolean shuffled = false;
+
+    private static transient Server server;
+    private transient ArrayList<RemoteClient> remoteClients;
     private transient ArrayList<NetworkPlaylist> othersSharedPlaylists = new ArrayList<>();
     private transient HashMap<RemoteClient, RecentlyPlayedPlaylist> othersRecentlyPlayed = new HashMap<>();
 
@@ -113,8 +115,10 @@ public class User implements Serializable {
         if (currentList instanceof NetworkPlaylist) throw new Error("Don't use this method over network!");
         Song ret = currentList.songs.get(index);
         ret.updateLastPlayed();
-        if (getSharedPlaylist().getSongs().contains(ret))
+        if (getSharedPlaylist().getSongs().contains(ret)) {
             getRecentlyPlayed().setCurrentSong(ret);
+            tellOthersAboutMyRecent();
+        }
         currentList.current = ret;
         return ret;
     }
@@ -126,12 +130,15 @@ public class User implements Serializable {
 
     public void playSong(Song song) {
         song.updateLastPlayed();
-        if (getSharedPlaylist().getSongs().contains(song))
+        if (getSharedPlaylist().getSongs().contains(song)) {
             getRecentlyPlayed().setCurrentSong(song);
+            tellOthersAboutMyRecent();
+        }
     }
 
     public void stopSong() {
         getRecentlyPlayed().removeCurrentSong();
+        tellOthersAboutMyRecent();
     }
 
     public void addSong(Song song) {
@@ -277,7 +284,7 @@ public class User implements Serializable {
         server.stopServer();
     }
 
-    public void tellOthersAboutMyRecent() {
+    private void tellOthersAboutMyRecent() {
         for (RemoteClient r :
                 getRemoteClients()) {
             try {
