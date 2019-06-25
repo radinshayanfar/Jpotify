@@ -7,7 +7,7 @@ public class UsernameBar extends JPanel {
 
     public UsernameBar() {
         setPreferredSize(new Dimension(500,40));
-        setBackground(Color.red);
+        setBackground(new Color(14,14,14));
         this.setVisible(true);
     }
 }

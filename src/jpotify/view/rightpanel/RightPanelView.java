@@ -13,15 +13,7 @@ public class RightPanelView extends JPanel {
     private JScrollPane scrollPane;
 
     public RightPanelView() {
-//
-//        ArrayList<Friend> friends = new ArrayList<>();
-//        Friend f1 = new Friend("maryam","offline");
-//        Friend f2 = new Friend("Mohammaf", "online");
-//        Friend f3 = new Friend("f","nazi","omid","online");
-//        friends.add(f1);
-//        friends.add(f2);
-//        friends.add(f3);
-//        FriendsBarView friendsBarView = new FriendsBarView(friends);
+
         this.setPreferredSize(new Dimension(WIDTH, MainView.HEIGHT));
         this.setLayout(new BorderLayout());
         this.setBackground(Color.BLACK);
@@ -38,7 +30,7 @@ public class RightPanelView extends JPanel {
         this.add(label, BorderLayout.NORTH);
 
         friendsBarView = new FriendsBarView();
-        scrollPane = new JScrollPane(friendsBarView, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPane = new JScrollPane(friendsBarView, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         this.add(scrollPane, BorderLayout.CENTER);
 
         ArrayList<Friend> friends = new ArrayList<>();

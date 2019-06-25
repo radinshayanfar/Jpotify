@@ -9,6 +9,7 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 public class FriendsBarView extends JPanel {
+
     static final int WIDTH = 200, FRIEND_HEIGHT = 60;
     private ArrayList<Friend> friends = new ArrayList<>();
     private JList friendsList;
@@ -16,8 +17,8 @@ public class FriendsBarView extends JPanel {
 
      public FriendsBarView(){
          this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-         this.setPreferredSize(new Dimension(WIDTH, MainView.HEIGHT));
-         this.setBackground(Color.MAGENTA);
+         this.setPreferredSize(new Dimension(WIDTH, MainView.HEIGHT-500));
+         this.setBackground(Color.BLACK);
 
          this.setVisible(true);
      }
@@ -30,6 +31,13 @@ public class FriendsBarView extends JPanel {
              f.addMouseListener(fh);
          }
          this.revalidate();
+    }
+
+    public void setFriendsList(Friend f){
+         ArrayList<Friend> newF = new ArrayList<>();
+         newF.add(f);
+         newF.addAll(friends);
+         setFriends(newF);
     }
 
     private class FriendHandler implements MouseListener{
@@ -49,9 +57,13 @@ public class FriendsBarView extends JPanel {
         }
         @Override
         public void mouseEntered(MouseEvent e) {
+            Friend f = (Friend) e.getSource();
+            f.setBackground(new Color(34,34,34));
         }
         @Override
         public void mouseExited(MouseEvent e) {
+            Friend f = (Friend) e.getSource();
+            f.setBackground(Color.BLACK);
         }
     }
 }

@@ -12,15 +12,15 @@ public class TopPanelView extends JPanel {
     public TopPanelView() {
         this.setLayout(new BorderLayout());
 
-        this.add(new LogoBox(), BorderLayout.WEST);
-        this.add(new UsernameBar(), BorderLayout.CENTER);
+//        this.add(new LogoBox(), BorderLayout.WEST);
+//        this.add(new UsernameBar(), BorderLayout.CENTER);
         setBackground(new Color(14,14, 14));
         setPreferredSize(new Dimension(MainView.WIDTH, HEIGHT));
 
         JPanel topRight = new JPanel();
         topRight.setBackground(Color.black);
         topRight.setPreferredSize(new Dimension(MainView.WIDTH, HEIGHT));
-        this.add(topRight, BorderLayout.EAST);
+//        this.add(topRight, BorderLayout.EAST);
 
 
         setVisible(true);
