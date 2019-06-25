@@ -9,11 +9,12 @@ public class SongsPanel extends JPanel {
     private ArrayList<Jsong> songs = new ArrayList<>();
 
     public SongsPanel() {
-        this.setSize(CenterPanelView.WIDTH, CenterPanelView.HEIGHT);
+        this.setSize(CenterPanelView.ELEMENTS, CenterPanelView.ELEMENTS);
         this.setBackground(new Color(14,14,14));
         this.setLayout(new FlowLayout(FlowLayout.LEFT));
 //        refresh(new Jsong("My songs", new ImagePanel("./assets/sample.png", ImagePanel.ICON_MODE)));
 //        add(new Jsong("My songs", new ImagePanel("./assets/sample.png", ImagePanel.ICON_MODE)));
+        this.add(new Jsong("My albums"," fd", "./assets/sampleAlbum.png"));
         setVisible(true);
     }
 

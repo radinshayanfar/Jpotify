@@ -11,7 +11,7 @@ import java.awt.event.MouseListener;
 public class Jsong extends JPanel implements MouseListener {
 
     public static final int WIDTH = 190, HEIGHT = 190;
-    private Dimension dimension = new Dimension(ImagePanel.JSONG,ImagePanel.JSONG);
+    public static final Dimension DIMENSION = new Dimension(ImagePanel.JSONG,ImagePanel.JSONG);
     private ImagePanel artwork;
     private JPanel infoPanel = new JPanel();
     private JLabel artist = new JLabel();
@@ -27,7 +27,7 @@ public class Jsong extends JPanel implements MouseListener {
         this.setPreferredSize(new Dimension(WIDTH,HEIGHT));
         this.setMaximumSize(new Dimension(WIDTH, HEIGHT));
         this.setBackground(Color.red);
-        artwork = new ImagePanel(img, dimension);
+        artwork = new ImagePanel(img, DIMENSION);
         artwork.setBorder(BorderFactory.createMatteBorder(2,2,2,2,Color.white));
         this.add(artwork, BorderLayout.CENTER);
         this.add(infoPanel, BorderLayout.SOUTH);

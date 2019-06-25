@@ -8,12 +8,12 @@ import javax.swing.border.Border;
 import java.awt.*;
 
 public class CenterPanelView extends JPanel implements PanelChangeListener {
-    public static final int WIDTH = 700;
+    public static final int WIDTH = 700, ELEMENTS =600;
 //    private TopPanelView topPanelView = new TopPanelView();
     private SongsPanel songsPanel = new SongsPanel();
     private AlbumsPanel albumsPanel = new AlbumsPanel();
     private PlaylistPanel playlistPanel = new PlaylistPanel();
-    private JScrollPane scrollPane = new JScrollPane();
+    private JScrollPane scrollPane;
 
     public CenterPanelView() {
         setPreferredSize(new Dimension(WIDTH, MainView.HEIGHT));
@@ -24,7 +24,6 @@ public class CenterPanelView extends JPanel implements PanelChangeListener {
         Border border2 = BorderFactory.createMatteBorder(1,0,0,0, Color.lightGray);
         this.setBorder(BorderFactory.createCompoundBorder(border1, border2));
 
-//        this.add(new Jsong("My albums"," ", new ImagePanel("./assets/sampleAlbum.png", new Dimension(ImagePanel.JSONG, ImagePanel.JSONG))));
         setVisible(true);
 
     }
@@ -53,8 +52,9 @@ public class CenterPanelView extends JPanel implements PanelChangeListener {
             this.remove(playlistPanel);
             this.remove(songsPanel);
             songsPanel = new SongsPanel();
-            this.add(songsPanel, BorderLayout.CENTER);
-//            this.setBackground(Color.YELLOW);
+            scrollPane = new JScrollPane(songsPanel);
+            this.add(scrollPane, BorderLayout.CENTER);
+            this.setBackground(Color.YELLOW);
             this.revalidate();
         }
         else if (panelName.equals("albums")){
@@ -64,7 +64,8 @@ public class CenterPanelView extends JPanel implements PanelChangeListener {
             this.remove(playlistPanel);
             this.remove(songsPanel);
             albumsPanel = new AlbumsPanel();
-            this.add(albumsPanel, BorderLayout.CENTER);
+            scrollPane = new JScrollPane(albumsPanel);
+            this.add(scrollPane, BorderLayout.CENTER);
 //            this.setBackground(Color.MAGENTA);
             this.revalidate();
         }
@@ -74,9 +75,10 @@ public class CenterPanelView extends JPanel implements PanelChangeListener {
             this.remove(albumsPanel);
             this.remove(playlistPanel);
             this.remove(songsPanel);
-            //TODO throws playlist name at controller and t
+            //TODO throws playlist name at controller and takes songslist
             playlistPanel = new PlaylistPanel();
-            this.add(playlistPanel, BorderLayout.CENTER);
+            scrollPane = new JScrollPane(playlistPanel);
+            this.add(scrollPane, BorderLayout.CENTER);
 //            this.setBackground(Color.blue);
             this.revalidate();
         }
