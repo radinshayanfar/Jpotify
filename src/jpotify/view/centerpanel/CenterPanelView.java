@@ -45,21 +45,20 @@ public class CenterPanelView extends JPanel implements PanelChangeListener {
 
     @Override
     public void DisplayPanel(String panelName) {
-//        scrollPane.setLayout(new FlowLayout(FlowLayout.LEFT));
         if (panelName.equals("songs")){
             System.out.println("song");
             this.removee();
-//            songsPanel = new SongsPanel();
+            songsPanel = new SongsPanel();
             songsPanel.setVisible(true);
             scrollPane = new JScrollPane(songsPanel);
             this.add(scrollPane, BorderLayout.CENTER);
-            this.setBackground(Color.YELLOW);
+//            this.setBackground(Color.YELLOW);
             this.revalidate();
         }
         else if (panelName.equals("albums")){
             System.out.println("album");
             this.removee();
-//            albumsPanel = new AlbumsPanel();
+            albumsPanel = new AlbumsPanel();
             albumsPanel.setVisible(true);
             scrollPane = new JScrollPane(albumsPanel);
             this.add(scrollPane, BorderLayout.CENTER);
@@ -84,8 +83,5 @@ public class CenterPanelView extends JPanel implements PanelChangeListener {
         this.remove(albumsPanel);
         this.remove(playlistPanel);
         this.remove(songsPanel);
-//        albumsPanel.setVisible(false);
-//        playlistPanel.setVisible(false);
-//        songsPanel.setVisible(false);
     }
 }
