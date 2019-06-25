@@ -10,6 +10,6 @@ public class PlaylistPanel extends JPanel {
         this.setLayout(new BorderLayout());
         this.setPreferredSize(new Dimension(CenterPanelView.ELEMENTS, CenterPanelView.ELEMENTS));
         this.setBackground(Color.cyan);
-        this.setVisible(true);
+        this.setVisible(false);
     }
 }

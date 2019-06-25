@@ -24,6 +24,10 @@ public class CenterPanelView extends JPanel implements PanelChangeListener {
         Border border2 = BorderFactory.createMatteBorder(1,0,0,0, Color.lightGray);
         this.setBorder(BorderFactory.createCompoundBorder(border1, border2));
 
+//        playlistPanel = new PlaylistPanel();
+        songsPanel = new SongsPanel();
+        albumsPanel = new AlbumsPanel();
+
         setVisible(true);
 
     }
@@ -45,42 +49,47 @@ public class CenterPanelView extends JPanel implements PanelChangeListener {
 
     @Override
     public void DisplayPanel(String panelName) {
+//        scrollPane.setLayout(new FlowLayout(FlowLayout.LEFT));
         if (panelName.equals("songs")){
             System.out.println("song");
-            this.invalidate();
-            this.remove(albumsPanel);
-            this.remove(playlistPanel);
-            this.remove(songsPanel);
-            songsPanel = new SongsPanel();
-            scrollPane = new JScrollPane(songsPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+            this.removee();
+//            songsPanel = new SongsPanel();
+            songsPanel.setVisible(true);
+            scrollPane = new JScrollPane(songsPanel);
             this.add(scrollPane, BorderLayout.CENTER);
             this.setBackground(Color.YELLOW);
             this.revalidate();
         }
         else if (panelName.equals("albums")){
             System.out.println("album");
-            this.invalidate();
-            this.remove(albumsPanel);
-            this.remove(playlistPanel);
-            this.remove(songsPanel);
-            albumsPanel = new AlbumsPanel();
-            scrollPane = new JScrollPane(albumsPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+            this.removee();
+//            albumsPanel = new AlbumsPanel();
+            albumsPanel.setVisible(true);
+            scrollPane = new JScrollPane(albumsPanel);
             this.add(scrollPane, BorderLayout.CENTER);
 //            this.setBackground(Color.MAGENTA);
             this.revalidate();
         }
         else{
             System.out.println("playlist");
-            this.invalidate();
-            this.remove(albumsPanel);
-            this.remove(playlistPanel);
-            this.remove(songsPanel);
+            this.removee();
             //TODO throws playlist name at controller and takes songslist
             playlistPanel = new PlaylistPanel();
-            scrollPane = new JScrollPane(playlistPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-            this.add(scrollPane, BorderLayout.CENTER);
+            playlistPanel.setVisible(true);
+//            scrollPane = new JScrollPane(playlistPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+            this.add(playlistPanel, BorderLayout.CENTER);
 //            this.setBackground(Color.blue);
             this.revalidate();
         }
+    }
+
+    private void removee(){
+        this.invalidate();
+        this.remove(albumsPanel);
+        this.remove(playlistPanel);
+        this.remove(songsPanel);
+//        albumsPanel.setVisible(false);
+//        playlistPanel.setVisible(false);
+//        songsPanel.setVisible(false);
     }
 }

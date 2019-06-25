@@ -16,7 +16,7 @@ public class VolumeControlPanelView extends JPanel {
     private JSlider volumeSlider = new JSlider(JSlider.HORIZONTAL, 100, 0);
 
     public VolumeControlPanelView() {
-
+        this.setBackground(new Color(34,34,34));
         this.setLayout(new FlowLayout(FlowLayout.CENTER));
         this.setBorder(BorderFactory.createEmptyBorder(30, 0, 0, 0));
 //        Mute Button
@@ -27,7 +27,7 @@ public class VolumeControlPanelView extends JPanel {
             e.printStackTrace();
         }
         mute.setPreferredSize(new Dimension(ELEMENTS_SIZE + 10, ELEMENTS_SIZE + 10));
-        mute.setBackground(Color.white);
+        mute.setBackground(new Color(34,34,34));
         this.add(mute);
 
         //        Volume Down Label
@@ -42,7 +42,7 @@ public class VolumeControlPanelView extends JPanel {
 
 //        Volume Slider
         volumeSlider.setPreferredSize(new Dimension(95, ELEMENTS_SIZE + 10));
-        volumeSlider.setBackground(Color.white);
+        volumeSlider.setBackground(new Color(34,34,34));
         this.add(volumeSlider);
 
         //        Volume Up Label
