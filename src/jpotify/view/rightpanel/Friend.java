@@ -25,11 +25,11 @@ public class Friend extends JPanel {
 
         for (JLabel l : labels){
             this.add(l);
-            this.setBackground(Color.BLACK);
+            this.setBackground(Color.red);
             this.setForeground(Color.lightGray);
         }
         name.setFont(new Font("Arial", Font.BOLD, 12));
-        state.setBorder(BorderFactory.createEmptyBorder(0,100, 0,0));
+        state.setBorder(BorderFactory.createEmptyBorder(0,0, 0,0));
     }
 
     public Friend(String name, String state){

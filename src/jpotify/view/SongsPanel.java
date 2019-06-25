@@ -14,7 +14,8 @@ public class SongsPanel extends JPanel {
         this.setSize(CenterPanelView.WIDTH, CenterPanelView.HEIGHT);
         this.setBackground(new Color(14,14,14));
         this.setLayout(new FlowLayout(FlowLayout.LEFT));
-        refresh(new Jsong("My songs", new ImagePanel("./assets/sample.png", ImagePanel.ICON_MODE)));
+//        refresh(new Jsong("My songs", new ImagePanel("./assets/sample.png", ImagePanel.ICON_MODE)));
+        add(new Jsong("My songs", new ImagePanel("./assets/sample.png", ImagePanel.ICON_MODE)));
         setVisible(true);
     }
 

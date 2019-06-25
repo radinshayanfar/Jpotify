@@ -10,10 +10,12 @@ import java.util.ArrayList;
 public class FriendsBarView extends JPanel {
     static final int WIDTH = 200, FRIEND_HEIGHT = 80;
     private ArrayList<Friend> friends = new ArrayList<>();
+    private JList friendsList;
 
     public FriendsBarView(ArrayList<Friend> friends) {
-        this();
-        setFriends(friends);
+
+        this.setVisible(true);
+
     }
 
     public FriendsBarView(){
@@ -31,14 +33,14 @@ public class FriendsBarView extends JPanel {
         label.setForeground(Color.white);
         label.setBorder(BorderFactory.createCompoundBorder(outerB, complexB));
         this.add(label);
-        Friend f1 = new Friend("maryam","offline");
-        this.add(f1);
+//        Friend f1 = new Friend("maryam","offline");
+//        this.add(f1);
         this.setVisible(true);
     }
 
     public void setFriends(ArrayList<Friend> friends) {
         this.friends = friends;
-        for (Friend f: friends){
+        for (Friend f: this.friends){
             this.add(f);
         }
     }

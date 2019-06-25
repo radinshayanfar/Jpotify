@@ -3,45 +3,37 @@ package jpotify.view;
 import jpotify.view.bottompanel.BottomPanelView;
 import jpotify.view.centerpanel.CenterPanelView;
 import jpotify.view.leftpanel.LeftPanelView;
-import jpotify.view.rightpanel.Friend;
-import jpotify.view.rightpanel.FriendsBarView;
+import jpotify.view.rightpanel.RightPanelView;
 import jpotify.view.toppanel.TopPanelView;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 public class MainView extends JFrame {
 
     public static final int WIDTH = 1200, HEIGHT = 750, ICON = 15;
+
     private LeftPanelView leftPanelView =  new LeftPanelView();
-    private FriendsBarView friendsBarView = new FriendsBarView();
+//    private RightPanelView rightPanelView = new RightPanelView();
     private BottomPanelView bottomPanelView = new BottomPanelView();
     private CenterPanelView centerPanelView = new CenterPanelView();
     private TopPanelView topPanelView = new TopPanelView();
+    private RightPanelView rightPanelView = new RightPanelView();
 
     public MainView() throws HeadlessException {
+
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(new BorderLayout());
         this.setSize(WIDTH, HEIGHT);
         this.setLocation((int) (Toolkit.getDefaultToolkit().getScreenSize().width / 2 - this.getSize().getWidth() / 2)
                 , (int) (Toolkit.getDefaultToolkit().getScreenSize().height / 2 - this.getSize().getHeight() / 2));
+        this.add(rightPanelView, BorderLayout.EAST);
+        rightPanelView.setVisible(true);
         this.add(topPanelView, BorderLayout.NORTH);
+//        this.add(new JPanel(), BorderLayout.EAST);
         this.add(leftPanelView, BorderLayout.WEST);
-        this.add(friendsBarView, BorderLayout.EAST);
         this.add(bottomPanelView, BorderLayout.SOUTH);
         this.add(centerPanelView, BorderLayout.CENTER);
-
-        ArrayList<Friend> friends = new ArrayList<>();
-        Friend f1 = new Friend("maryam","offline");
-        Friend f2 = new Friend("Mohammaf", "online");
-        Friend f3 = new Friend("f","nazi","omid","online");
-        friends.add(f1);
-        friends.add(f2);
-        friends.add(f3);
-//        friendsBarView.setFriends(friends);
-//        friendsBarView.revalidate();
-
         this.setVisible(true);
     }
 
@@ -53,8 +45,8 @@ public class MainView extends JFrame {
         return leftPanelView;
     }
 
-    public FriendsBarView getFriendsBarView() {
-        return friendsBarView;
+    public RightPanelView getRightPanelView() {
+        return rightPanelView;
     }
 
     public CenterPanelView getCenterPanelView() {
