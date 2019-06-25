@@ -1,4 +1,6 @@
-package jpotify.view;
+package jpotify.view.centerpanel;
+
+import jpotify.view.ImagePanel;
 
 import javax.swing.*;
 import java.awt.*;

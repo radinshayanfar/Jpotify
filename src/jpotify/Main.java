@@ -1,7 +1,7 @@
 package jpotify;
 
 import jpotify.view.MainView;
-import jpotify.view.bottompanel.PlaylistView.PlaylistList;
+import jpotify.view.rightpanel.PlaylistList;
 import jpotify.view.leftpanel.CreateNewPlaylist;
 
 import java.util.ArrayList;

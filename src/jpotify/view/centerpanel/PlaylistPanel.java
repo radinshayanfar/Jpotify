@@ -1,7 +1,4 @@
-package jpotify.view.bottompanel.PlaylistView;
-
-import jpotify.view.SongsPanel;
-import jpotify.view.centerpanel.CenterPanelView;
+package jpotify.view.centerpanel;
 
 import javax.swing.*;
 import java.awt.*;

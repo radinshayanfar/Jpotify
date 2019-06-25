@@ -1,4 +1,4 @@
-package jpotify.view.bottompanel.PlaylistView;
+package jpotify.view.rightpanel;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;

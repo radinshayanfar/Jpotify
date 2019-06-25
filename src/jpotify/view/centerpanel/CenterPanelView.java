@@ -2,7 +2,6 @@ package jpotify.view.centerpanel;
 
 import jpotify.view.*;
 import jpotify.view.Listeners.PanelChangeListener;
-import jpotify.view.bottompanel.PlaylistView.PlaylistPanel;
 
 import javax.swing.*;
 import javax.swing.border.Border;
