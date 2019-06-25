@@ -1,7 +1,12 @@
 package jpotify.view.rightpanel;
 
+import jpotify.view.MainView;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Friend extends JPanel {
@@ -12,27 +17,45 @@ public class Friend extends JPanel {
     private JLabel state = new JLabel();
     private ArrayList<JLabel> labels = new ArrayList<>();
 
-    public Friend(String Name, String Artist , String Title , String State) {
-        labels.add(name);
-        labels.add(title);
-        labels.add(artist);
-        labels.add(state);
+    public Friend(String Name, String State, String Song) {
+        this.setPreferredSize(new Dimension(FriendsBarView.WIDTH, FriendsBarView.FRIEND_HEIGHT));
+        this.setMaximumSize(new Dimension(FriendsBarView.WIDTH, FriendsBarView.FRIEND_HEIGHT));
+        this.setBackground(Color.red);
+        this.setLayout(new GridLayout(2,2));
+        this.setBorder(BorderFactory.createMatteBorder(0, 0,5,0, Color.YELLOW));
 
-        this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-//        this.setBackground(Color.BLACK);
-        this.setPreferredSize(new Dimension(FriendsBarView.WIDTH - 20, FriendsBarView.FRIEND_HEIGHT));
-        this.setBorder(BorderFactory.createMatteBorder(0,0, 1,0, Color.cyan));
+        name.setText(Name);
+        title.setText(Song);
+        state.setText(State);
 
-        for (JLabel l : labels){
+        ArrayList<JLabel> buttons = new ArrayList<>();
+        buttons.add(name);
+        buttons.add(state);
+        buttons.add(title);
+        for (JLabel l : buttons){
             this.add(l);
-            this.setBackground(Color.red);
-            this.setForeground(Color.lightGray);
+            l.setPreferredSize(new Dimension(100,40));
+            l.setForeground(Color.lightGray);
+            l.setBackground(Color.cyan);
         }
-        name.setFont(new Font("Arial", Font.BOLD, 12));
-        state.setBorder(BorderFactory.createEmptyBorder(0,0, 0,0));
+        name.setBorder(BorderFactory.createEmptyBorder(0,8,0,0));
+        title.setBorder(BorderFactory.createEmptyBorder(0,15,0,0));
+
+        try {
+            ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/Music Note.png")));
+            title.setIcon(new ImageIcon(icon.getImage().getScaledInstance(MainView.ICON, MainView.ICON, Image.SCALE_AREA_AVERAGING)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        this.setVisible(true);
     }
 
-    public Friend(String name, String state){
-        this(name, "","", state);
+    public String getTitle() {
+        return title.getText();
+    }
+
+    public String getName() {
+        return name.getText();
     }
 }

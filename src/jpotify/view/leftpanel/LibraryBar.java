@@ -29,6 +29,7 @@ public class LibraryBar extends JPanel {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setBackground(Color.black);
         this.setSize(new Dimension(LeftPanelView.WIDTH, LeftPanelView.ELEMENTS_HEIGHT + 100));
+        this.setMinimumSize(new Dimension(LeftPanelView.WIDTH, LeftPanelView.ELEMENTS_HEIGHT + 100));
 
         Border outerB = BorderFactory.createMatteBorder(0,15,5,0, Color.black);
         Border whiteLineB = BorderFactory.createMatteBorder(0,0,1,0, Color.lightGray);

@@ -26,7 +26,6 @@ public class CenterPanelView extends JPanel implements PanelChangeListener {
 
         this.add(new Jsong("My albums", new ImagePanel("./assets/sampleAlbum.png", ImagePanel.ICON_MODE)));
 
-
         setVisible(true);
 
     }
@@ -55,8 +54,8 @@ public class CenterPanelView extends JPanel implements PanelChangeListener {
             this.remove(playlistPanel);
             this.remove(songsPanel);
             songsPanel = new SongsPanel();
-            this.add(songsPanel);
-            this.setBackground(Color.YELLOW);
+            this.add(songsPanel, BorderLayout.CENTER);
+//            this.setBackground(Color.YELLOW);
             this.revalidate();
         }
         else if (panelName.equals("albums")){
@@ -66,8 +65,8 @@ public class CenterPanelView extends JPanel implements PanelChangeListener {
             this.remove(playlistPanel);
             this.remove(songsPanel);
             albumsPanel = new AlbumsPanel();
-            this.add(albumsPanel);
-            this.setBackground(Color.MAGENTA);
+            this.add(albumsPanel, BorderLayout.CENTER);
+//            this.setBackground(Color.MAGENTA);
             this.revalidate();
         }
         else{
@@ -78,8 +77,8 @@ public class CenterPanelView extends JPanel implements PanelChangeListener {
             this.remove(songsPanel);
             //TODO throws playlist name at controller and t
             playlistPanel = new PlaylistPanel();
-            this.add(playlistPanel);
-            this.setBackground(Color.blue);
+            this.add(playlistPanel, BorderLayout.CENTER);
+//            this.setBackground(Color.blue);
             this.revalidate();
         }
     }

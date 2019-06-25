@@ -14,23 +14,19 @@ public class MainView extends JFrame {
     public static final int WIDTH = 1200, HEIGHT = 750, ICON = 15;
 
     private LeftPanelView leftPanelView =  new LeftPanelView();
-//    private RightPanelView rightPanelView = new RightPanelView();
     private BottomPanelView bottomPanelView = new BottomPanelView();
     private CenterPanelView centerPanelView = new CenterPanelView();
     private TopPanelView topPanelView = new TopPanelView();
     private RightPanelView rightPanelView = new RightPanelView();
 
-    public MainView() throws HeadlessException {
-
+    public MainView() throws HeadlessException { ;
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(new BorderLayout());
         this.setSize(WIDTH, HEIGHT);
         this.setLocation((int) (Toolkit.getDefaultToolkit().getScreenSize().width / 2 - this.getSize().getWidth() / 2)
                 , (int) (Toolkit.getDefaultToolkit().getScreenSize().height / 2 - this.getSize().getHeight() / 2));
         this.add(rightPanelView, BorderLayout.EAST);
-        rightPanelView.setVisible(true);
         this.add(topPanelView, BorderLayout.NORTH);
-//        this.add(new JPanel(), BorderLayout.EAST);
         this.add(leftPanelView, BorderLayout.WEST);
         this.add(bottomPanelView, BorderLayout.SOUTH);
         this.add(centerPanelView, BorderLayout.CENTER);

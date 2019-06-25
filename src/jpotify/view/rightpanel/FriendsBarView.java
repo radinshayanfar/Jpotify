@@ -3,45 +3,55 @@ package jpotify.view.rightpanel;
 import jpotify.view.MainView;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 public class FriendsBarView extends JPanel {
-    static final int WIDTH = 200, FRIEND_HEIGHT = 80;
+    static final int WIDTH = 200, FRIEND_HEIGHT = 60;
     private ArrayList<Friend> friends = new ArrayList<>();
     private JList friendsList;
+    private FriendHandler fh = new FriendHandler();
 
-    public FriendsBarView(ArrayList<Friend> friends) {
+     public FriendsBarView(){
+         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+         this.setPreferredSize(new Dimension(WIDTH, MainView.HEIGHT));
+         this.setBackground(Color.MAGENTA);
 
-        this.setVisible(true);
+         this.setVisible(true);
+     }
 
+    public void setFriends(ArrayList<Friend> friends){
+         this.invalidate();
+         this.removeAll();
+         for (Friend f : friends){
+             this.add(f);
+             f.addMouseListener(fh);
+         }
+         this.revalidate();
     }
 
-    public FriendsBarView(){
-        this.setPreferredSize(new Dimension(WIDTH, MainView.HEIGHT));
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        this.setBackground(Color.BLACK);
+    private class FriendHandler implements MouseListener{
 
-        Border outerB = BorderFactory.createMatteBorder(15,15,5,15, Color.black);
-        Border whiteLineB = BorderFactory.createMatteBorder(0,0,1,0, Color.lightGray);
-        Border inerB = BorderFactory.createMatteBorder(0,0,5,0, Color.black);
-        Border complexB = BorderFactory.createCompoundBorder(whiteLineB, inerB);
-        //Friends Activity
-        JLabel label = new JLabel("Friends Activity  ");
-        label.setFont(new Font("Arial", Font.PLAIN, 20));
-        label.setForeground(Color.white);
-        label.setBorder(BorderFactory.createCompoundBorder(outerB, complexB));
-        this.add(label);
-//        Friend f1 = new Friend("maryam","offline");
-//        this.add(f1);
-        this.setVisible(true);
-    }
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            Friend f = (Friend) e.getSource();
+            System.out.println(f.getName());
+            System.out.println(f.getTitle());
+        }
 
-    public void setFriends(ArrayList<Friend> friends) {
-        this.friends = friends;
-        for (Friend f: this.friends){
-            this.add(f);
+        @Override
+        public void mousePressed(MouseEvent e) {
+        }
+        @Override
+        public void mouseReleased(MouseEvent e) {
+        }
+        @Override
+        public void mouseEntered(MouseEvent e) {
+        }
+        @Override
+        public void mouseExited(MouseEvent e) {
         }
     }
 }
