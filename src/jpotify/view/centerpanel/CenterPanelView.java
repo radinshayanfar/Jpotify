@@ -52,7 +52,7 @@ public class CenterPanelView extends JPanel implements PanelChangeListener {
             this.remove(playlistPanel);
             this.remove(songsPanel);
             songsPanel = new SongsPanel();
-            scrollPane = new JScrollPane(songsPanel);
+            scrollPane = new JScrollPane(songsPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
             this.add(scrollPane, BorderLayout.CENTER);
             this.setBackground(Color.YELLOW);
             this.revalidate();
@@ -64,7 +64,7 @@ public class CenterPanelView extends JPanel implements PanelChangeListener {
             this.remove(playlistPanel);
             this.remove(songsPanel);
             albumsPanel = new AlbumsPanel();
-            scrollPane = new JScrollPane(albumsPanel);
+            scrollPane = new JScrollPane(albumsPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
             this.add(scrollPane, BorderLayout.CENTER);
 //            this.setBackground(Color.MAGENTA);
             this.revalidate();
@@ -77,7 +77,7 @@ public class CenterPanelView extends JPanel implements PanelChangeListener {
             this.remove(songsPanel);
             //TODO throws playlist name at controller and takes songslist
             playlistPanel = new PlaylistPanel();
-            scrollPane = new JScrollPane(playlistPanel);
+            scrollPane = new JScrollPane(playlistPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
             this.add(scrollPane, BorderLayout.CENTER);
 //            this.setBackground(Color.blue);
             this.revalidate();
