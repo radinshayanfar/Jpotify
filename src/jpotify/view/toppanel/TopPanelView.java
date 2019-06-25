@@ -16,6 +16,13 @@ public class TopPanelView extends JPanel {
         this.add(new UsernameBar(), BorderLayout.CENTER);
         setBackground(new Color(14,14, 14));
         setPreferredSize(new Dimension(MainView.WIDTH, HEIGHT));
+
+        JPanel topRight = new JPanel();
+        topRight.setBackground(Color.black);
+        topRight.setPreferredSize(new Dimension(MainView.WIDTH, HEIGHT));
+        this.add(topRight, BorderLayout.EAST);
+
+
         setVisible(true);
     }
 

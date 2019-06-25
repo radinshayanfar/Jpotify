@@ -1,6 +1,7 @@
 package jpotify;
 
 import jpotify.view.MainView;
+import jpotify.view.bottompanel.PlaylistView.PlaylistList;
 import jpotify.view.leftpanel.CreateNewPlaylist;
 
 import java.util.ArrayList;
@@ -39,6 +40,9 @@ public class Main {
         s.add("sdf");
         s.add("sdfdsf");
         CreateNewPlaylist p = new CreateNewPlaylist(s);
+        PlaylistList pl = new PlaylistList("play", s);
+        pl.setVisible(true);
+
         p.setVisible(true);
 
     }

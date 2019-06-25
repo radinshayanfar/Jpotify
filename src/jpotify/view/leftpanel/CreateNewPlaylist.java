@@ -2,13 +2,16 @@ package jpotify.view.leftpanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class CreateNewPlaylist extends JFrame {
+public class CreateNewPlaylist extends JFrame implements ActionListener {
 
     private JTextField name = new JTextField();
     private JButton cancelBtn = new JButton("cancel");
     private JButton okBtn = new JButton("okay");
+    private JList songsList;
 
     public CreateNewPlaylist(ArrayList mySongs) throws HeadlessException {
 
@@ -27,7 +30,7 @@ public class CreateNewPlaylist extends JFrame {
         upPanel.add(name);
 //        upPanel.add(sondLabel);
 
-        JList songsList = new JList(mySongs.toArray());
+        songsList = new JList(mySongs.toArray());
         JScrollPane scrollPane = new JScrollPane(songsList);
 //        songsList.setSelectionMode();
         this.add(scrollPane, BorderLayout.CENTER);
@@ -37,9 +40,24 @@ public class CreateNewPlaylist extends JFrame {
         buttonPanel.setPreferredSize(new Dimension(300,30));
         buttonPanel.add(cancelBtn);
         buttonPanel.add(okBtn);
+        cancelBtn.addActionListener(this);
+        okBtn.addActionListener(this);
         this.add(buttonPanel, BorderLayout.SOUTH);
 
         this.setVisible(false);
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(e.getSource().equals(cancelBtn)){
+            this.setVisible(false);
+        }
+        if (e.getSource().equals(okBtn)){
+            System.out.println(songsList.getSelectedValuesList());
+            System.out.println(name.getText());
+            //TODO
+            if(songsList.getSelectedValuesList().size() != 0)
+                this.setVisible(false);
+        }
+    }
 }
