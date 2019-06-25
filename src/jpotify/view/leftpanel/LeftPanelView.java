@@ -29,8 +29,11 @@ public class LeftPanelView extends JPanel {
 //        this.add(playlistBar);
 
 //        this.add(new JScrollPane(libraryBar, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
-        this.add(new ImagePanel("./assets/sample.png", ImagePanel.ARTWORK_MODE), BorderLayout.SOUTH);
-//        this.add(new ArtworkPanel());
+        artworkPanel = new ImagePanel("./assets/sample.png", new Dimension(ImagePanel.ARTWORK_MODE, ImagePanel.ARTWORK_MODE));
+        this.add( artworkPanel, BorderLayout.SOUTH);
+//        artworkPanel.setBorder(BorderFactory.createEmptyBorder(1,1,0,0));
+
+        //        this.add(new ArtworkPanel());
 
         this.setPreferredSize(new Dimension(WIDTH, MainView.HEIGHT));
         this.setBackground(Color.BLACK);
@@ -52,7 +55,8 @@ public class LeftPanelView extends JPanel {
     public void changeArtworkPanel(String address){
         this.invalidate();
         this.remove(artworkPanel);
-        this.add(new ImagePanel(address, ImagePanel.ARTWORK_MODE), BorderLayout.SOUTH);
+        this.add(new ImagePanel(address, new Dimension(ImagePanel.ARTWORK_MODE, ImagePanel.ARTWORK_MODE)), BorderLayout.SOUTH);
+//        artworkPanel.setBorder(BorderFactory.createEmptyBorder(0,10,0,0));
         this.revalidate();
     }
 }

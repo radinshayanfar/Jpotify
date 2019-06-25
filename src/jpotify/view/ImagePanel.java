@@ -6,27 +6,27 @@ import java.awt.*;
 public class ImagePanel extends JPanel {
 
     private Image img;
-    private int size;
-    public static final int ARTWORK_MODE = 180, ICON_MODE = 80;
+    private Dimension size;
+    public static final int ARTWORK_MODE = 180, ICON_MODE = 80, JSONG = 150;
 
-    public ImagePanel(String img, int size) {
-        this(new ImageIcon(img).getImage(), size);
+    public ImagePanel(String img, Dimension dimension) {
+        this(new ImageIcon(img).getImage(), dimension);
     }
 
-    public ImagePanel(Image img, int size) {
+    public ImagePanel(Image img, Dimension dimension) {
 //        this.img = (BufferedImage) img;
         this.img = img;
-        this.size = size;
-        Dimension sizeD = new Dimension(size, size);
-        setPreferredSize(sizeD);
-        setMinimumSize(sizeD);
-        setMaximumSize(sizeD);
-        setSize(sizeD);
+        this.size = dimension;
+//        Dimension sizeD = new Dimension(size, size);
+        setPreferredSize(dimension);
+        setMinimumSize(dimension);
+        setMaximumSize(dimension);
+        setSize(dimension);
         setLayout(null);
     }
 
     public void paintComponent(Graphics g) {
-        g.drawImage(img, 0, 0 , size ,size , null);
+        g.drawImage(img, 0, 0 , size.width ,size.height , null);
     }
 
 }

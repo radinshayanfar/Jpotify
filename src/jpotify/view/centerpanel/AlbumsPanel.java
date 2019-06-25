@@ -1,7 +1,5 @@
 package jpotify.view.centerpanel;
 
-import jpotify.view.ImagePanel;
-
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -14,7 +12,7 @@ public class AlbumsPanel extends JPanel {
         this.setBackground(new Color(14,14,14));
         this.setLayout(new FlowLayout(FlowLayout.LEFT));
 //        refresh(new Jsong("My albums", new ImagePanel("./assets/sampleAlbum.png", ImagePanel.ICON_MODE)));
-        this.add(new Jsong("My albums", new ImagePanel("./assets/sampleAlbum.png", ImagePanel.ICON_MODE)));
+//        this.add(new Jsong("My albums", new ImagePanel("./assets/sampleAlbum.png", new Dimension(ImagePanel.JSONG, ImagePanel.JSONG))));
         setVisible(true);
     }
 

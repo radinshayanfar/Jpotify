@@ -13,6 +13,7 @@ public class CenterPanelView extends JPanel implements PanelChangeListener {
     private SongsPanel songsPanel = new SongsPanel();
     private AlbumsPanel albumsPanel = new AlbumsPanel();
     private PlaylistPanel playlistPanel = new PlaylistPanel();
+    private JScrollPane scrollPane = new JScrollPane();
 
     public CenterPanelView() {
         setPreferredSize(new Dimension(WIDTH, MainView.HEIGHT));
@@ -23,8 +24,7 @@ public class CenterPanelView extends JPanel implements PanelChangeListener {
         Border border2 = BorderFactory.createMatteBorder(1,0,0,0, Color.lightGray);
         this.setBorder(BorderFactory.createCompoundBorder(border1, border2));
 
-        this.add(new Jsong("My albums", new ImagePanel("./assets/sampleAlbum.png", ImagePanel.ICON_MODE)));
-
+//        this.add(new Jsong("My albums"," ", new ImagePanel("./assets/sampleAlbum.png", new Dimension(ImagePanel.JSONG, ImagePanel.JSONG))));
         setVisible(true);
 
     }
