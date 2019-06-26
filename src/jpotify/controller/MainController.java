@@ -4,10 +4,7 @@ import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
 import helper.FileHelper;
 import javazoom.jl.decoder.JavaLayerException;
-import jpotify.model.CustomPlayer;
-import jpotify.model.Song;
-import jpotify.model.User;
-import jpotify.model.Users;
+import jpotify.model.*;
 import jpotify.view.MainView;
 import jpotify.view.centerpanel.JSong;
 
@@ -19,7 +16,7 @@ import java.util.List;
 
 public class MainController {
     public static final int PLAYLIST = 2, MYSONG = 0, ALBUMS = 1;
-    public static final int PLAY_BUTTON=1;
+    //    public static final int PLAY_BUTTON=1;
     private MainView mainView;
     private Users users;
     private User user;
@@ -30,6 +27,8 @@ public class MainController {
         mainView = new MainView(this);
         this.users = users;
         this.user = users.getUser(userIndex);
+        user.setRepeatRule(RepeatRule.REPEAT);
+        user.turnShuffleOn();
     }
 
     public void addSongToLibrary(File... files) {
@@ -48,7 +47,7 @@ public class MainController {
         List<Song> songs = user.getLibrarySongs();
 //        System.out.println(songs);
         for (int i = 0; i < songs.size(); i++) {
-            jSongs.add(new JSong(this, songs.get(i).getTitle(), songs.get(i).getArtist(), songs.get(i).getAlbum(), songs.get(i).getArtwork(),i ));
+            jSongs.add(new JSong(this, songs.get(i).getTitle(), songs.get(i).getArtist(), songs.get(i).getAlbum(), songs.get(i).getArtwork(), i));
         }
         return jSongs;
     }
@@ -67,6 +66,17 @@ public class MainController {
     private void GUIChangeForSongPlay(Song song) {
         mainView.changeArtwork(song.getArtwork());
         mainView.getBottomPanelView().getControlPanel().changePlayButton(false);
+    }
+
+    private void GUIChangeForSongStop() {
+//        try {
+//            mainView.changeArtwork(FileHelper.loadSampleArtwork());
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        TODO: remove artwork and bottom info
+        mainView.getBottomPanelView().getControlPanel().changePlayButton(true);
+        updateJSlider(0);
     }
 
     public void updateJSlider(int state) {
@@ -120,17 +130,49 @@ public class MainController {
     }
 
     public void songReachedEnd() {
-        Song nextSong = user.next();
         user.stopSong();
+        Song nextSong = user.next();
+        if (nextSong == null) {
+            songListReachedEnd();
+            return;
+        }
         user.playSong(nextSong);
         playSongWithCustomPlayer(nextSong);
+        GUIChangeForSongPlay(nextSong);
     }
 
     public void nextPressed() {
-        Song nextSong = user.forceNext();
+        if (player == null) return;
         user.stopSong();
+        Song nextSong = user.forceNext();
+        if (nextSong == null) {
+            songListReachedEnd();
+            return;
+        }
         user.playSong(nextSong);
         playSongWithCustomPlayer(nextSong);
+        GUIChangeForSongPlay(nextSong);
+    }
+
+    public void previousPressed() {
+        if (player == null) return;
+        user.stopSong();
+        Song previousSong = user.previous();
+        if (previousSong == null) {
+            songListReachedEnd();
+            return;
+        }
+        user.playSong(previousSong);
+        playSongWithCustomPlayer(previousSong);
+        GUIChangeForSongPlay(previousSong);
+    }
+
+    private void songListReachedEnd() {
+        if (player != null) {
+            player.stop();
+            player = null;
+        }
+        GUIChangeForSongStop();
     }
 
     private void playSongWithCustomPlayer(Song song) {
@@ -138,15 +180,15 @@ public class MainController {
             if (player != null)
                 player.stop();
             player = new CustomPlayer(song.getAddress(), this);
-//           TODO: player.setVolume();
+            player.setVolume(volume);
             player.play();
         } catch (JavaLayerException | IOException | InvalidDataException | UnsupportedTagException e) {
             e.printStackTrace();
         }
     }
 
-    public void changeCenterPanel(int mode, ArrayList information){
-        switch (mode){
+    public void changeCenterPanel(int mode, ArrayList information) {
+        switch (mode) {
             case ALBUMS:
                 mainView.getCenterPanelView().displayPanel(mode, information);
             case MYSONG:

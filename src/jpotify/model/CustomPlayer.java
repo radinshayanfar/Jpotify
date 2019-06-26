@@ -19,6 +19,7 @@ public class CustomPlayer {
     private final static int PLAYING = 1;
     private final static int PAUSED = 2;
     private final static int FINISHED = 3;
+    private final static int STOPPED = 4;
 
     // the player actually doing all the work
     private Player player;
@@ -153,7 +154,8 @@ public class CustomPlayer {
             }
 
         }
-        controller.songReachedEnd();
+        if (playerStatus != FINISHED)
+            controller.songReachedEnd();
         close();
     }
 
@@ -182,9 +184,10 @@ public class CustomPlayer {
         } catch (JavaLayerException | FileNotFoundException ignored) {
         }
         player.skipMilliSeconds(milliSecond);
-        player.setVolume(gainVolume);
+        System.out.println("In change: " + gainVolume);
         if (wasPlaying)
             this.play();
+        volumeChanged = true;
     }
 
     public void changePositionHundred(int value) throws JavaLayerException {
@@ -197,6 +200,7 @@ public class CustomPlayer {
 
     public void setVolume(float volume) {
         this.gainVolume = volume;
+        System.out.println(gainVolume);
         volumeChanged = true;
     }
 

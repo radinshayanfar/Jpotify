@@ -1,6 +1,7 @@
 package jpotify.model;
 
 import com.mpatric.mp3agic.*;
+import helper.FileHelper;
 import helper.TagReader;
 
 import java.io.File;
@@ -68,7 +69,7 @@ public class Song implements Serializable, Comparable<Song> {
 
             }
             if (artwork == null) {
-                artwork = Files.readAllBytes(Paths.get("./assets/Album.png"));
+                artwork = FileHelper.loadSampleArtwork();
             }
         } catch (IOException | UnsupportedTagException | InvalidDataException e) {
             e.printStackTrace();
@@ -77,7 +78,7 @@ public class Song implements Serializable, Comparable<Song> {
 
     public void useDefaultArtwork() {
         try {
-            artwork = Files.readAllBytes(Paths.get("./assets/Album.png"));
+            artwork = FileHelper.loadSampleArtwork();
         } catch (IOException e) {
             e.printStackTrace();
         }

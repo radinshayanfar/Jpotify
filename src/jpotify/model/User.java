@@ -238,12 +238,16 @@ public class User implements Serializable {
     public void unshuffleCurrentSelected() {
         if (currentList instanceof Playlist && shuffledOriginal != null) {
             currentList = shuffledOriginal;
+            shuffledOriginal = null;
         }
     }
 
     public boolean turnShuffleOn() {
-        if (currentList instanceof Playlist)
+        if (currentList instanceof Playlist) {
+            shuffledOriginal = (Playlist) currentList;
+            currentList = ((Playlist) currentList).getShuffled();
             return shuffled = true;
+        }
         return false;
     }
 

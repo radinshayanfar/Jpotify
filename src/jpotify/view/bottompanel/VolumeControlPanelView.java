@@ -75,10 +75,6 @@ public class VolumeControlPanelView extends JPanel implements ActionListener, Ch
 
     @Override
     public void stateChanged(ChangeEvent e) {
-        changeVolume();
-    }
-
-    public void changeVolume(){
         controller.changeVolume(volumeSlider.getValue());
     }
 }

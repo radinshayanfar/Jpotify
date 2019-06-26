@@ -11,9 +11,9 @@ public class SongList implements Serializable {
 
     public Song next(RepeatRule rule) {
         if (current == null) {
-            if (songs.size() > 0)
+            /*if (songs.size() > 0)
                 return current = songs.get(0);
-            else return null;
+            else*/ return null;
         }
         if (rule == RepeatRule.REPEAT_ONE)
             return current;
@@ -29,9 +29,9 @@ public class SongList implements Serializable {
 
     public Song previous(RepeatRule rule) {
         if (current == null) {
-            if (songs.size() > 0)
+            /*if (songs.size() > 0)
                 return current = songs.get(songs.size() - 1);
-            else return null;
+            else*/ return null;
         }
         if (rule == RepeatRule.REPEAT_ONE)
             return current;
@@ -39,7 +39,7 @@ public class SongList implements Serializable {
         if (index == 0) {
             if (rule == RepeatRule.REPEAT)
                 return current = songs.get(songs.size() - 1);
-            else return current = null;
+            else return current; //current = null;
         } else {
             return current = songs.get(index - 1);
         }

@@ -60,4 +60,8 @@ final public class FileHelper {
 
         return fileName;
     }
+
+    public static byte[] loadSampleArtwork() throws IOException {
+        return Files.readAllBytes(Paths.get("./assets/sample.png"));
+    }
 }

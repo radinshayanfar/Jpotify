@@ -68,11 +68,10 @@ public class ControlPanel extends JPanel implements ActionListener, MouseListene
         }
 
         if (actionEvent.getSource() == next) {
-            System.out.println("next pressed");
-//            controller.nextPressed();
+            controller.nextPressed();
         }
-        if (actionEvent.getSource().equals(previous)) {
-            //TODO
+        if (actionEvent.getSource() == previous) {
+            controller.previousPressed();
         }
         if (actionEvent.getSource().equals(repeat)) {
             switch (repeatState) {
