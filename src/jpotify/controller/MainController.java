@@ -2,10 +2,12 @@ package jpotify.controller;
 
 import com.mpatric.mp3agic.InvalidDataException;
 import com.mpatric.mp3agic.UnsupportedTagException;
+import helper.FileHelper;
 import javazoom.jl.decoder.JavaLayerException;
 import jpotify.model.CustomPlayer;
 import jpotify.model.Song;
 import jpotify.model.User;
+import jpotify.model.Users;
 import jpotify.view.MainView;
 import jpotify.view.centerpanel.JSong;
 
@@ -19,12 +21,14 @@ public class MainController {
     public static final int PLAYLIST = 2, MYSONG = 0, ALBUMS = 1;
     public static final int PLAY_BUTTON=1;
     private MainView mainView;
+    private Users users;
     private User user;
     private CustomPlayer player;
 
-    public MainController() {
+    public MainController(Users users, int userIndex) {
         mainView = new MainView(this);
-        user = new User("Radin");
+        this.users = users;
+        this.user = users.getUser(userIndex);
     }
 
     public void addSongToLibrary(File... files) {
@@ -68,8 +72,6 @@ public class MainController {
     }
 
     public void updateJSlider(int state){
-        System.out.println(state);
-        mainView.getBottomPanelView().getControlPanel().sliderChangedFromCode();
         mainView.getBottomPanelView().getControlPanel().getControlBar().setValue(state);
         mainView.getBottomPanelView().getControlPanel().revalidate();
     }
@@ -100,6 +102,16 @@ public class MainController {
             player.play();
     }
 
+    public void pausePlayerForSeek() {
+        if (player != null)
+            player.pause();
+    }
+
+    public void resumePlayerForSeek() {
+        if (player != null)
+            player.resume();
+    }
+
     public void sliderChanged(int value) {
         if (player != null) {
             try {
@@ -107,6 +119,16 @@ public class MainController {
             } catch (JavaLayerException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public void saveState() {
+//        Users users = new Users();
+//        users.addUser(user);
+        try {
+            FileHelper.saveUsers(this.users);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
