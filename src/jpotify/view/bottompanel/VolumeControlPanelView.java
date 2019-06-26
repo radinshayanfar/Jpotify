@@ -1,5 +1,7 @@
 package jpotify.view.bottompanel;
 
+import jpotify.controller.MainController;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -10,12 +12,14 @@ public class VolumeControlPanelView extends JPanel {
     private static final int ELEMENTS_SIZE = 20;
     static final int WIDTH = 200;
 
+    private MainController controller;
     private JButton mute = new JButton();
     private JLabel volumeDown = new JLabel();
     private JLabel volumeUp= new  JLabel();
     private JSlider volumeSlider = new JSlider(JSlider.HORIZONTAL, 100, 0);
 
-    public VolumeControlPanelView() {
+    public VolumeControlPanelView(MainController mainController) {
+        controller = mainController;
         this.setBackground(new Color(34,34,34));
         this.setLayout(new FlowLayout(FlowLayout.CENTER));
         this.setBorder(BorderFactory.createEmptyBorder(30, 0, 0, 0));

@@ -1,5 +1,7 @@
 package jpotify.view.rightpanel;
 
+import jpotify.controller.MainController;
+
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -10,13 +12,15 @@ import java.util.ArrayList;
 
 public class PlaylistList extends JFrame implements ActionListener {
 
+    private MainController controller;
     private JLabel name = new JLabel();
     private JButton btn = new JButton("Download All");
     private JButton downloadBtn = new JButton("Download Single");
     private ListHandler listHandler = new ListHandler();
     private JList songsList;
 
-    public PlaylistList(String playlistName, ArrayList<String> playlistSong) throws HeadlessException {
+    public PlaylistList(MainController mainController, String playlistName, ArrayList<String> playlistSong) throws HeadlessException {
+        controller = mainController;
 
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setLayout(new BorderLayout());

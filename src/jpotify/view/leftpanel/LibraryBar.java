@@ -1,5 +1,6 @@
 package jpotify.view.leftpanel;
 
+import jpotify.controller.MainController;
 import jpotify.view.Listeners.PanelChangeListener;
 import jpotify.view.MainView;
 
@@ -15,6 +16,7 @@ import java.io.IOException;
 
 public class LibraryBar extends JPanel {
 
+    private MainController controller;
     private static final int ELEMENTS_SIZE = 15;
     private PanelChangeListener panelChangeListener;
     private JButton addSong = new JButton();
@@ -23,7 +25,8 @@ public class LibraryBar extends JPanel {
     private JFileChooser fileChooser = new JFileChooser();
     private ButtonListener buttonListener = new ButtonListener();
 
-    public LibraryBar() {
+    public LibraryBar(MainController mainController) {
+        controller = mainController;
 
         //overall sets
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));

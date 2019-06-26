@@ -1,5 +1,6 @@
 package jpotify.view;
 
+import jpotify.controller.MainController;
 import jpotify.view.bottompanel.BottomPanelView;
 import jpotify.view.centerpanel.CenterPanelView;
 import jpotify.view.leftpanel.LeftPanelView;
@@ -12,24 +13,32 @@ import java.awt.*;
 public class MainView extends JFrame {
 
     public static final int WIDTH = 1200, HEIGHT = 750, ICON = 15;
+    private MainController controller;
+    private LeftPanelView leftPanelView;
+    private BottomPanelView bottomPanelView;
+    private CenterPanelView centerPanelView;
+    private TopPanelView topPanelView;
+    private RightPanelView rightPanelView;
 
-    private LeftPanelView leftPanelView =  new LeftPanelView();
-    private BottomPanelView bottomPanelView = new BottomPanelView();
-    private CenterPanelView centerPanelView = new CenterPanelView();
-    private TopPanelView topPanelView = new TopPanelView();
-    private RightPanelView rightPanelView = new RightPanelView();
-
-    public MainView() throws HeadlessException { ;
+    public MainView(MainController mainController) throws HeadlessException {
+        controller = mainController;
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(new BorderLayout());
         this.setSize(WIDTH, HEIGHT);
         this.setLocation((int) (Toolkit.getDefaultToolkit().getScreenSize().width / 2 - this.getSize().getWidth() / 2)
                 , (int) (Toolkit.getDefaultToolkit().getScreenSize().height / 2 - this.getSize().getHeight() / 2));
+        rightPanelView = new RightPanelView(mainController);
         this.add(rightPanelView, BorderLayout.EAST);
+        topPanelView = new TopPanelView(mainController);
         this.add(topPanelView, BorderLayout.NORTH);
+        leftPanelView = new LeftPanelView(mainController);
         this.add(leftPanelView, BorderLayout.WEST);
+        bottomPanelView = new BottomPanelView(mainController);
         this.add(bottomPanelView, BorderLayout.SOUTH);
+        centerPanelView = new CenterPanelView(mainController);
         this.add(centerPanelView, BorderLayout.CENTER);
+        this.getLeftPanelView().getLibraryBar().setPanelChangeListener(this.getCenterPanelView());
+        this.getLeftPanelView().getPlaylistBar().setPanelChangeListener(this.getCenterPanelView());
         this.setVisible(true);
     }
 

@@ -1,5 +1,6 @@
 package jpotify.view.rightpanel;
 
+import jpotify.controller.MainController;
 import jpotify.view.MainView;
 
 import javax.imageio.ImageIO;
@@ -11,13 +12,15 @@ import java.util.ArrayList;
 
 public class Friend extends JPanel {
 
+    private MainController controller;
     private JLabel artist = new JLabel();
     private JLabel title = new JLabel();
     private JLabel name = new JLabel();
     private JLabel state = new JLabel();
     private ArrayList<JLabel> labels = new ArrayList<>();
 
-    public Friend(String Name, String State, String Song) {
+    public Friend(MainController mainController, String Name, String State, String Song) {
+        controller = mainController;
         this.setPreferredSize(new Dimension(FriendsBarView.WIDTH, FriendsBarView.FRIEND_HEIGHT));
         this.setMaximumSize(new Dimension(FriendsBarView.WIDTH, FriendsBarView.FRIEND_HEIGHT));
         this.setBackground(Color.BLACK);

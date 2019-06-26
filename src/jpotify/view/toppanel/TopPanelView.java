@@ -1,5 +1,6 @@
 package jpotify.view.toppanel;
 
+import jpotify.controller.MainController;
 import jpotify.view.MainView;
 
 import javax.swing.*;
@@ -7,10 +8,12 @@ import java.awt.*;
 
 public class TopPanelView extends JPanel {
 
+    private MainController controller;
     static final int HEIGHT = 40;
 
-    public TopPanelView() {
+    public TopPanelView(MainController mainController) {
         this.setLayout(new BorderLayout());
+        controller = mainController;
 
 //        this.add(new LogoBox(), BorderLayout.WEST);
 //        this.add(new UsernameBar(), BorderLayout.CENTER);

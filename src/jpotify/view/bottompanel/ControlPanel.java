@@ -1,6 +1,7 @@
 package jpotify.view.bottompanel;
 
 
+import jpotify.controller.MainController;
 import jpotify.view.centerpanel.CenterPanelView;
 
 import javax.imageio.ImageIO;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 
 public class ControlPanel extends JPanel implements ActionListener {
 
+    private MainController controller;
     private Boolean isPlaying = true;
     private Boolean notShuffled = true;
     private static final int REPEAT_ONE_SONG = 2, REPEAT=1, NO_REPEAT=0;
@@ -29,7 +31,8 @@ public class ControlPanel extends JPanel implements ActionListener {
     private JSlider controlBar = new JSlider(JSlider.HORIZONTAL, 100, 0);
     private ButtonPanel btnPanel = new ButtonPanel();
 
-    public ControlPanel() {
+    public ControlPanel(MainController mainController) {
+        controller = mainController;
         this.setLayout(new BorderLayout());
         this.setBackground(new Color(34,34,34));
         this.setPreferredSize(new Dimension(CenterPanelView.WIDTH, BottomPanelView.HEIGHT));

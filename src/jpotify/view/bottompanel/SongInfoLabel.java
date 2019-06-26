@@ -1,5 +1,6 @@
 package jpotify.view.bottompanel;
 
+import jpotify.controller.MainController;
 import jpotify.view.leftpanel.LeftPanelView;
 
 import javax.swing.*;
@@ -8,15 +9,17 @@ import java.awt.*;
 
 public class SongInfoLabel extends JPanel {
 
+    private MainController controller;
     private JLabel title = new JLabel();
     private JLabel artist = new JLabel();
     private JLabel album = new JLabel();
 
-    public SongInfoLabel() {
-        this("","","");
+    public SongInfoLabel(MainController mainController) {
+        this(mainController,"","","");
     }
 
-    public SongInfoLabel(String title, String artist, String album){
+    public SongInfoLabel(MainController mainController, String title, String artist, String album){
+        controller = mainController;
         Border border = BorderFactory.createEmptyBorder(5,0,5,0);
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setBorder(BorderFactory.createEmptyBorder(5, 20, 0, 0));

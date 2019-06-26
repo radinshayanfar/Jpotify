@@ -1,5 +1,7 @@
 package jpotify.view.leftpanel;
 
+import jpotify.controller.MainController;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -8,12 +10,14 @@ import java.util.ArrayList;
 
 public class CreateNewPlaylist extends JFrame implements ActionListener {
 
+    private MainController controller;
     private JTextField name = new JTextField();
     private JButton cancelBtn = new JButton("cancel");
     private JButton okBtn = new JButton("okay");
     private JList songsList;
 
-    public CreateNewPlaylist(ArrayList mySongs) throws HeadlessException {
+    public CreateNewPlaylist(MainController mainController, ArrayList mySongs) throws HeadlessException {
+        controller = mainController;
 
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setLayout(new BorderLayout());

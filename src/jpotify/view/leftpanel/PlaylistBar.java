@@ -1,5 +1,6 @@
 package jpotify.view.leftpanel;
 
+import jpotify.controller.MainController;
 import jpotify.view.Listeners.PanelChangeListener;
 import jpotify.view.MainView;
 
@@ -15,6 +16,7 @@ import java.util.Vector;
 
 public class PlaylistBar extends JPanel {
 
+    private MainController controller;
     private static final int ELEMENTS_SIZE = 15;
     private JScrollPane scrollPane = new JScrollPane();
     private JComboBox playLists;
@@ -24,7 +26,8 @@ public class PlaylistBar extends JPanel {
     private PanelChangeListener panelChangeListener;
 //    private NewPlaylistHandler nplh = new NewPlaylistHandler();
 
-    public PlaylistBar(){
+    public PlaylistBar(MainController mainController){
+        controller = mainController;
         this.setPreferredSize(new Dimension(LeftPanelView.WIDTH, LeftPanelView.ELEMENTS_HEIGHT));
         this.setBackground(Color.BLACK);
         this.setLayout(new BorderLayout());

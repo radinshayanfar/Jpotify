@@ -1,5 +1,6 @@
 package jpotify.view.centerpanel;
 
+import jpotify.controller.MainController;
 import jpotify.view.*;
 import jpotify.view.Listeners.PanelChangeListener;
 
@@ -8,14 +9,16 @@ import javax.swing.border.Border;
 import java.awt.*;
 
 public class CenterPanelView extends JPanel implements PanelChangeListener {
+    private MainController controller;
     public static final int WIDTH = 800, ELEMENTS =210;
 //    private TopPanelView topPanelView = new TopPanelView();
-    private SongsPanel songsPanel = new SongsPanel();
-    private AlbumsPanel albumsPanel = new AlbumsPanel();
-    private PlaylistPanel playlistPanel = new PlaylistPanel();
+    private SongsPanel songsPanel;
+    private AlbumsPanel albumsPanel;
+    private PlaylistPanel playlistPanel;
     private JScrollPane scrollPane;
 
-    public CenterPanelView() {
+    public CenterPanelView(MainController mainController) {
+        controller = mainController;
         setPreferredSize(new Dimension(WIDTH, MainView.HEIGHT));
         setLayout(new BorderLayout());
         this.setBackground(new Color(14,14, 14));
@@ -26,6 +29,9 @@ public class CenterPanelView extends JPanel implements PanelChangeListener {
 
         setVisible(true);
 
+        songsPanel = new SongsPanel(controller);
+        albumsPanel = new AlbumsPanel(controller);
+        playlistPanel = new PlaylistPanel(controller);
     }
 
     public void setSongsPanel(SongsPanel s){
@@ -48,7 +54,7 @@ public class CenterPanelView extends JPanel implements PanelChangeListener {
         if (panelName.equals("songs")){
             System.out.println("song");
             this.removee();
-            songsPanel = new SongsPanel();
+            songsPanel = new SongsPanel(controller);
             songsPanel.setVisible(true);
             scrollPane = new JScrollPane(songsPanel);
             this.add(scrollPane, BorderLayout.CENTER);
@@ -58,7 +64,7 @@ public class CenterPanelView extends JPanel implements PanelChangeListener {
         else if (panelName.equals("albums")){
             System.out.println("album");
             this.removee();
-            albumsPanel = new AlbumsPanel();
+            albumsPanel = new AlbumsPanel(controller);
             albumsPanel.setVisible(true);
             scrollPane = new JScrollPane(albumsPanel);
             this.add(scrollPane, BorderLayout.CENTER);
@@ -69,7 +75,7 @@ public class CenterPanelView extends JPanel implements PanelChangeListener {
             System.out.println("playlist");
             this.removee();
             //TODO throws playlist name at controller and takes songslist
-            playlistPanel = new PlaylistPanel();
+            playlistPanel = new PlaylistPanel(controller);
             playlistPanel.setVisible(true);
 //            scrollPane = new JScrollPane(playlistPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
             this.add(playlistPanel, BorderLayout.CENTER);

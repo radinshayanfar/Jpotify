@@ -1,17 +1,16 @@
 package jpotify;
 
-import jpotify.view.MainView;
-import jpotify.view.leftpanel.CreateNewPlaylist;
-import jpotify.view.rightpanel.PlaylistList;
+import jpotify.controller.MainController;
 
 import java.util.ArrayList;
 
 public class Main {
 
     public static void main(String[] args) {
-        MainView mainView = new MainView();
-        mainView.getLeftPanelView().getLibraryBar().setPanelChangeListener(mainView.getCenterPanelView());
-        mainView.getLeftPanelView().getPlaylistBar().setPanelChangeListener(mainView.getCenterPanelView());
+
+        new MainController();
+
+
 
         ArrayList<String> s = new ArrayList<>();
         s.add("dsf");
@@ -49,11 +48,11 @@ public class Main {
 //        thisi.add(new Jsong("My albums"," fd4", "./assets/sampleAlbum.png"));
 //        thisi.add(new Jsong("My albums"," fd6", "./assets/sampleAlbum.png"));
 
-        CreateNewPlaylist p = new CreateNewPlaylist(s);
-        PlaylistList pl = new PlaylistList("play", s);
-        pl.setVisible(true);
+//        CreateNewPlaylist p = new CreateNewPlaylist(s);
+//        PlaylistList pl = new PlaylistList("play", s);
+//        pl.setVisible(true);
 
-        p.setVisible(true);
+//        p.setVisible(true);
 
     }
 

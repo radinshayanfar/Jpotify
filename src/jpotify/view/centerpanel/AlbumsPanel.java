@@ -1,14 +1,18 @@
 package jpotify.view.centerpanel;
 
+import jpotify.controller.MainController;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 
 public class AlbumsPanel extends JPanel {
+    private MainController controller;
     private ArrayList<Jsong> albums = new ArrayList<>();
 
-    public AlbumsPanel() {
+    public AlbumsPanel(MainController mainController) {
 
+        controller = mainController;
         this.setSize(CenterPanelView.WIDTH, CenterPanelView.ELEMENTS);
         this.setMaximumSize(new Dimension(CenterPanelView.WIDTH, CenterPanelView.ELEMENTS));
         this.setBackground(new Color(14,14,14));
@@ -16,13 +20,13 @@ public class AlbumsPanel extends JPanel {
 //        refresh(new Jsong("My albums", new ImagePanel("./assets/sampleAlbum.png", ImagePanel.ICON_MODE)));
 //        this.add(new Jsong("My albums", new ImagePanel("./assets/sampleAlbum.png", new Dimension(ImagePanel.JSONG, ImagePanel.JSONG))));
 
-        add(new Jsong("My albums"," fd"," fd", "./assets/sampleAlbum.png"));
-        add(new Jsong("My albums"," fd"," fd1", "./assets/sampleAlbum.png"));
-        add(new Jsong("My albums"," fd21"," fd", "./assets/sampleAlbum.png"));
-        add(new Jsong("My albums"," fd5"," fd", "./assets/sampleAlbum.png"));
-        add(new Jsong("My albums"," fd5"," fd", "./assets/sampleAlbum.png"));
-        add(new Jsong("My albums"," fd4"," fd", "./assets/sampleAlbum.png"));
-        add(new Jsong("My albums"," fd6"," fd", "./assets/sampleAlbum.png"));
+//        add(new Jsong("My albums"," fd"," fd", "./assets/sampleAlbum.png"));
+//        add(new Jsong("My albums"," fd"," fd1", "./assets/sampleAlbum.png"));
+//        add(new Jsong("My albums"," fd21"," fd", "./assets/sampleAlbum.png"));
+//        add(new Jsong("My albums"," fd5"," fd", "./assets/sampleAlbum.png"));
+//        add(new Jsong("My albums"," fd5"," fd", "./assets/sampleAlbum.png"));
+//        add(new Jsong("My albums"," fd4"," fd", "./assets/sampleAlbum.png"));
+//        add(new Jsong("My albums"," fd6"," fd", "./assets/sampleAlbum.png"));
 
 
         setVisible(false);

@@ -1,5 +1,6 @@
 package jpotify.view.centerpanel;
 
+import jpotify.controller.MainController;
 import jpotify.view.ImagePanel;
 import jpotify.view.Listeners.NewSongIsPlayed;
 
@@ -14,6 +15,7 @@ import java.io.IOException;
 
 public class Jsong extends JPanel implements MouseListener {
 
+    private MainController controller;
     public static final int WIDTH = CenterPanelView.WIDTH - 100 , HEIGHT = 190 ,BORDER= 1;
     public static final Dimension DIMENSION = new Dimension(ImagePanel.JSONG ,ImagePanel.JSONG);
     private ImagePanel artwork;
@@ -24,11 +26,12 @@ public class Jsong extends JPanel implements MouseListener {
     private NewSongIsPlayed songIsPlayed;
     private JButton delete = new JButton();
 
-    public Jsong(String ttl , String rtst, String lbm, String rtwrk) {
-        this(ttl, rtst, lbm, new ImageIcon(rtwrk).getImage());
+    public Jsong(MainController mainController, String ttl , String rtst, String lbm, String rtwrk) {
+        this(mainController, ttl, rtst, lbm, new ImageIcon(rtwrk).getImage());
     }
 
-    public Jsong(String ttl, String rtst, String lbm, Image img){
+    public Jsong(MainController mainController, String ttl, String rtst, String lbm, Image img){
+        controller = mainController;
         this.setLayout(new BorderLayout());
         this.setPreferredSize(new Dimension(WIDTH,HEIGHT));
         this.setMaximumSize(new Dimension(WIDTH, HEIGHT));

@@ -1,5 +1,6 @@
 package jpotify.view.rightpanel;
 
+import jpotify.controller.MainController;
 import jpotify.view.MainView;
 
 import javax.swing.*;
@@ -10,12 +11,14 @@ import java.util.ArrayList;
 
 public class FriendsBarView extends JPanel {
 
+    private MainController controller;
     static final int WIDTH = 200, FRIEND_HEIGHT = 60;
     private ArrayList<Friend> friends = new ArrayList<>();
     private JList friendsList;
     private FriendHandler fh = new FriendHandler();
 
-     public FriendsBarView(){
+     public FriendsBarView(MainController mainController){
+         controller = mainController;
          this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
          this.setPreferredSize(new Dimension(WIDTH, MainView.HEIGHT-500));
          this.setBackground(Color.BLACK);
