@@ -19,7 +19,7 @@ import java.util.List;
 
 public class MainController {
     public static final int PLAYLIST = 2, MYSONG = 0, ALBUMS = 1;
-    public static final int PLAY_BUTTON = 1;
+    //    public static final int PLAY_BUTTON = 1;
     private MainView mainView;
     private Users users;
     private User user;
@@ -52,22 +52,14 @@ public class MainController {
         return jSongs;
     }
 
-    public void mySongIsOn(boolean b) {
+    public void mySongIsOn() {
         user.setCurrentSelectedListInGUI(user.getLibrary());
     }
 
     public void playSelectedSong(int index) {
         user.setCurrentList();
         Song song = user.playSong(index);
-        try {
-            if (player != null)
-                player.stop();
-            player = new CustomPlayer(song.getAddress(), this);
-            player.play();
-
-        } catch (JavaLayerException | IOException | InvalidDataException | UnsupportedTagException e) {
-            e.printStackTrace();
-        }
+        playSongWithCustomPlayer(song);
         GUIChangeForSongPlay(song);
     }
 
@@ -116,13 +108,39 @@ public class MainController {
             player.resume();
     }
 
-    public void sliderChanged(int value) {
-        if (player != null) {
-            try {
-                player.changePositionHundred(value);
-            } catch (JavaLayerException e) {
-                e.printStackTrace();
-            }
+    public boolean songSliderChanged(int value) {
+        if (player == null) return false;
+        try {
+            player.changePositionHundred(value);
+        } catch (JavaLayerException e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    public void songReachedEnd() {
+        Song nextSong = user.next();
+        user.stopSong();
+        user.playSong(nextSong);
+        playSongWithCustomPlayer(nextSong);
+    }
+
+    public void nextPressed() {
+        Song nextSong = user.forceNext();
+        user.stopSong();
+        user.playSong(nextSong);
+        playSongWithCustomPlayer(nextSong);
+    }
+
+    private void playSongWithCustomPlayer(Song song) {
+        try {
+            if (player != null)
+                player.stop();
+            player = new CustomPlayer(song.getAddress(), this);
+//           TODO: player.setVolume();
+            player.play();
+        } catch (JavaLayerException | IOException | InvalidDataException | UnsupportedTagException e) {
+            e.printStackTrace();
         }
     }
 
@@ -135,4 +153,6 @@ public class MainController {
             e.printStackTrace();
         }
     }
+
+
 }

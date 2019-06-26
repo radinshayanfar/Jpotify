@@ -67,8 +67,9 @@ public class ControlPanel extends JPanel implements ActionListener, MouseListene
             }
         }
 
-        if (actionEvent.getSource().equals(next)) {
-            //TODO
+        if (actionEvent.getSource() == next) {
+            System.out.println("next pressed");
+//            controller.nextPressed();
         }
         if (actionEvent.getSource().equals(previous)) {
             //TODO
@@ -164,7 +165,7 @@ public class ControlPanel extends JPanel implements ActionListener, MouseListene
     @Override
     public void mouseReleased(MouseEvent e) {
         JSlider s = (JSlider) e.getSource();
-        controller.sliderChanged(s.getValue());
+        if (!controller.songSliderChanged(s.getValue())) s.setValue(0);
         controller.resumePlayerForSeek();
     }
 

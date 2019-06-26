@@ -53,7 +53,7 @@ public class CenterPanelView extends JPanel {
         if (mode == MainController.MYSONG){
             this.removeAll();
             System.out.println("song");
-            controller.mySongIsOn(true);
+            controller.mySongIsOn();
             try {
                 songsPanel = new SongsPanel(controller, controller.getJSongs());
             } catch (IOException e) {
