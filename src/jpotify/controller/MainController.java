@@ -19,7 +19,7 @@ import java.util.List;
 
 public class MainController {
     public static final int PLAYLIST = 2, MYSONG = 0, ALBUMS = 1;
-    public static final int PLAY_BUTTON=1;
+    public static final int PLAY_BUTTON = 1;
     private MainView mainView;
     private Users users;
     private User user;
@@ -47,7 +47,7 @@ public class MainController {
         List<Song> songs = user.getLibrarySongs();
 //        System.out.println(songs);
         for (int i = 0; i < songs.size(); i++) {
-            jSongs.add(new JSong(this, songs.get(i).getTitle(), songs.get(i).getArtist(), songs.get(i).getAlbum(), songs.get(i).getArtwork(),i ));
+            jSongs.add(new JSong(this, songs.get(i).getTitle(), songs.get(i).getArtist(), songs.get(i).getAlbum(), songs.get(i).getArtwork(), i));
         }
         return jSongs;
     }
@@ -68,38 +68,42 @@ public class MainController {
         } catch (JavaLayerException | IOException | InvalidDataException | UnsupportedTagException e) {
             e.printStackTrace();
         }
-        mainView.changeArtwork(song.getArtwork());
+        GUIChangeForSongPlay(song);
     }
 
-    public void updateJSlider(int state){
+    private void GUIChangeForSongPlay(Song song) {
+        mainView.changeArtwork(song.getArtwork());
+        mainView.getBottomPanelView().getControlPanel().changePlayButton(false);
+    }
+
+    public void updateJSlider(int state) {
         mainView.getBottomPanelView().getControlPanel().getControlBar().setValue(state);
         mainView.getBottomPanelView().getControlPanel().revalidate();
     }
 
-    public void changeCenterPanel(int mode){
-           switch (mode){
-               case ALBUMS:
-                   mainView.getCenterPanelView().displayPanel(mode);
-               case MYSONG:
-                   mainView.getCenterPanelView().displayPanel(mode);
-               case PLAYLIST:
-                   mainView.getCenterPanelView().displayPanel(mode);
-           }
-    }
-
-    public void controlButtonHandler(int mode){
-        switch (mode){
-            case PLAY_BUTTON:
-                mainView.getBottomPanelView().getControlPanel().changeButton(mode);
+    public void changeCenterPanel(int mode) {
+        switch (mode) {
+            case ALBUMS:
+                mainView.getCenterPanelView().displayPanel(mode);
+            case MYSONG:
+                mainView.getCenterPanelView().displayPanel(mode);
+            case PLAYLIST:
+                mainView.getCenterPanelView().displayPanel(mode);
         }
     }
 
-    public void pause(boolean paused) {
-        if (paused){
-            player.pause();
-        }
-        else
-            player.play();
+//    public void controlButtonHandler(int mode) {
+//        switch (mode) {
+//            case PLAY_BUTTON:
+//                mainView.getBottomPanelView().getControlPanel().changeButton(mode);
+//        }
+//    }
+
+    public boolean pause(boolean pause) {
+        if (player == null) return false;
+        if (pause) player.pause();
+        else player.play();
+        return true;
     }
 
     public void pausePlayerForSeek() {
@@ -108,7 +112,7 @@ public class MainController {
     }
 
     public void resumePlayerForSeek() {
-        if (player != null)
+        if (player != null && mainView.getBottomPanelView().getControlPanel().isPlaying())
             player.resume();
     }
 

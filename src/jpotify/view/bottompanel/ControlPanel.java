@@ -6,8 +6,6 @@ import jpotify.view.centerpanel.CenterPanelView;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,9 +19,9 @@ import java.util.ArrayList;
 public class ControlPanel extends JPanel implements ActionListener, MouseListener {
 
     private MainController controller;
-    private static Boolean isPlaying = false;
+    private Boolean playing = false;
     private Boolean notShuffled = true;
-    private static final int REPEAT_ONE_SONG = 2, REPEAT=1, NO_REPEAT=0;
+    private static final int REPEAT_ONE_SONG = 2, REPEAT = 1, NO_REPEAT = 0;
     private int repeatState;
     private ActionListener a = this;
     private static final int ICON = 40;
@@ -32,7 +30,7 @@ public class ControlPanel extends JPanel implements ActionListener, MouseListene
     private JButton previous = new JButton();
     private JButton repeat = new JButton();
     private JButton shuffle = new JButton();
-    private JSlider controlBar = new JSlider(JSlider.HORIZONTAL, 0,100, 0);
+    private JSlider controlBar = new JSlider(JSlider.HORIZONTAL, 0, 100, 0);
     private ButtonPanel btnPanel = new ButtonPanel();
 
     public JSlider getControlBar() {
@@ -42,12 +40,12 @@ public class ControlPanel extends JPanel implements ActionListener, MouseListene
     public ControlPanel(MainController mainController) {
         controller = mainController;
         this.setLayout(new BorderLayout());
-        this.setBackground(new Color(34,34,34));
+        this.setBackground(new Color(34, 34, 34));
         this.setPreferredSize(new Dimension(CenterPanelView.WIDTH, BottomPanelView.HEIGHT));
         this.add(btnPanel, BorderLayout.NORTH);
         repeatState = 0;
-        controlBar.setBackground(new Color(34,34,34));
-        controlBar.setPreferredSize(new Dimension(CenterPanelView.WIDTH - 500 , 20));
+        controlBar.setBackground(new Color(34, 34, 34));
+        controlBar.setPreferredSize(new Dimension(CenterPanelView.WIDTH - 500, 20));
         this.setVisible(true);
         controlBar.addMouseListener(this);
         this.add(controlBar, BorderLayout.SOUTH);
@@ -55,46 +53,32 @@ public class ControlPanel extends JPanel implements ActionListener, MouseListene
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        if(actionEvent.getSource().equals(play)){
-            //TODO
-            if (isPlaying){
-                System.out.println("1");
-                isPlaying = false;
-                try {
-                    ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/icons/play.png")));
-                    play.setIcon(new ImageIcon(icon.getImage().getScaledInstance(ICON + 15 , ICON + 15, Image.SCALE_AREA_AVERAGING)));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        if (actionEvent.getSource() == play) {
+            if (playing){
+                System.out.println("Pausing...");
+                changePlayButton(true);
                 controller.pause(true);
                 return;
             }
-            else {
-                System.out.println("2");
-                try {
-                    ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/icons/pause.png")));
-                    play.setIcon(new ImageIcon(icon.getImage().getScaledInstance(ICON + 15 , ICON + 15, Image.SCALE_AREA_AVERAGING)));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                isPlaying = true;
-                controller.pause(false);
+            else if (controller.pause(false)) {
+                System.out.println("Playing...");
+                changePlayButton(false);
                 return;
             }
         }
 
-        if(actionEvent.getSource().equals(next)){
+        if (actionEvent.getSource().equals(next)) {
             //TODO
         }
-        if (actionEvent.getSource().equals(previous)){
+        if (actionEvent.getSource().equals(previous)) {
             //TODO
         }
-        if(actionEvent.getSource().equals(repeat)){
-            switch (repeatState){
+        if (actionEvent.getSource().equals(repeat)) {
+            switch (repeatState) {
                 case REPEAT:
                     try {
                         ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/icons/like.png")));
-                        repeat.setIcon(new ImageIcon(icon.getImage().getScaledInstance(ICON  , ICON , Image.SCALE_AREA_AVERAGING)));
+                        repeat.setIcon(new ImageIcon(icon.getImage().getScaledInstance(ICON, ICON, Image.SCALE_AREA_AVERAGING)));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -102,7 +86,7 @@ public class ControlPanel extends JPanel implements ActionListener, MouseListene
                 case REPEAT_ONE_SONG:
                     try {
                         ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/icons/play.png")));
-                        repeat.setIcon(new ImageIcon(icon.getImage().getScaledInstance(ICON  , ICON , Image.SCALE_AREA_AVERAGING)));
+                        repeat.setIcon(new ImageIcon(icon.getImage().getScaledInstance(ICON, ICON, Image.SCALE_AREA_AVERAGING)));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -110,35 +94,34 @@ public class ControlPanel extends JPanel implements ActionListener, MouseListene
                 case NO_REPEAT:
                     try {
                         ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/icons/play.png")));
-                        repeat.setIcon(new ImageIcon(icon.getImage().getScaledInstance(ICON , ICON , Image.SCALE_AREA_AVERAGING)));
+                        repeat.setIcon(new ImageIcon(icon.getImage().getScaledInstance(ICON, ICON, Image.SCALE_AREA_AVERAGING)));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                     break;
                 default:
                     repeatState++;
-                    repeatState = repeatState%3;
+                    repeatState = repeatState % 3;
                     System.out.println(repeatState);
                     break;
-         }
+            }
         }
 
-        if(actionEvent.getSource().equals(shuffle)){
+        if (actionEvent.getSource().equals(shuffle)) {
             //TODO
-            if (notShuffled){
+            if (notShuffled) {
                 notShuffled = false;
                 try {
                     ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/icons/random.png")));
-                    shuffle.setIcon(new ImageIcon(icon.getImage().getScaledInstance(ICON + 15 , ICON + 15, Image.SCALE_AREA_AVERAGING)));
+                    shuffle.setIcon(new ImageIcon(icon.getImage().getScaledInstance(ICON + 15, ICON + 15, Image.SCALE_AREA_AVERAGING)));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 return;
-            }
-            else {
+            } else {
                 try {
                     ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/icons/shuffle.png")));
-                    shuffle.setIcon(new ImageIcon(icon.getImage().getScaledInstance(ICON + 15 , ICON + 15, Image.SCALE_AREA_AVERAGING)));
+                    shuffle.setIcon(new ImageIcon(icon.getImage().getScaledInstance(ICON + 15, ICON + 15, Image.SCALE_AREA_AVERAGING)));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -148,16 +131,23 @@ public class ControlPanel extends JPanel implements ActionListener, MouseListene
         }
     }
 
-    public void changeButton(int mode) {
-        switch (mode){
-            case MainController.PLAY_BUTTON:
-                try {
-                    ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/icons/pause.png")));
-                    play.setIcon(new ImageIcon(icon.getImage().getScaledInstance(ICON + 15 , ICON + 15, Image.SCALE_AREA_AVERAGING)));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                isPlaying = true;
+    public void changePlayButton(boolean pause) {
+        if (pause) {
+            try {
+                ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/icons/play.png")));
+                play.setIcon(new ImageIcon(icon.getImage().getScaledInstance(ICON + 15 , ICON + 15, Image.SCALE_AREA_AVERAGING)));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            playing = false;
+        } else {
+            try {
+                ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/icons/pause.png")));
+                play.setIcon(new ImageIcon(icon.getImage().getScaledInstance(ICON + 15, ICON + 15, Image.SCALE_AREA_AVERAGING)));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            playing = true;
         }
     }
 
@@ -188,20 +178,20 @@ public class ControlPanel extends JPanel implements ActionListener, MouseListene
 
     }
 
-    private class ButtonPanel extends JPanel{
+    private class ButtonPanel extends JPanel {
 
         public ButtonPanel() {
             this.setLayout(new FlowLayout(FlowLayout.CENTER));
-            this.setBackground(new Color(34,34,34));
+            this.setBackground(new Color(34, 34, 34));
             try {
                 ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/icons/play.png")));
-                play.setIcon(new ImageIcon(icon.getImage().getScaledInstance(ICON + 15 , ICON + 15, Image.SCALE_AREA_AVERAGING)));
+                play.setIcon(new ImageIcon(icon.getImage().getScaledInstance(ICON + 15, ICON + 15, Image.SCALE_AREA_AVERAGING)));
             } catch (IOException e) {
                 e.printStackTrace();
             }
             try {
                 ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/icons/shuffle.png")));
-                shuffle.setIcon(new ImageIcon(icon.getImage().getScaledInstance(ICON , ICON, Image.SCALE_AREA_AVERAGING)));
+                shuffle.setIcon(new ImageIcon(icon.getImage().getScaledInstance(ICON, ICON, Image.SCALE_AREA_AVERAGING)));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -231,9 +221,9 @@ public class ControlPanel extends JPanel implements ActionListener, MouseListene
             buttons.add(next);
             buttons.add(repeat);
 
-            for (JButton btn : buttons){
-                btn.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-                btn.setBackground(new Color(34,34,34));
+            for (JButton btn : buttons) {
+                btn.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+                btn.setBackground(new Color(34, 34, 34));
                 btn.addActionListener(a);
                 this.add(btn);
             }
@@ -241,5 +231,7 @@ public class ControlPanel extends JPanel implements ActionListener, MouseListene
         }
     }
 
-
+    public Boolean isPlaying() {
+        return playing;
+    }
 }
