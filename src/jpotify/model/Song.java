@@ -7,6 +7,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.Objects;
 
@@ -63,11 +65,10 @@ public class Song implements Serializable, Comparable<Song> {
             if (mp3file.hasId3v2Tag()) {
                 ID3v2 id3v2Tag = mp3file.getId3v2Tag();
                 artwork = id3v2Tag.getAlbumImage();
-                if (artwork == null) {
-//                TODO: use default artwork
-                }
-            } else {
-//                TODO: use default artwork
+
+            }
+            if (artwork == null) {
+                artwork = Files.readAllBytes(Paths.get("./assets/Album.png"));
             }
         } catch (IOException | UnsupportedTagException | InvalidDataException e) {
             e.printStackTrace();
@@ -75,7 +76,11 @@ public class Song implements Serializable, Comparable<Song> {
     }
 
     public void useDefaultArtwork() {
-//        TODO: use default artwork
+        try {
+            artwork = Files.readAllBytes(Paths.get("./assets/Album.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public byte[] getArtwork() {

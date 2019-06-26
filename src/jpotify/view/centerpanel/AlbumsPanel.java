@@ -8,16 +8,19 @@ import java.util.ArrayList;
 
 public class AlbumsPanel extends JPanel {
     private MainController controller;
-    private ArrayList<JSong> albums = new ArrayList<>();
+    private ArrayList<JAlbum> album = new ArrayList<>();
 
-    public AlbumsPanel(MainController mainController, ArrayList<JSong> jSongs) {
+    public AlbumsPanel(MainController mainController, ArrayList<JAlbum> jAlbums) {
 
         controller = mainController;
         this.setSize(CenterPanelView.WIDTH, CenterPanelView.ELEMENTS);
         this.setMaximumSize(new Dimension(CenterPanelView.WIDTH, CenterPanelView.ELEMENTS));
         this.setBackground(new Color(14,14,14));
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        this.albums = jSongs;
+        this.album = jAlbums;
+        for (JAlbum a: album) {
+            this.add(a);
+        }
         setVisible(false);
     }
 }

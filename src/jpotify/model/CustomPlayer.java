@@ -182,6 +182,7 @@ public class CustomPlayer {
         } catch (JavaLayerException | FileNotFoundException ignored) {
         }
         player.skipMilliSeconds(milliSecond);
+        player.setVolume(gainVolume);
         if (wasPlaying)
             this.play();
     }
@@ -198,4 +199,5 @@ public class CustomPlayer {
         this.gainVolume = volume;
         volumeChanged = true;
     }
+
 }

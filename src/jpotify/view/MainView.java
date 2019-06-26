@@ -16,7 +16,7 @@ import java.awt.event.WindowListener;
 
 public class MainView extends JFrame implements WindowListener {
 
-    public static final int WIDTH = 1400, HEIGHT = 750, ICON = 15;
+    public static final int WIDTH = 1200, HEIGHT = 750, ICON = 15;
     private MainController controller;
     private LeftPanelView leftPanelView;
     private BottomPanelView bottomPanelView;
