@@ -11,7 +11,6 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -103,26 +102,26 @@ public class JAlbum extends JPanel implements MouseListener {
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        if(e.getSource().equals(delete))
-            delete.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.red));
-        else {
-            this.setBackground(Color.BLACK);
-            mySetBorder(Color.black);
-            delete.setBackground(Color.BLACK);
-            infoPanel.setBackground(Color.BLACK);
-        }
+//        if(e.getSource().equals(delete))
+//            delete.setBorder(BorderFactory.createMatteBorder(1,1,1,1,Color.red));
+//        else {
+//            this.setBackground(Color.BLACK);
+//            mySetBorder(Color.black);
+//            delete.setBackground(Color.BLACK);
+//            infoPanel.setBackground(Color.BLACK);
+//        }
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        if(e.getSource().equals(delete))
-            delete.setBorder(null);
-        else {
-            this.setBackground(new Color(14, 14, 14));
-            mySetBorder(new Color(14,14,14));
-            delete.setBackground(new Color(14,14,14));
-            infoPanel.setBackground(new Color(14,14,14));
-        }
+//        if(e.getSource().equals(delete))
+//            delete.setBorder(null);
+//        else {
+//            this.setBackground(new Color(14, 14, 14));
+//            mySetBorder(new Color(14,14,14));
+//            delete.setBackground(new Color(14,14,14));
+//            infoPanel.setBackground(new Color(14,14,14));
+//        }
     }
 
     private void mySetBorder(Color c){

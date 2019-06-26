@@ -7,6 +7,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class CenterPanelView extends JPanel {
 
@@ -49,7 +50,7 @@ public class CenterPanelView extends JPanel {
         return albumsPanel;
     }
 
-    public void displayPanel(int mode)  {
+    public void displayPanel(int mode, ArrayList array)  {
         if (mode == MainController.MYSONG){
             this.removeAll();
             System.out.println("song");

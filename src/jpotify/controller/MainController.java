@@ -78,14 +78,14 @@ public class MainController {
         mainView.getBottomPanelView().getControlPanel().revalidate();
     }
 
-    public void changeCenterPanel(int mode){
+    public void changeCenterPanel(int mode, ArrayList information){
            switch (mode){
                case ALBUMS:
-                   mainView.getCenterPanelView().displayPanel(mode);
+                   mainView.getCenterPanelView().displayPanel(mode, information);
                case MYSONG:
-                   mainView.getCenterPanelView().displayPanel(mode);
+                   mainView.getCenterPanelView().displayPanel(mode, information);
                case PLAYLIST:
-                   mainView.getCenterPanelView().displayPanel(mode);
+                   mainView.getCenterPanelView().displayPanel(mode, information);
            }
     }
 
