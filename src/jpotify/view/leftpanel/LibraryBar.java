@@ -34,9 +34,9 @@ public class LibraryBar extends JPanel {
         this.setSize(new Dimension(LeftPanelView.WIDTH, LeftPanelView.ELEMENTS_HEIGHT + 100));
         this.setMinimumSize(new Dimension(LeftPanelView.WIDTH, LeftPanelView.ELEMENTS_HEIGHT + 100));
 
-        Border outerB = BorderFactory.createMatteBorder(0,15,5,0, Color.black);
-        Border whiteLineB = BorderFactory.createMatteBorder(0,0,1,0, Color.lightGray);
-        Border inerB = BorderFactory.createMatteBorder(0,0,5,0, Color.black);
+        Border outerB = BorderFactory.createMatteBorder(0, 15, 5, 0, Color.black);
+        Border whiteLineB = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.lightGray);
+        Border inerB = BorderFactory.createMatteBorder(0, 0, 5, 0, Color.black);
         Border complexB = BorderFactory.createCompoundBorder(whiteLineB, inerB);
 
         //home
@@ -85,35 +85,36 @@ public class LibraryBar extends JPanel {
         albums.addActionListener(buttonListener);
         albums.setBorder(BorderFactory.createMatteBorder(5, 30, 0, 0, Color.BLACK));
 
-        this.setPreferredSize(new Dimension(LeftPanelView.WIDTH,100));
+        this.setPreferredSize(new Dimension(LeftPanelView.WIDTH, 100));
         this.setVisible(true);
     }
 
-    public void setPanelChangeListener(PanelChangeListener pl){
+    public void setPanelChangeListener(PanelChangeListener pl) {
         this.panelChangeListener = pl;
     }
 
-    private class ButtonListener implements ActionListener{
+    private class ButtonListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (e.getSource().equals(addSong)){
+            if (e.getSource().equals(addSong)) {
                 System.out.println("works correctly");
                 FileNameExtensionFilter filter = new FileNameExtensionFilter("Mp3 File", "mp3");
                 fileChooser.setFileFilter(filter);
                 fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
                 fileChooser.setMultiSelectionEnabled(true);
                 int f = fileChooser.showOpenDialog(null);
-                if (f == JFileChooser.CANCEL_OPTION){
+                if (f == JFileChooser.CANCEL_OPTION) {
+                } else if (f == JFileChooser.APPROVE_OPTION) {
+                    File[] files = fileChooser.getSelectedFiles();
+                    controller.addSongToLibrary(files);
                 }
-                else if (f == JFileChooser.APPROVE_OPTION){
-                    File [] file = fileChooser.getSelectedFiles();
-                }
-            }
-            if (e.getSource().equals(songs)){
                 panelChangeListener.DisplayPanel("songs");
             }
-            if (e.getSource().equals(albums)){
+            if (e.getSource().equals(songs)) {
+                panelChangeListener.DisplayPanel("songs");
+            }
+            if (e.getSource().equals(albums)) {
                 panelChangeListener.DisplayPanel("albums");
             }
         }

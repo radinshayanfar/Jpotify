@@ -12,7 +12,7 @@ import java.awt.*;
 
 public class MainView extends JFrame {
 
-    public static final int WIDTH = 1200, HEIGHT = 750, ICON = 15;
+    public static final int WIDTH = 1400, HEIGHT = 750, ICON = 15;
     private MainController controller;
     private LeftPanelView leftPanelView;
     private BottomPanelView bottomPanelView;
@@ -60,5 +60,9 @@ public class MainView extends JFrame {
 
     public TopPanelView getTopPanelView() {
         return topPanelView;
+    }
+
+    public void changeArtwork(byte[] artwork) {
+        leftPanelView.changeArtworkPanel(artwork);
     }
 }

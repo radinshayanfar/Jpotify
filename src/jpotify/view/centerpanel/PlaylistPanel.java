@@ -15,6 +15,6 @@ public class PlaylistPanel extends JPanel {
         this.setPreferredSize(new Dimension(CenterPanelView.ELEMENTS, CenterPanelView.ELEMENTS));
         this.setBackground(Color.cyan);
         this.setVisible(false);
-        songsPanel = new SongsPanel(controller);
+//        songsPanel = new SongsPanel(controller);
     }
 }

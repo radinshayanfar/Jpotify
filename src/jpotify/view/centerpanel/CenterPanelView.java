@@ -7,11 +7,11 @@ import jpotify.view.Listeners.PanelChangeListener;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.io.IOException;
 
 public class CenterPanelView extends JPanel implements PanelChangeListener {
     private MainController controller;
-    public static final int WIDTH = 800, ELEMENTS =210;
-//    private TopPanelView topPanelView = new TopPanelView();
+    public static final int WIDTH = 800, ELEMENTS = 210;
     private SongsPanel songsPanel;
     private AlbumsPanel albumsPanel;
     private PlaylistPanel playlistPanel;
@@ -28,10 +28,10 @@ public class CenterPanelView extends JPanel implements PanelChangeListener {
         this.setBorder(BorderFactory.createCompoundBorder(border1, border2));
 
         setVisible(true);
-
-        songsPanel = new SongsPanel(controller);
-        albumsPanel = new AlbumsPanel(controller);
-        playlistPanel = new PlaylistPanel(controller);
+//
+//        songsPanel = new SongsPanel(controller);
+//        albumsPanel = new AlbumsPanel(controller);
+//        playlistPanel = new PlaylistPanel(controller);
     }
 
     public void setSongsPanel(SongsPanel s){
@@ -50,21 +50,25 @@ public class CenterPanelView extends JPanel implements PanelChangeListener {
     }
 
     @Override
-    public void DisplayPanel(String panelName) {
+    public void DisplayPanel(String panelName)  {
         if (panelName.equals("songs")){
+            this.removeAll();
             System.out.println("song");
-            this.removee();
-            songsPanel = new SongsPanel(controller);
+            controller.mySongIsOn(true);
+            try {
+                songsPanel = new SongsPanel(controller, controller.getJSongs());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             songsPanel.setVisible(true);
             scrollPane = new JScrollPane(songsPanel);
             this.add(scrollPane, BorderLayout.CENTER);
-//            this.setBackground(Color.YELLOW);
             this.revalidate();
         }
         else if (panelName.equals("albums")){
             System.out.println("album");
-            this.removee();
-            albumsPanel = new AlbumsPanel(controller);
+            this.removeAll();
+//            albumsPanel = new AlbumsPanel(controller);
             albumsPanel.setVisible(true);
             scrollPane = new JScrollPane(albumsPanel);
             this.add(scrollPane, BorderLayout.CENTER);
@@ -73,7 +77,8 @@ public class CenterPanelView extends JPanel implements PanelChangeListener {
         }
         else{
             System.out.println("playlist");
-            this.removee();
+//            this.removeAllPanels();
+            this.removeAll();
             //TODO throws playlist name at controller and takes songslist
             playlistPanel = new PlaylistPanel(controller);
             playlistPanel.setVisible(true);
@@ -84,8 +89,8 @@ public class CenterPanelView extends JPanel implements PanelChangeListener {
         }
     }
 
-    private void removee(){
-        this.invalidate();
+    private void removeAllPanels(){
+//        this.invalidate();
         this.remove(albumsPanel);
         this.remove(playlistPanel);
         this.remove(songsPanel);

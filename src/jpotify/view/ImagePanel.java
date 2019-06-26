@@ -7,7 +7,7 @@ public class ImagePanel extends JPanel {
 
     private Image img;
     private Dimension size;
-    public static final int ARTWORK_MODE = 150, ICON_MODE = 80, JSONG = 150;
+    public static final int ARTWORK_MODE = 200, ICON_MODE = 80, JSONG = 150;
 
     public ImagePanel(String img, Dimension dimension) {
         this(new ImageIcon(img).getImage(), dimension);

@@ -1,13 +1,15 @@
 package jpotify.model;
 
 import helper.FileHelper;
-import helper.StringHelper;
 import jpotify.model.Network.Server;
 
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 
 public class User implements Serializable {
 
@@ -161,9 +163,13 @@ public class User implements Serializable {
 //        TODO: implement method
     }
 
-    public List<Song> getLibrary() {
+    public List<Song> getLibrarySongs() {
         Collections.sort(library.songs);
         return library.songs;
+    }
+
+    public SongList getLibrary() {
+        return library;
     }
 
     public List<Album> getAlbums() {

@@ -61,7 +61,7 @@ public class NextPreviousTest {
 
         System.out.println("-----------");
         for (Song s :
-                user.getLibrary()) {
+                user.getLibrarySongs()) {
             System.out.println(s.getTitle());
         }
 

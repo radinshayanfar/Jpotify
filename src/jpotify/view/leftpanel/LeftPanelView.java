@@ -4,14 +4,16 @@ import jpotify.controller.MainController;
 import jpotify.view.ImagePanel;
 import jpotify.view.MainView;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 
 public class LeftPanelView extends JPanel {
 
     public static final int WIDTH = 200, ELEMENTS_HEIGHT = 200;
     private MainController controller;
-
     private LibraryBar libraryBar;
     private PlaylistBar playlistBar;
     private ImagePanel artworkPanel;
@@ -47,11 +49,17 @@ public class LeftPanelView extends JPanel {
         return artworkPanel;
     }
 
-    public void changeArtworkPanel(String address){
-        this.invalidate();
+    public void changeArtworkPanel(byte [] image){
+        Image img = null;
+        try {
+            img = ImageIO.read(new ByteArrayInputStream(image));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+//        this.invalidate();
         this.remove(artworkPanel);
-        this.add(new ImagePanel(address, new Dimension(ImagePanel.ARTWORK_MODE, ImagePanel.ARTWORK_MODE)), BorderLayout.SOUTH);
-//        artworkPanel.setBorder(BorderFactory.createEmptyBorder(0,10,0,0));
+        artworkPanel = new ImagePanel(img, new Dimension(ImagePanel.ARTWORK_MODE, ImagePanel.ARTWORK_MODE));
+        this.add(artworkPanel, BorderLayout.SOUTH);
         this.revalidate();
     }
 }

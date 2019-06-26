@@ -3,6 +3,7 @@ package jpotify.view.centerpanel;
 import jpotify.controller.MainController;
 import jpotify.view.ImagePanel;
 import jpotify.view.Listeners.NewSongIsPlayed;
+import jpotify.view.Listeners.PanelChangeListener;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -10,13 +11,14 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 
-public class Jsong extends JPanel implements MouseListener {
+public class JSong extends JPanel implements MouseListener {
 
     private MainController controller;
-    public static final int WIDTH = CenterPanelView.WIDTH - 100 , HEIGHT = 190 ,BORDER= 1;
+    public static final int WIDTH = CenterPanelView.WIDTH , HEIGHT = 190 ,BORDER= 1;
     public static final Dimension DIMENSION = new Dimension(ImagePanel.JSONG ,ImagePanel.JSONG);
     private ImagePanel artwork;
     private JPanel infoPanel = new JPanel();
@@ -25,18 +27,18 @@ public class Jsong extends JPanel implements MouseListener {
     private JLabel album = new JLabel();
     private NewSongIsPlayed songIsPlayed;
     private JButton delete = new JButton();
+    private int index;
+    private PanelChangeListener panelChangeListener;
 
-    public Jsong(MainController mainController, String ttl , String rtst, String lbm, String rtwrk) {
-        this(mainController, ttl, rtst, lbm, new ImageIcon(rtwrk).getImage());
-    }
-
-    public Jsong(MainController mainController, String ttl, String rtst, String lbm, Image img){
+    public JSong(MainController mainController, String ttl, String rtst, String lbm, byte [] img, int index) throws IOException {
         controller = mainController;
+        this.index = index;
         this.setLayout(new BorderLayout());
-        this.setPreferredSize(new Dimension(WIDTH,HEIGHT));
-        this.setMaximumSize(new Dimension(WIDTH, HEIGHT));
+        this.setPreferredSize(new Dimension(WIDTH-100,HEIGHT));
+        this.setMaximumSize(new Dimension(WIDTH-100, HEIGHT));
         this.setBackground(new Color(14,14,14));
-        artwork = new ImagePanel(img, DIMENSION);
+        Image image = ImageIO.read(new ByteArrayInputStream(img));
+        artwork = new ImagePanel(image, DIMENSION);
         artwork.setBorder(BorderFactory.createMatteBorder(BORDER,BORDER,BORDER,BORDER,Color.white));
         this.add(artwork, BorderLayout.WEST);
         this.add(infoPanel, BorderLayout.CENTER);
@@ -74,15 +76,16 @@ public class Jsong extends JPanel implements MouseListener {
         this.setVisible(true);
     }
 
-    public void setSongIsPlayed(NewSongIsPlayed sg){
-        songIsPlayed = sg;
+    public void setPanelChangeListener(PanelChangeListener pl) {
+        this.panelChangeListener = pl;
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
         if (e.getSource().equals(this)){
             System.out.println("play");
-            //TODO play new song
+            panelChangeListener.DisplayPanel("songs");
+            controller.playSelectedSong(index);
         }
         if (e.getSource().equals(delete)){
             System.out.println("delete");
