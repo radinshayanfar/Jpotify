@@ -153,7 +153,7 @@ public class CustomPlayer {
             }
 
         }
-//        TODO: invoke song finished method
+        controller.songReachedEnd();
         close();
     }
 
