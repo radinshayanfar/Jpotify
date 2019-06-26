@@ -11,12 +11,14 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
 
-public class ControlPanel extends JPanel implements ActionListener, ChangeListener {
+public class ControlPanel extends JPanel implements ActionListener, MouseListener {
 
     private MainController controller;
     private static Boolean isPlaying = false;
@@ -32,7 +34,6 @@ public class ControlPanel extends JPanel implements ActionListener, ChangeListen
     private JButton shuffle = new JButton();
     private JSlider controlBar = new JSlider(JSlider.HORIZONTAL, 0,100, 0);
     private ButtonPanel btnPanel = new ButtonPanel();
-    private boolean sliderChangedFromCode = false;
 
     public JSlider getControlBar() {
         return controlBar;
@@ -48,7 +49,7 @@ public class ControlPanel extends JPanel implements ActionListener, ChangeListen
         controlBar.setBackground(new Color(34,34,34));
         controlBar.setPreferredSize(new Dimension(CenterPanelView.WIDTH - 500 , 20));
         this.setVisible(true);
-        controlBar.addChangeListener(this);
+        controlBar.addMouseListener(this);
         this.add(controlBar, BorderLayout.SOUTH);
     }
 
@@ -161,18 +162,30 @@ public class ControlPanel extends JPanel implements ActionListener, ChangeListen
     }
 
     @Override
-    public void stateChanged(ChangeEvent e) {
-        if (!sliderChangedFromCode) {
-            JSlider s = (JSlider) e.getSource();
-            controller.sliderChanged(s.getValue());
-        }
-        else {
-            sliderChangedFromCode = false;
-        }
+    public void mouseClicked(MouseEvent e) {
+
     }
 
-    public void sliderChangedFromCode() {
-        this.sliderChangedFromCode = true;
+    @Override
+    public void mousePressed(MouseEvent e) {
+        controller.pausePlayerForSeek();
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        JSlider s = (JSlider) e.getSource();
+        controller.sliderChanged(s.getValue());
+        controller.resumePlayerForSeek();
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
     }
 
     private class ButtonPanel extends JPanel{

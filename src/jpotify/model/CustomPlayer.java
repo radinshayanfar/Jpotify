@@ -40,6 +40,7 @@ public class CustomPlayer {
 
     // keeping position to invoke label updater
     private long lastInvokedTimePosition;
+    private int lastSeekPosition = 0;
 
     // play volume
     private float gainVolume = 0.0f;
@@ -143,9 +144,9 @@ public class CustomPlayer {
                 player.setVolume(gainVolume);
                 volumeChanged = false;
             }
-            int position = player.getPosition();
+            int position = lastSeekPosition + player.getPosition();
             if (position - lastInvokedTimePosition >= 1000) {
-                System.out.println(position);
+//                System.out.println(position);
                 controller.updateJSlider((int) ((double)position / duration * 100));
                 lastInvokedTimePosition = position;
 //                System.err.println(lastInvokedTimePosition);
@@ -188,7 +189,9 @@ public class CustomPlayer {
     public void changePositionHundred(int value) throws JavaLayerException {
         int milliSecond = (int) ((double) value / 100 * duration);
         changePosition(milliSecond);
-//        lastInvokedTimePosition = milliSecond;
+//        positionPlayed = lastSeekPosition + player.getPosition();
+        lastInvokedTimePosition = 0;
+        lastSeekPosition = milliSecond;
     }
 
     public void setVolume(float volume) {

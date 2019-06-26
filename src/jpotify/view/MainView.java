@@ -10,8 +10,10 @@ import jpotify.view.toppanel.TopPanelView;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
-public class MainView extends JFrame {
+public class MainView extends JFrame implements WindowListener {
 
     public static final int WIDTH = 1400, HEIGHT = 750, ICON = 15;
     private MainController controller;
@@ -24,6 +26,7 @@ public class MainView extends JFrame {
     public MainView(MainController mainController) throws HeadlessException {
         controller = mainController;
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.addWindowListener(this);
         this.setLayout(new BorderLayout());
         this.setSize(WIDTH, HEIGHT);
         this.setLocation((int) (Toolkit.getDefaultToolkit().getScreenSize().width / 2 - this.getSize().getWidth() / 2)
@@ -73,5 +76,40 @@ public class MainView extends JFrame {
 
     public void changeArtwork(byte[] artwork) {
         leftPanelView.changeArtworkPanel(artwork);
+    }
+
+    @Override
+    public void windowOpened(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+        controller.saveState();
+    }
+
+    @Override
+    public void windowClosed(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowIconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowActivated(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {
+
     }
 }
