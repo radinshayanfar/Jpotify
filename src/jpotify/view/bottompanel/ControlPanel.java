@@ -6,6 +6,8 @@ import jpotify.view.centerpanel.CenterPanelView;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,10 +16,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 
-public class ControlPanel extends JPanel implements ActionListener {
+public class ControlPanel extends JPanel implements ActionListener, ChangeListener {
 
     private MainController controller;
-    private Boolean isPlaying = true;
+    private static Boolean isPlaying = false;
     private Boolean notShuffled = true;
     private static final int REPEAT_ONE_SONG = 2, REPEAT=1, NO_REPEAT=0;
     private int repeatState;
@@ -28,20 +30,26 @@ public class ControlPanel extends JPanel implements ActionListener {
     private JButton previous = new JButton();
     private JButton repeat = new JButton();
     private JButton shuffle = new JButton();
-    private JSlider controlBar = new JSlider(JSlider.HORIZONTAL, 100, 0);
+    private JSlider controlBar = new JSlider(JSlider.HORIZONTAL, 0,100, 0);
     private ButtonPanel btnPanel = new ButtonPanel();
+    private boolean sliderChangedFromCode = false;
+
+    public JSlider getControlBar() {
+        return controlBar;
+    }
 
     public ControlPanel(MainController mainController) {
         controller = mainController;
         this.setLayout(new BorderLayout());
         this.setBackground(new Color(34,34,34));
         this.setPreferredSize(new Dimension(CenterPanelView.WIDTH, BottomPanelView.HEIGHT));
-        this.add(controlBar, BorderLayout.SOUTH);
         this.add(btnPanel, BorderLayout.NORTH);
         repeatState = 0;
         controlBar.setBackground(new Color(34,34,34));
-        controlBar.setPreferredSize(new Dimension(CenterPanelView.WIDTH - 100 , 20));
+        controlBar.setPreferredSize(new Dimension(CenterPanelView.WIDTH - 500 , 20));
         this.setVisible(true);
+        controlBar.addChangeListener(this);
+        this.add(controlBar, BorderLayout.SOUTH);
     }
 
     @Override
@@ -49,23 +57,27 @@ public class ControlPanel extends JPanel implements ActionListener {
         if(actionEvent.getSource().equals(play)){
             //TODO
             if (isPlaying){
+                System.out.println("1");
                 isPlaying = false;
-                try {
-                    ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/icons/pause.png")));
-                    play.setIcon(new ImageIcon(icon.getImage().getScaledInstance(ICON + 15 , ICON + 15, Image.SCALE_AREA_AVERAGING)));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return;
-            }
-            else {
                 try {
                     ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/icons/play.png")));
                     play.setIcon(new ImageIcon(icon.getImage().getScaledInstance(ICON + 15 , ICON + 15, Image.SCALE_AREA_AVERAGING)));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                controller.pause(true);
+                return;
+            }
+            else {
+                System.out.println("2");
+                try {
+                    ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/icons/pause.png")));
+                    play.setIcon(new ImageIcon(icon.getImage().getScaledInstance(ICON + 15 , ICON + 15, Image.SCALE_AREA_AVERAGING)));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 isPlaying = true;
+                controller.pause(false);
                 return;
             }
         }
@@ -135,6 +147,34 @@ public class ControlPanel extends JPanel implements ActionListener {
         }
     }
 
+    public void changeButton(int mode) {
+        switch (mode){
+            case MainController.PLAY_BUTTON:
+                try {
+                    ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/icons/pause.png")));
+                    play.setIcon(new ImageIcon(icon.getImage().getScaledInstance(ICON + 15 , ICON + 15, Image.SCALE_AREA_AVERAGING)));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                isPlaying = true;
+        }
+    }
+
+    @Override
+    public void stateChanged(ChangeEvent e) {
+        if (!sliderChangedFromCode) {
+            JSlider s = (JSlider) e.getSource();
+            controller.sliderChanged(s.getValue());
+        }
+        else {
+            sliderChangedFromCode = false;
+        }
+    }
+
+    public void sliderChangedFromCode() {
+        this.sliderChangedFromCode = true;
+    }
+
     private class ButtonPanel extends JPanel{
 
         public ButtonPanel() {
@@ -187,4 +227,6 @@ public class ControlPanel extends JPanel implements ActionListener {
             shuffle.addActionListener(a);
         }
     }
+
+
 }

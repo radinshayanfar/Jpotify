@@ -17,6 +17,7 @@ import java.util.List;
 
 public class MainController {
     public static final int PLAYLIST = 2, MYSONG = 0, ALBUMS = 1;
+    public static final int PLAY_BUTTON=1;
     private MainView mainView;
     private User user;
     private CustomPlayer player;
@@ -57,12 +58,20 @@ public class MainController {
         try {
             if (player != null)
                 player.stop();
-            player = new CustomPlayer(song.getAddress());
+            player = new CustomPlayer(song.getAddress(), this);
             player.play();
+
         } catch (JavaLayerException | IOException | InvalidDataException | UnsupportedTagException e) {
             e.printStackTrace();
         }
         mainView.changeArtwork(song.getArtwork());
+    }
+
+    public void updateJSlider(int state){
+        System.out.println(state);
+        mainView.getBottomPanelView().getControlPanel().sliderChangedFromCode();
+        mainView.getBottomPanelView().getControlPanel().getControlBar().setValue(state);
+        mainView.getBottomPanelView().getControlPanel().revalidate();
     }
 
     public void changeCenterPanel(int mode){
@@ -74,5 +83,30 @@ public class MainController {
                case PLAYLIST:
                    mainView.getCenterPanelView().displayPanel(mode);
            }
+    }
+
+    public void controlButtonHandler(int mode){
+        switch (mode){
+            case PLAY_BUTTON:
+                mainView.getBottomPanelView().getControlPanel().changeButton(mode);
+        }
+    }
+
+    public void pause(boolean paused) {
+        if (paused){
+            player.pause();
+        }
+        else
+            player.play();
+    }
+
+    public void sliderChanged(int value) {
+        if (player != null) {
+            try {
+                player.changePositionHundred(value);
+            } catch (JavaLayerException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

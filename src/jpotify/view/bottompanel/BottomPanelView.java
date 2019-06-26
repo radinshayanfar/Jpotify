@@ -16,7 +16,6 @@ public class BottomPanelView extends JPanel {
     public BottomPanelView(MainController mainController) {
         controller = mainController;
         this.setLayout(new BorderLayout());
-
         this.setBackground(new Color(34, 34, 34));
         this.setPreferredSize(new Dimension(MainView.WIDTH, HEIGHT));
         songInfoLabel = new SongInfoLabel(controller);
@@ -30,5 +29,17 @@ public class BottomPanelView extends JPanel {
 
     public SongInfoLabel getSongInfoLabel() {
         return songInfoLabel;
+    }
+
+    public MainController getController() {
+        return controller;
+    }
+
+    public VolumeControlPanelView getVolumeControlPanelView() {
+        return volumeControlPanelView;
+    }
+
+    public ControlPanel getControlPanel() {
+        return controlPanel;
     }
 }

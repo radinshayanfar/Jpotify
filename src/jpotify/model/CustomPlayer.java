@@ -6,6 +6,7 @@ import com.mpatric.mp3agic.UnsupportedTagException;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.AudioDevice;
 import javazoom.jl.player.Player;
+import jpotify.controller.MainController;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -44,13 +45,16 @@ public class CustomPlayer {
     private float gainVolume = 0.0f;
     private boolean volumeChanged = false;
 
-    public CustomPlayer(final File file) throws JavaLayerException, IOException, InvalidDataException, UnsupportedTagException {
-        this(file, null);
+    private MainController controller;
+
+    public CustomPlayer(final File file, MainController controller) throws JavaLayerException, IOException, InvalidDataException, UnsupportedTagException {
+        this(file, controller, null);
     }
 
-    public CustomPlayer(final File file, final AudioDevice audioDevice) throws JavaLayerException, IOException, InvalidDataException, UnsupportedTagException {
+    public CustomPlayer(final File file, MainController controller, final AudioDevice audioDevice) throws JavaLayerException, IOException, InvalidDataException, UnsupportedTagException {
         this.file = file;
         Mp3File mp3File = new Mp3File(file);
+        this.controller = controller;
         this.duration = mp3File.getLengthInMilliseconds();
         this.frameCount = mp3File.getFrameCount();
         this.player = new Player(new FileInputStream(file), audioDevice);
@@ -141,7 +145,8 @@ public class CustomPlayer {
             }
             int position = player.getPosition();
             if (position - lastInvokedTimePosition >= 1000) {
-//                TODO: invoke label updater
+                System.out.println(position);
+                controller.updateJSlider((int) ((double)position / duration * 100));
                 lastInvokedTimePosition = position;
 //                System.err.println(lastInvokedTimePosition);
             }
@@ -165,7 +170,7 @@ public class CustomPlayer {
         }
     }
 
-    public void changePosition(int second) throws JavaLayerException {
+    private void changePosition(int milliSecond) throws JavaLayerException {
         boolean wasPlaying = false;
         if (this.playerStatus == PLAYING) {
             wasPlaying = true;
@@ -175,9 +180,15 @@ public class CustomPlayer {
             this.player = new Player(new FileInputStream(this.file));
         } catch (JavaLayerException | FileNotFoundException ignored) {
         }
-        player.skipMilliSeconds(second * 1000);
+        player.skipMilliSeconds(milliSecond);
         if (wasPlaying)
             this.play();
+    }
+
+    public void changePositionHundred(int value) throws JavaLayerException {
+        int milliSecond = (int) ((double) value / 100 * duration);
+        changePosition(milliSecond);
+//        lastInvokedTimePosition = milliSecond;
     }
 
     public void setVolume(float volume) {
