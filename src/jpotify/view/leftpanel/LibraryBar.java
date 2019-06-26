@@ -1,7 +1,6 @@
 package jpotify.view.leftpanel;
 
 import jpotify.controller.MainController;
-import jpotify.view.Listeners.PanelChangeListener;
 import jpotify.view.MainView;
 
 import javax.imageio.ImageIO;
@@ -18,7 +17,6 @@ public class LibraryBar extends JPanel {
 
     private MainController controller;
     private static final int ELEMENTS_SIZE = 15;
-    private PanelChangeListener panelChangeListener;
     private JButton addSong = new JButton();
     private JButton songs = new JButton();
     private JButton albums = new JButton();
@@ -89,10 +87,6 @@ public class LibraryBar extends JPanel {
         this.setVisible(true);
     }
 
-    public void setPanelChangeListener(PanelChangeListener pl) {
-        this.panelChangeListener = pl;
-    }
-
     private class ButtonListener implements ActionListener {
 
         @Override
@@ -109,13 +103,13 @@ public class LibraryBar extends JPanel {
                     File[] files = fileChooser.getSelectedFiles();
                     controller.addSongToLibrary(files);
                 }
-                panelChangeListener.DisplayPanel("songs");
+                controller.changeCenterPanel(MainController.MYSONG);
             }
             if (e.getSource().equals(songs)) {
-                panelChangeListener.DisplayPanel("songs");
+                controller.changeCenterPanel(MainController.MYSONG);
             }
             if (e.getSource().equals(albums)) {
-                panelChangeListener.DisplayPanel("albums");
+                controller.changeCenterPanel(MainController.ALBUMS);
             }
         }
     }

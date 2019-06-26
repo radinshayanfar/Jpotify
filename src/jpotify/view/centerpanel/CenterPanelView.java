@@ -1,15 +1,15 @@
 package jpotify.view.centerpanel;
 
 import jpotify.controller.MainController;
-import jpotify.view.*;
-import jpotify.view.Listeners.PanelChangeListener;
+import jpotify.view.MainView;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.io.IOException;
 
-public class CenterPanelView extends JPanel implements PanelChangeListener {
+public class CenterPanelView extends JPanel {
+
     private MainController controller;
     public static final int WIDTH = 800, ELEMENTS = 210;
     private SongsPanel songsPanel;
@@ -49,9 +49,8 @@ public class CenterPanelView extends JPanel implements PanelChangeListener {
         return albumsPanel;
     }
 
-    @Override
-    public void DisplayPanel(String panelName)  {
-        if (panelName.equals("songs")){
+    public void displayPanel(int mode)  {
+        if (mode == MainController.MYSONG){
             this.removeAll();
             System.out.println("song");
             controller.mySongIsOn(true);
@@ -65,7 +64,7 @@ public class CenterPanelView extends JPanel implements PanelChangeListener {
             this.add(scrollPane, BorderLayout.CENTER);
             this.revalidate();
         }
-        else if (panelName.equals("albums")){
+        else if (mode == MainController.ALBUMS){
             System.out.println("album");
             this.removeAll();
 //            albumsPanel = new AlbumsPanel(controller);

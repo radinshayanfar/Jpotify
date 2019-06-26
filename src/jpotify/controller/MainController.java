@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainController {
+    public static final int PLAYLIST = 2, MYSONG = 0, ALBUMS = 1;
     private MainView mainView;
     private User user;
     private CustomPlayer player;
@@ -64,4 +65,14 @@ public class MainController {
         mainView.changeArtwork(song.getArtwork());
     }
 
+    public void changeCenterPanel(int mode){
+           switch (mode){
+               case ALBUMS:
+                   mainView.getCenterPanelView().displayPanel(mode);
+               case MYSONG:
+                   mainView.getCenterPanelView().displayPanel(mode);
+               case PLAYLIST:
+                   mainView.getCenterPanelView().displayPanel(mode);
+           }
+    }
 }

@@ -37,8 +37,6 @@ public class MainView extends JFrame {
         this.add(bottomPanelView, BorderLayout.SOUTH);
         centerPanelView = new CenterPanelView(mainController);
         this.add(centerPanelView, BorderLayout.CENTER);
-        this.getLeftPanelView().getLibraryBar().setPanelChangeListener(this.getCenterPanelView());
-        this.getLeftPanelView().getPlaylistBar().setPanelChangeListener(this.getCenterPanelView());
         this.setVisible(true);
     }
 

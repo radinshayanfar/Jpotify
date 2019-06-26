@@ -3,7 +3,6 @@ package jpotify.view.centerpanel;
 import jpotify.controller.MainController;
 import jpotify.view.ImagePanel;
 import jpotify.view.Listeners.NewSongIsPlayed;
-import jpotify.view.Listeners.PanelChangeListener;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -28,7 +27,6 @@ public class JSong extends JPanel implements MouseListener {
     private NewSongIsPlayed songIsPlayed;
     private JButton delete = new JButton();
     private int index;
-    private PanelChangeListener panelChangeListener;
 
     public JSong(MainController mainController, String ttl, String rtst, String lbm, byte [] img, int index) throws IOException {
         controller = mainController;
@@ -76,16 +74,13 @@ public class JSong extends JPanel implements MouseListener {
         this.setVisible(true);
     }
 
-    public void setPanelChangeListener(PanelChangeListener pl) {
-        this.panelChangeListener = pl;
-    }
 
     @Override
     public void mouseClicked(MouseEvent e) {
         if (e.getSource().equals(this)){
             System.out.println("play");
-            panelChangeListener.DisplayPanel("songs");
             controller.playSelectedSong(index);
+            controller.changeCenterPanel(MainController.MYSONG);
         }
         if (e.getSource().equals(delete)){
             System.out.println("delete");

@@ -1,7 +1,6 @@
 package jpotify.view.leftpanel;
 
 import jpotify.controller.MainController;
-import jpotify.view.Listeners.PanelChangeListener;
 import jpotify.view.MainView;
 
 import javax.imageio.ImageIO;
@@ -23,8 +22,6 @@ public class PlaylistBar extends JPanel {
     private Vector<Object> items = new Vector<>();
     private JButton addPlaylist = new JButton();
     private PlayListHandler playListHandler;
-    private PanelChangeListener panelChangeListener;
-//    private NewPlaylistHandler nplh = new NewPlaylistHandler();
 
     public PlaylistBar(MainController mainController){
         controller = mainController;
@@ -83,14 +80,11 @@ public class PlaylistBar extends JPanel {
             refreshList(o);
     }
 
-    public void setPanelChangeListener(PanelChangeListener panelChangeListener) {
-        this.panelChangeListener = panelChangeListener;
-    }
 
     private class PlayListHandler implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            panelChangeListener.DisplayPanel((String)playLists.getSelectedItem());
+            controller.changeCenterPanel(MainController.PLAYLIST);
         }
     }
 
