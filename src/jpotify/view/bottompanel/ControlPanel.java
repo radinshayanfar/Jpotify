@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class ControlPanel extends JPanel implements ActionListener {
 
     private Boolean isPlaying = true;
-    private Boolean isShuffled = false;
+    private Boolean notShuffled = true;
     private static final int REPEAT_ONE_SONG = 2, REPEAT=1, NO_REPEAT=0;
     private int repeatState;
     private ActionListener a = this;
@@ -107,25 +107,26 @@ public class ControlPanel extends JPanel implements ActionListener {
          }
         }
 
-        if (actionEvent.getSource().equals(shuffle)){
-            if (!isShuffled){
+        if(actionEvent.getSource().equals(shuffle)){
+            //TODO
+            if (notShuffled){
+                notShuffled = false;
                 try {
-                    ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/icons/like.png")));
-                    shuffle.setIcon(new ImageIcon(icon.getImage().getScaledInstance(ICON  , ICON , Image.SCALE_AREA_AVERAGING)));
+                    ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/icons/random.png")));
+                    shuffle.setIcon(new ImageIcon(icon.getImage().getScaledInstance(ICON + 15 , ICON + 15, Image.SCALE_AREA_AVERAGING)));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                isShuffled = true;
                 return;
             }
-            else if (isShuffled){
+            else {
                 try {
                     ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/icons/shuffle.png")));
-                    shuffle.setIcon(new ImageIcon(icon.getImage().getScaledInstance(ICON  , ICON , Image.SCALE_AREA_AVERAGING)));
+                    shuffle.setIcon(new ImageIcon(icon.getImage().getScaledInstance(ICON + 15 , ICON + 15, Image.SCALE_AREA_AVERAGING)));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                isShuffled = false;
+                notShuffled = true;
                 return;
             }
         }
