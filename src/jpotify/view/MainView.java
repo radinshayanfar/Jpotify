@@ -3,6 +3,7 @@ package jpotify.view;
 import jpotify.controller.MainController;
 import jpotify.view.bottompanel.BottomPanelView;
 import jpotify.view.centerpanel.CenterPanelView;
+import jpotify.view.centerpanel.JPlaylistSong;
 import jpotify.view.centerpanel.PlaylistPanel;
 import jpotify.view.leftpanel.LeftPanelView;
 import jpotify.view.rightpanel.RightPanelView;
@@ -43,6 +44,7 @@ public class MainView extends JFrame implements WindowListener {
         this.add(centerPanelView, BorderLayout.CENTER);
 
         JFrame pframe = new JFrame();
+        pframe.setVisible(true);
         pframe.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         pframe.setLayout(new BorderLayout());
         pframe.setSize(WIDTH, HEIGHT);
@@ -50,6 +52,9 @@ public class MainView extends JFrame implements WindowListener {
                 , (int) (Toolkit.getDefaultToolkit().getScreenSize().height / 2 - this.getSize().getHeight() / 2));
         PlaylistPanel pdf = new PlaylistPanel(controller);
         pframe.add(pdf, BorderLayout.CENTER);
+        pdf.setLayout(new BoxLayout(pdf, BoxLayout.Y_AXIS));
+        pdf.setVisible(true);
+        pdf.add(new JPlaylistSong(controller, 0, 1, "dsf","Sdf","dfss"));
 
         this.setVisible(true);
     }
