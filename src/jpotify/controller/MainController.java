@@ -53,55 +53,50 @@ public class MainController {
         return jSongs;
     }
 
-    public void mySongIsOn(boolean b) {
+    public void mySongIsOn() {
         user.setCurrentSelectedListInGUI(user.getLibrary());
     }
 
     public void playSelectedSong(int index) {
         user.setCurrentList();
         Song song = user.playSong(index);
-        try {
-            if (player != null)
-                player.stop();
-            player = new CustomPlayer(song.getAddress(), this);
-            player.play();
-            player.setVolume(volume);
-
-        } catch (JavaLayerException | IOException | InvalidDataException | UnsupportedTagException e) {
-            e.printStackTrace();
-        }
-        mainView.changeArtwork(song.getArtwork());
+        playSongWithCustomPlayer(song);
+        GUIChangeForSongPlay(song);
     }
 
-    public void updateJSlider(int state){
+    private void GUIChangeForSongPlay(Song song) {
+        mainView.changeArtwork(song.getArtwork());
+        mainView.getBottomPanelView().getControlPanel().changePlayButton(false);
+    }
+
+    public void updateJSlider(int state) {
         mainView.getBottomPanelView().getControlPanel().getControlBar().setValue(state);
         mainView.getBottomPanelView().getControlPanel().revalidate();
     }
 
-    public void changeCenterPanel(int mode, ArrayList information){
-           switch (mode){
-               case ALBUMS:
-                   mainView.getCenterPanelView().displayPanel(mode, information);
-               case MYSONG:
-                   mainView.getCenterPanelView().displayPanel(mode, information);
-               case PLAYLIST:
-                   mainView.getCenterPanelView().displayPanel(mode, information);
-           }
-    }
-
-    public void controlButtonHandler(int mode){
-        switch (mode){
-            case PLAY_BUTTON:
-                mainView.getBottomPanelView().getControlPanel().changeButton(mode);
+    public void changeCenterPanel(int mode) {
+        switch (mode) {
+            case ALBUMS:
+//                mainView.getCenterPanelView().displayPanel(mode);
+            case MYSONG:
+                mainView.getCenterPanelView().displayPanel(mode, null);
+            case PLAYLIST:
+//                mainView.getCenterPanelView().displayPanel(mode);
         }
     }
 
-    public void pause(boolean paused) {
-        if (paused){
-            player.pause();
-        }
-        else
-            player.play();
+//    public void controlButtonHandler(int mode) {
+//        switch (mode) {
+//            case PLAY_BUTTON:
+//                mainView.getBottomPanelView().getControlPanel().changeButton(mode);
+//        }
+//    }
+
+    public boolean pause(boolean pause) {
+        if (player == null) return false;
+        if (pause) player.pause();
+        else player.play();
+        return true;
     }
 
     public void pausePlayerForSeek() {
@@ -110,20 +105,55 @@ public class MainController {
     }
 
     public void resumePlayerForSeek() {
-        if (player != null)
+        if (player != null && mainView.getBottomPanelView().getControlPanel().isPlaying())
             player.resume();
     }
 
-    public void sliderChanged(int value) {
-        if (player != null) {
-            try {
-                player.changePositionHundred(value);
-                player.setVolume(volume);
-            } catch (JavaLayerException e) {
-                e.printStackTrace();
-            }
+    public boolean songSliderChanged(int value) {
+        if (player == null) return false;
+        try {
+            player.changePositionHundred(value);
+        } catch (JavaLayerException e) {
+            e.printStackTrace();
         }
-        mainView.getBottomPanelView().getVolumeControlPanelView().changeVolume();
+        return true;
+    }
+
+    public void songReachedEnd() {
+        Song nextSong = user.next();
+        user.stopSong();
+        user.playSong(nextSong);
+        playSongWithCustomPlayer(nextSong);
+    }
+
+    public void nextPressed() {
+        Song nextSong = user.forceNext();
+        user.stopSong();
+        user.playSong(nextSong);
+        playSongWithCustomPlayer(nextSong);
+    }
+
+    private void playSongWithCustomPlayer(Song song) {
+        try {
+            if (player != null)
+                player.stop();
+            player = new CustomPlayer(song.getAddress(), this);
+//           TODO: player.setVolume();
+            player.play();
+        } catch (JavaLayerException | IOException | InvalidDataException | UnsupportedTagException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void changeCenterPanel(int mode, ArrayList information){
+        switch (mode){
+            case ALBUMS:
+                mainView.getCenterPanelView().displayPanel(mode, information);
+            case MYSONG:
+                mainView.getCenterPanelView().displayPanel(mode, information);
+            case PLAYLIST:
+                mainView.getCenterPanelView().displayPanel(mode, information);
+        }
     }
 
     public void saveState() {
@@ -141,4 +171,5 @@ public class MainController {
         if (player != null)
             player.setVolume(value);
     }
+
 }

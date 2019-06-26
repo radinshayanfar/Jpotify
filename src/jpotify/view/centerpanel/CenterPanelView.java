@@ -68,7 +68,7 @@ public class CenterPanelView extends JPanel {
         else if (mode == MainController.ALBUMS){
             System.out.println("album");
             this.removeAll();
-            albumsPanel = new AlbumsPanel(controller);
+//            albumsPanel = new AlbumsPanel(controller);
             albumsPanel.setVisible(true);
             scrollPane = new JScrollPane(albumsPanel);
             this.add(scrollPane, BorderLayout.CENTER);
