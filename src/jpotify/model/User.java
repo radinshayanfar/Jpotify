@@ -217,6 +217,10 @@ public class User implements Serializable {
         return currentList;
     }
 
+    public SongList getCurrentSelectedListInGUI() {
+        return currentSelectedListInGUI;
+    }
+
     public Playlist newPlaylist(String name) {
         Playlist ret = new Playlist(name, true);
         playlists.add(ret);
@@ -258,7 +262,7 @@ public class User implements Serializable {
     }
 
     public void removePlaylist() {
-//        TODO: implement method
+        playlists.remove(getCurrentSelectedListInGUI());
     }
 
     public ArrayList<Playlist> getPlaylists() {

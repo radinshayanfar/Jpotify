@@ -56,16 +56,22 @@ public class CreateNewPlaylist extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if(e.getSource().equals(cancelBtn)){
             this.setVisible(false);
+            this.dispose();
         }
         if (e.getSource().equals(okBtn)){
-            ArrayList<Integer> indexes = new ArrayList<>();
-            for (Object o: songsList.getSelectedValuesList()) {
-                String s = (String) o;
-                indexes.add(songs.indexOf(s));
+            if (!name.getText().equals("")) {
+                ArrayList<Integer> indexes = new ArrayList<>();
+                for (Object o : songsList.getSelectedValuesList()) {
+                    String s = (String) o;
+                    indexes.add(songs.indexOf(s));
+                }
+                controller.createNewPlaylist(name.getText(), indexes);
+                if (songsList.getSelectedValuesList().size() != 0)
+                    this.setVisible(false);
             }
-            controller.createNewPlaylist(name.getText(), indexes);
-            if(songsList.getSelectedValuesList().size() != 0)
-                this.setVisible(false);
+            else{
+                JOptionPane.showMessageDialog(null, "Please Enter a Name","ERROR!",JOptionPane.WARNING_MESSAGE);
+            }
         }
     }
 }

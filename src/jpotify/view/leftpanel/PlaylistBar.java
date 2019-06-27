@@ -13,26 +13,26 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Vector;
 
-public class PlaylistBar extends JPanel  {
+public class PlaylistBar extends JPanel implements ActionListener {
 
     private MainController controller;
     private static final int ELEMENTS_SIZE = 15;
     private JScrollPane scrollPane = new JScrollPane();
     private JComboBox playLists;
-    private Vector<Object> items = new Vector<>();
+    private Vector<String> items = new Vector<>();
     private JButton addPlaylist = new JButton();
-    private PlayListHandler playListHandler;
+    private PlayListHandler playListHandler = new PlayListHandler();
 
-    public PlaylistBar(MainController mainController){
+    public PlaylistBar(MainController mainController, Vector<String> items) {
         controller = mainController;
         this.setPreferredSize(new Dimension(LeftPanelView.WIDTH, LeftPanelView.ELEMENTS_HEIGHT));
         this.setBackground(Color.BLACK);
         this.setLayout(new BorderLayout());
         this.setVisible(true);
 
-        Border outerB = BorderFactory.createMatteBorder(50,15,5,0, Color.BLACK);
-        Border whiteLineB = BorderFactory.createMatteBorder(0,0,1,0, Color.lightGray);
-        Border inerB = BorderFactory.createMatteBorder(0,0,5,0, Color.BLACK);
+        Border outerB = BorderFactory.createMatteBorder(50, 15, 5, 0, Color.BLACK);
+        Border whiteLineB = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.lightGray);
+        Border inerB = BorderFactory.createMatteBorder(0, 0, 5, 0, Color.BLACK);
         Border complexB = BorderFactory.createCompoundBorder(whiteLineB, inerB);
         //playlist label
         JLabel playlistLabel = new JLabel("Playlists         ");
@@ -53,39 +53,51 @@ public class PlaylistBar extends JPanel  {
         addPlaylist.setBorder(BorderFactory.createMatteBorder(5, 0, 10, 0, Color.BLACK));
         this.add(addPlaylist, BorderLayout.SOUTH);
 
-        refreshList("Favorites");
-        refreshList("Shared");
+
+        this.items = items;
+        playLists = new JComboBox(items);
+        playLists.setForeground(Color.white);
+        playLists.setBackground(Color.black);
+        playLists.setPreferredSize(new Dimension(LeftPanelView.WIDTH, 30));
+
         JPanel panel = new JPanel();
         panel.setBackground(Color.black);
         this.add(panel, BorderLayout.CENTER);
         panel.setLayout(new BorderLayout());
-        panel.add(playLists , BorderLayout.NORTH);
+        panel.add(playLists, BorderLayout.NORTH);
 
-        playLists.addActionListener(new PlayListHandler());
+        playLists.addActionListener(playListHandler);
 
-        addPlaylist.addActionListener(new PlayListHandler());
+        addPlaylist.addActionListener(this);
 
         this.setVisible(true);
     }
 
-    public void refreshList(Object newItem){
+    public JComboBox getPlayLists() {
+        return playLists;
+    }
+
+    public void refreshList(String newItem) {
         items.add(newItem);
         playLists = new JComboBox(items);
+        playLists.addActionListener(playListHandler);
+        System.out.println("Test: " + playLists.getItemCount());
         playLists.setForeground(Color.white);
         playLists.setBackground(Color.black);
         playLists.setPreferredSize(new Dimension(LeftPanelView.WIDTH, 30));
         this.revalidate();
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        controller.createNewPlaylistFrame();
+    }
 
     private class PlayListHandler implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if(e.getSource().equals(playLists))
-                controller.changeCenterPanel(MainController.PLAYLIST, playLists.getSelectedIndex());
-            if(e.getSource().equals(addPlaylist)){
-                controller.createNewPlaylistFrame();
-            }
+            System.out.println(playLists.getSelectedIndex());
+            controller.changeCenterPanel(MainController.PLAYLIST, playLists.getSelectedIndex());
         }
     }
 

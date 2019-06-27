@@ -5,15 +5,21 @@ import jpotify.view.MainView;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
-public class PlaylistPanel extends JPanel {
+public class PlaylistPanel extends JPanel implements MouseListener {
     private MainController controller;
     private SongsPanel songsPanel;
     private JPlaylistSong songs;
     private JPanel playlistList;
     private JPanel controlPanel;
     private JPanel infoPanel;
+    private JButton edit, add, delete, playAll, moveUp, moveDown, deleteSong;
+    private JLabel label;
 
     public PlaylistPanel(MainController mainController, String name, ArrayList<JPlaylistSong> songs) {
         controller = mainController;
@@ -33,14 +39,17 @@ public class PlaylistPanel extends JPanel {
         infoPanel = new JPanel();
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
         infoPanel.setMaximumSize(new Dimension(CenterPanelView.WIDTH, 50));
-        JLabel label = new JLabel(name);
-        JButton delete = new JButton("delete");
-        JButton add = new JButton("add song");
-        JButton edit = new JButton("edit name");
+        label = new JLabel(name);
+        delete = new JButton("delete");
+        add = new JButton("add song");
+        edit = new JButton("edit name");
         this.add(label);
         this.add(edit);
+        edit.addMouseListener(this);
         this.add(add);
+        add.addMouseListener(this);
         this.add(delete);
+        delete.addMouseListener(this);
         this.setVisible(true);
     }
 
@@ -49,23 +58,109 @@ public class PlaylistPanel extends JPanel {
         controlPanel.setLayout(new FlowLayout());
         controlPanel.setBackground(Color.MAGENTA);
         controlPanel.setMaximumSize(new Dimension(CenterPanelView.WIDTH, 50));
-        JButton playAll = new JButton("playAll");
-        JButton moveUp = new JButton("moveUp");
-        JButton moveDown = new JButton("moveDown");
-        JButton deleteSong = new JButton("deleteSong");
+        playAll = new JButton("playAll");
+        moveUp = new JButton("moveUp");
+        moveDown = new JButton("moveDown");
+        deleteSong = new JButton("deleteSong");
         for (JButton j : new JButton[]{playAll, moveUp, moveDown, deleteSong}) {
             controlPanel.add(j);
+            j.addMouseListener(this);
         }
         controlPanel.setVisible(true);
     }
 
     private void setPlaylistList(ArrayList<JPlaylistSong> songs) {
         playlistList = new JPanel();
-        playlistList.setLayout(new BoxLayout(playlistList,BoxLayout.Y_AXIS));
+        playlistList.setLayout(new BoxLayout(playlistList, BoxLayout.Y_AXIS));
         playlistList.setMaximumSize(new Dimension(CenterPanelView.WIDTH, MainView.HEIGHT - 150));
-        for (JPlaylistSong song : songs){
+        for (JPlaylistSong song : songs) {
             playlistList.add(song);
             song.setVisible(true);
+        }
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+//        edit, add, delete, playAll, moveUp, moveDown, deleteSong;
+        if (e.getSource() == playAll)
+            controller.playSelectedSong(0);
+        if (e.getSource() == add) {
+            new AddSongToPlayList(controller.getLibrarySongsNames());
+        }
+        if (e.getSource() == delete){
+            controller.removePlaylist();
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
+
+    private class AddSongToPlayList extends JFrame implements ActionListener {
+
+        private JButton cancelBtn = new JButton("cancel");
+        private JButton okBtn = new JButton("okay");
+        private JList songsList;
+        private ArrayList<String> songs = new ArrayList<>();
+
+        public AddSongToPlayList(ArrayList<String> mySongs) throws HeadlessException {
+            this.songs = mySongs;
+            this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+            this.setLayout(new BorderLayout());
+            this.setSize(300, 400);
+            this.setLocation((int) (Toolkit.getDefaultToolkit().getScreenSize().width / 2 - this.getSize().getWidth() / 2)
+                    , (int) (Toolkit.getDefaultToolkit().getScreenSize().height / 2 - this.getSize().getHeight() / 2));
+
+
+            songsList = new JList(mySongs.toArray());
+            JScrollPane scrollPane = new JScrollPane(songsList);
+            this.add(scrollPane, BorderLayout.CENTER);
+
+            JPanel buttonPanel = new JPanel();
+            buttonPanel.setLayout(new GridLayout(1, 2));
+            buttonPanel.setPreferredSize(new Dimension(300, 30));
+            buttonPanel.add(cancelBtn);
+            buttonPanel.add(okBtn);
+            cancelBtn.addActionListener(this);
+            okBtn.addActionListener(this);
+            this.add(buttonPanel, BorderLayout.SOUTH);
+
+            this.setVisible(true);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (e.getSource().equals(cancelBtn)) {
+                this.setVisible(false);
+                this.dispose();
+            }
+            if (e.getSource().equals(okBtn)) {
+                ArrayList<Integer> indexes = new ArrayList<>();
+                for (Object o : songsList.getSelectedValuesList()) {
+                    String s = (String) o;
+                    indexes.add(songs.indexOf(s));
+                    controller.addSongToPlaylist(indexes);
+                }
+                if (songsList.getSelectedValuesList().size() != 0) {
+                    this.dispose();
+                }
+            }
         }
     }
 }

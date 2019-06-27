@@ -104,6 +104,12 @@ public class CenterPanelView extends JPanel {
             this.add(scrollPane);
             this.revalidate();
         }
+        else if(mode == MainController.BLANPAGE){
+            System.out.println("blank page");
+            this.removeAll();
+            this.add(new CenterPanelView(controller));
+            this.revalidate();
+        }
     }
 
     private void removeAllPanels(){

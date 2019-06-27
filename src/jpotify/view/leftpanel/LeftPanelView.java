@@ -27,7 +27,7 @@ public class LeftPanelView extends JPanel {
         libraryBar = new LibraryBar(controller);
         this.add(libraryBar, BorderLayout.NORTH);
 
-        playlistBar = new PlaylistBar(controller);
+        playlistBar = new PlaylistBar(controller, controller.getPlayListNames());
         this.add(playlistBar, BorderLayout.CENTER);
         artworkPanel = new ImagePanel("./assets/sample.png", new Dimension(ImagePanel.ARTWORK_MODE, ImagePanel.ARTWORK_MODE));
         this.add( artworkPanel, BorderLayout.SOUTH);

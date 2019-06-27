@@ -16,9 +16,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 public class MainController {
-    public static final int JALBUM = 3,PLAYLIST = 2, MYSONG = 0, ALBUMS = 1;
+    public static final int JALBUM = 3,PLAYLIST = 2, MYSONG = 0, ALBUMS = 1, BLANPAGE = 4;
     //    public static final int PLAY_BUTTON=1;
     private MainView mainView;
     private Users users;
@@ -29,11 +30,11 @@ public class MainController {
     private int saveIndex;
 
     public MainController(Users users, int userIndex) {
-        mainView = new MainView(this);
         this.users = users;
         this.user = users.getUser(userIndex);
         user.setRepeatRule(RepeatRule.OFF);
 //        user.turnShuffleOn();
+        mainView = new MainView(this);
     }
 
     public void addSongToLibrary(File... files) {
@@ -258,11 +259,16 @@ public class MainController {
     }
 
     public void createNewPlaylistFrame() {
-        ArrayList<String> songName = new ArrayList<>();
-        for (Song s: user.getLibrarySongs())
-            songName.add(s.getTitle());
-        CreateNewPlaylist createNewPlaylist = new CreateNewPlaylist(this, songName);
+        ArrayList<String> songNames = getLibrarySongsNames();
+        CreateNewPlaylist createNewPlaylist = new CreateNewPlaylist(this, songNames);
         createNewPlaylist.setVisible(true);
+    }
+
+    public ArrayList<String> getLibrarySongsNames() {
+        ArrayList<String> songNames = new ArrayList<>();
+        for (Song s: user.getLibrarySongs())
+            songNames.add(s.getTitle());
+        return songNames;
     }
 
     public void createNewPlaylist(String text, ArrayList<Integer> indexes) {
@@ -270,10 +276,48 @@ public class MainController {
         for (Integer i: indexes) {
             songs.add(user.getLibrarySongs().get(i));
         }
-        changeCenterPanel(PLAYLIST, user.newPlaylist(text, songs));
+        int lastIndex = user.newPlaylist(text, songs);
+        mainView.getLeftPanelView().getPlaylistBar().refreshList(text);
+//        mainView.getLeftPanelView().getPlaylistBar().getPlayLists().setSelectedIndex(2);
+        mainView.getLeftPanelView().getPlaylistBar().revalidate();
+        changeCenterPanel(PLAYLIST, lastIndex);
+//        for (Playlist p :
+//                user.getPlaylists()) {
+//            System.out.println(p.getName() + ": " + p.getSongs());
+//        }
     }
 
     public String getPlayListName(int index) {
         return user.getPlaylists().get(index).getName();
+    }
+
+    public Vector<String> getPlayListNames() {
+        Vector<String> ret = new Vector<>();
+        for (Playlist p: user.getPlaylists()) {
+            System.out.println(p.getName());
+            ret.add(p.getName());
+        }
+        return ret;
+    }
+
+    public void addSongToPlaylist(ArrayList<Integer> indexes) {
+//        ArrayList<Song> songs = new ArrayList<>();
+        int index = user.getPlaylists().indexOf(user.getCurrentSelectedListInGUI());
+        for (Integer i: indexes) {
+//            songs.add(user.getLibrarySongs().get(i));
+            user.getPlaylists().get(index).addSong(user.getLibrarySongs().get(i));
+        }
+//        int lastIndex = user.newPlaylist(text, songs);
+//        mainView.getLeftPanelView().getPlaylistBar().refreshList();
+//        mainView.getLeftPanelView().getPlaylistBar().getPlayLists().setSelectedIndex(2);
+        mainView.getLeftPanelView().getPlaylistBar().revalidate();
+//        mainView.getCenterPanelView().displayPanel(PLAYLIST, index);
+        changeCenterPanel(PLAYLIST, index);
+    }
+
+    public void removePlaylist() {
+        user.removePlaylist();
+        System.out.println("T1");
+        mainView.getCenterPanelView().displayPanel(BLANPAGE, 0);
     }
 }

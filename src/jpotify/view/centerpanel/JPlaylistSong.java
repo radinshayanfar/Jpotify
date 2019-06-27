@@ -55,6 +55,8 @@ public class JPlaylistSong extends JPanel implements MouseListener {
         delete.setBorder(null);
         delete.setBackground(new Color(14,14,14));
 
+        this.addMouseListener(this);
+
         this.setVisible(true);
     }
 
@@ -68,6 +70,7 @@ public class JPlaylistSong extends JPanel implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        System.out.println(index.getText() + "playlist songs");
         controller.playSelectedSong(Integer.parseInt(index.getText())-1);
     }
 
