@@ -11,7 +11,6 @@ import jpotify.view.centerpanel.JPlaylistSong;
 import jpotify.view.centerpanel.JSong;
 import jpotify.view.leftpanel.CreateNewPlaylist;
 
-import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -325,5 +324,18 @@ public class MainController {
 //
         mainView.getCenterPanelView().displayPanel(BLANPAGE, 0);
         mainView.getLeftPanelView().refreshPlaylistBar();
+    }
+
+    public void setRepeat(RepeatRule repeatRule) {
+        //TODO Set repeat
+    }
+
+    public void turnShuffleOff() {
+        //TODO turn shuffle off
+    }
+
+    public boolean turnShuffleOn() {
+        //TOdo turn Shuffle on
+        return false;
     }
 }
