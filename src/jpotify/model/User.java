@@ -164,8 +164,6 @@ public class User implements Serializable {
         Song song = getLibrarySongs().get(songIndex);
         for (int i = playlists.size() - 1; i >= 0; i--) {
             playlists.get(i).removeSong(song);
-            if (playlists.get(i).getSongs().size() == 0)
-                playlists.remove(i);
         }
         Album songAlbum = song.getAlbumReference();
         if (songAlbum != null) {
