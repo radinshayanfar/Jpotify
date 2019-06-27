@@ -103,13 +103,13 @@ public class LibraryBar extends JPanel {
                     File[] files = fileChooser.getSelectedFiles();
                     controller.addSongToLibrary(files);
                 }
-                controller.changeCenterPanel(MainController.MYSONG);
+                controller.changeCenterPanel(MainController.MYSONG, 0);
             }
             if (e.getSource().equals(songs)) {
-                controller.changeCenterPanel(MainController.MYSONG);
+                controller.changeCenterPanel(MainController.MYSONG, 0);
             }
             if (e.getSource().equals(albums)) {
-                controller.changeCenterPanel(MainController.ALBUMS);
+                controller.changeCenterPanel(MainController.ALBUMS, 0);
             }
         }
     }

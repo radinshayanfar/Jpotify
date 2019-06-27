@@ -1,7 +1,5 @@
 package jpotify.model;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -14,8 +12,9 @@ public class Album extends SongList implements Comparable<Album> {
 
     @Override
     public int compareTo(Album o) {
+        Collections.sort(songs);
         long diff = getLastPlayed() - o.getLastPlayed();
-        return diff < 0 ? -1 : (diff == 0 ? 0 : 1);
+        return diff < 0 ? 1 : (diff == 0 ? 0 : -1);
     }
 
     public long getLastPlayed() {
@@ -36,6 +35,17 @@ public class Album extends SongList implements Comparable<Album> {
         return songs;
     }
 
+    public String getTitles(){
+        StringBuilder ret = new StringBuilder();
+        for (int i = 0 ; i < 3 && i != songs.size() ; i++){
+            ret.append(songs.get(i).getTitle() + ", ");
+        }
+        ret.delete(ret.length() - 2, ret.length());
+        if (songs.size() > 3)
+            ret.append(", ...");
+        return ret.toString();
+    }
+
     public byte[] getArtwork() {
         return songs.get(0).getArtwork();
     }
@@ -46,5 +56,10 @@ public class Album extends SongList implements Comparable<Album> {
 
     public void removeSong(Song song) {
         songs.remove(song);
+    }
+
+    @Override
+    public String toString() {
+        return "Album{+"+ getName() +"}";
     }
 }

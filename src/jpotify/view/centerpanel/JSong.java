@@ -85,11 +85,14 @@ public class JSong extends JPanel implements MouseListener {
         if (e.getSource().equals(this)){
             System.out.println("play");
             controller.playSelectedSong(index);
-            controller.changeCenterPanel(MainController.MYSONG);
+            if (controller.getCurrentMode() == MainController.MYSONG)
+                controller.changeCenterPanel(MainController.MYSONG, 0);
+            if (controller.getCurrentMode() == MainController.JALBUM)
+                controller.changeCenterPanel(MainController.JALBUM, controller.searchAlbumIndex(album.getText()));
         }
         if (e.getSource().equals(delete)){
             System.out.println("delete");
-            //TODO delete Song
+            controller.deleteSongFromLibrary(this.index);
         }
     }
 

@@ -18,8 +18,9 @@ public class SongsPanel extends JPanel {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         for (JSong s :songs) {
             this.add(s);
+            s.setVisible(true);
         }
-        setVisible(false);
+        setVisible(true);
     }
 
 

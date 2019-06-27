@@ -7,7 +7,6 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class CenterPanelView extends JPanel {
 
@@ -17,6 +16,8 @@ public class CenterPanelView extends JPanel {
     private AlbumsPanel albumsPanel;
     private PlaylistPanel playlistPanel;
     private JScrollPane scrollPane;
+    private JAlbum jAlbum;
+    private SongsPanel albumSongPanel;
 
     public CenterPanelView(MainController mainController) {
         controller = mainController;
@@ -50,13 +51,13 @@ public class CenterPanelView extends JPanel {
         return albumsPanel;
     }
 
-    public void displayPanel(int mode, ArrayList array)  {
+    public void displayPanel(int mode, int index)  {
+        controller.setCurrentMode(mode, index);
         if (mode == MainController.MYSONG){
             this.removeAll();
             System.out.println("song");
-            controller.mySongIsOn();
             try {
-                songsPanel = new SongsPanel(controller, controller.getJSongs());
+                songsPanel = new SongsPanel(controller, controller.getJSongs(mode, 0));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -68,11 +69,28 @@ public class CenterPanelView extends JPanel {
         else if (mode == MainController.ALBUMS){
             System.out.println("album");
             this.removeAll();
-//            albumsPanel = new AlbumsPanel(controller);
+            try {
+                albumsPanel = new AlbumsPanel(controller, controller.getJAlbum());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             albumsPanel.setVisible(true);
             scrollPane = new JScrollPane(albumsPanel);
             this.add(scrollPane, BorderLayout.CENTER);
 //            this.setBackground(Color.MAGENTA);
+            this.revalidate();
+        }
+        else if(mode == MainController.JALBUM){
+            System.out.println("selcted album pressed");
+            this.removeAll();
+            try {
+                albumSongPanel = new SongsPanel(controller, controller.getJSongs(mode, index));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            albumsPanel.setVisible(true);
+            scrollPane = new JScrollPane(albumSongPanel);
+            this.add(scrollPane, BorderLayout.CENTER);
             this.revalidate();
         }
         else{

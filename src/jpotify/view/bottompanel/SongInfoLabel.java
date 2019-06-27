@@ -43,5 +43,6 @@ public class SongInfoLabel extends JPanel {
         this.album.setText("Album: ".concat(album));
         this.title.setText("Title: ".concat(title));
         this.artist.setText("Artist: ".concat(artist));
+        revalidate();
     }
 }

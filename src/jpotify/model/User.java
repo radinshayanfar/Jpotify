@@ -117,10 +117,10 @@ public class User implements Serializable {
         if (currentList instanceof NetworkPlaylist) throw new Error("Don't use this method over network!");
         Song ret = currentList.songs.get(index);
         ret.updateLastPlayed();
-        if (getSharedPlaylist().getSongs().contains(ret)) {
-            getRecentlyPlayed().setCurrentSong(ret);
-            tellOthersAboutMyRecent();
-        }
+//        if (getSharedPlaylist().getSongs().contains(ret)) {
+//            getRecentlyPlayed().setCurrentSong(ret);
+//            tellOthersAboutMyRecent();
+//        }
         currentList.current = ret;
         return ret;
     }
@@ -132,15 +132,15 @@ public class User implements Serializable {
 
     public void playSong(Song song) {
         song.updateLastPlayed();
-        if (getSharedPlaylist().getSongs().contains(song)) {
-            getRecentlyPlayed().setCurrentSong(song);
-            tellOthersAboutMyRecent();
-        }
+//        if (getSharedPlaylist().getSongs().contains(song)) {
+//            getRecentlyPlayed().setCurrentSong(song);
+//            tellOthersAboutMyRecent();
+//        }
     }
 
     public void stopSong() {
         getRecentlyPlayed().removeCurrentSong();
-        tellOthersAboutMyRecent();
+//        tellOthersAboutMyRecent();
     }
 
     public void addSong(Song song) {
@@ -160,7 +160,7 @@ public class User implements Serializable {
     }
 
     public boolean removeSongFromLibrary(int songIndex) {
-        if (currentList.current == getLibrarySongs().get(songIndex)) return false;
+        if (getCurrentList().current  == getLibrarySongs().get(songIndex)) return false;
         Song song = getLibrarySongs().get(songIndex);
         for (int i = playlists.size() - 1; i >= 0; i--) {
             playlists.get(i).removeSong(song);
@@ -169,16 +169,16 @@ public class User implements Serializable {
         }
         Album songAlbum = song.getAlbumReference();
         if (songAlbum != null) {
-            songAlbum.removeSong(song);
-            if (songAlbum.songs.size() == 0)
+            if (songAlbum.songs.size() == 1)
                 albums.remove(songAlbum.getName());
+            else songAlbum.removeSong(song);
         }
         getLibrarySongs().remove(songIndex);
         return true;
     }
 
     public boolean removeSongFromPlaylist(int playlistIndex, int songIndex) {
-        if (currentList.current == playlists.get(playlistIndex).getSongs().get(songIndex)) return false;
+        if (getCurrentList().current == playlists.get(playlistIndex).getSongs().get(songIndex)) return false;
         playlists.get(playlistIndex).removeSong(songIndex);
         return true;
     }
@@ -197,7 +197,24 @@ public class User implements Serializable {
     }
 
     public List<Album> getAlbums() {
-        return new ArrayList<>(albums.values());
+        ArrayList<Album> ret = new ArrayList<>(albums.values());
+        Collections.sort(ret);
+        return ret;
+    }
+
+    public int searchAlbums(String name){
+        List<Album> albums = getAlbums();
+        for (Album a: albums) {
+            if (a.getName().equals(name))
+                return albums.indexOf(a);
+        }
+        return -1;
+    }
+
+    private SongList getCurrentList() {
+        if (currentList == null)
+            currentList = new SongList();
+        return currentList;
     }
 
     public Playlist newPlaylist(String name) {

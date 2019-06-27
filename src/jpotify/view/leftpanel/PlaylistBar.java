@@ -84,7 +84,8 @@ public class PlaylistBar extends JPanel {
     private class PlayListHandler implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            controller.changeCenterPanel(MainController.PLAYLIST);
+//            controller.changeCenterPanel(MainController.PLAYLIST);
+            //TODO
         }
     }
 
