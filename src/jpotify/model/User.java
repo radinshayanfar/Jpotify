@@ -223,6 +223,12 @@ public class User implements Serializable {
         return ret;
     }
 
+    public int newPlaylist(String name, ArrayList<Song> songs) {
+        Playlist newList = new Playlist(name, songs);
+        playlists.add(newList);
+        return playlists.size() - 1;
+    }
+
     public void addSharedPlaylist(NetworkPlaylist playlist) {
         if (playlist == null)
             return;

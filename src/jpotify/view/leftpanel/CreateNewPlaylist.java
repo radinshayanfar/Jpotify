@@ -15,10 +15,11 @@ public class CreateNewPlaylist extends JFrame implements ActionListener {
     private JButton cancelBtn = new JButton("cancel");
     private JButton okBtn = new JButton("okay");
     private JList songsList;
+    private ArrayList<String> songs  = new ArrayList<>();
 
-    public CreateNewPlaylist(MainController mainController, ArrayList mySongs) throws HeadlessException {
+    public CreateNewPlaylist(MainController mainController, ArrayList<String> mySongs) throws HeadlessException {
         controller = mainController;
-
+        this.songs = mySongs;
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setLayout(new BorderLayout());
         this.setSize(300, 400);
@@ -57,9 +58,12 @@ public class CreateNewPlaylist extends JFrame implements ActionListener {
             this.setVisible(false);
         }
         if (e.getSource().equals(okBtn)){
-            System.out.println(songsList.getSelectedValuesList());
-            System.out.println(name.getText());
-            //TODO
+            ArrayList<Integer> indexes = new ArrayList<>();
+            for (Object o: songsList.getSelectedValuesList()) {
+                String s = (String) o;
+                indexes.add(songs.indexOf(s));
+            }
+            controller.createNewPlaylist(name.getText(), indexes);
             if(songsList.getSelectedValuesList().size() != 0)
                 this.setVisible(false);
         }

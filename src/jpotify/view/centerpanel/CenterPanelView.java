@@ -7,6 +7,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class CenterPanelView extends JPanel {
 
@@ -93,16 +94,14 @@ public class CenterPanelView extends JPanel {
             this.add(scrollPane, BorderLayout.CENTER);
             this.revalidate();
         }
-        else{
+        else if(mode == MainController.PLAYLIST){
             System.out.println("playlist");
-//            this.removeAllPanels();
             this.removeAll();
-            //TODO throws playlist name at controller and takes songslist
-            playlistPanel = new PlaylistPanel(controller);
+            ArrayList<JPlaylistSong> playlistSongs = controller.getJPlaylistSong(index);
+            playlistPanel = new PlaylistPanel(controller, controller.getPlayListName(index), playlistSongs);
             playlistPanel.setVisible(true);
-//            scrollPane = new JScrollPane(playlistPanel, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-            this.add(playlistPanel, BorderLayout.CENTER);
-//            this.setBackground(Color.blue);
+            scrollPane = new JScrollPane(playlistPanel);
+            this.add(scrollPane);
             this.revalidate();
         }
     }

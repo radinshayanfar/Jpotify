@@ -7,7 +7,9 @@ import javazoom.jl.decoder.JavaLayerException;
 import jpotify.model.*;
 import jpotify.view.MainView;
 import jpotify.view.centerpanel.JAlbum;
+import jpotify.view.centerpanel.JPlaylistSong;
 import jpotify.view.centerpanel.JSong;
+import jpotify.view.leftpanel.CreateNewPlaylist;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -221,6 +223,15 @@ public class MainController {
         return jAlbums;
     }
 
+    public ArrayList<JPlaylistSong> getJPlaylistSong(int index) {
+        ArrayList<JPlaylistSong> ret = new ArrayList<>();
+        int i = 0;
+        for (Song s: user.getPlaylists().get(index).getSongs()) {
+            ret.add(new JPlaylistSong(this,index,i++,s.getTitle(),s.getArtist(),s.getAlbum()));
+        }
+        return ret;
+    }
+
     public ArrayList<JSong> getJSongs(int mode, int index) throws IOException {
         ArrayList<JSong> jSongs = new ArrayList<>();
         List<Song> songs = null;
@@ -231,9 +242,9 @@ public class MainController {
             case JALBUM:
                 songs = user.getAlbums().get(index).getSongs();
                 break;
-            case PLAYLIST:
-                songs = user.getPlaylists().get(index).getSongs();
-                break;
+//            case PLAYLIST:
+//                songs = user.getPlaylists().get(index).getSongs();
+//                break;
         }
         for (int i = 0; i < songs.size(); i++) {
             jSongs.add(new JSong(this, songs.get(i).getTitle(), songs.get(i).getArtist(), songs.get(i).getAlbum(), songs.get(i).getArtwork(), i));
@@ -244,5 +255,25 @@ public class MainController {
 
     public int searchAlbumIndex(String text) {
         return user.searchAlbums(text);
+    }
+
+    public void createNewPlaylistFrame() {
+        ArrayList<String> songName = new ArrayList<>();
+        for (Song s: user.getLibrarySongs())
+            songName.add(s.getTitle());
+        CreateNewPlaylist createNewPlaylist = new CreateNewPlaylist(this, songName);
+        createNewPlaylist.setVisible(true);
+    }
+
+    public void createNewPlaylist(String text, ArrayList<Integer> indexes) {
+        ArrayList<Song> songs = new ArrayList<>();
+        for (Integer i: indexes) {
+            songs.add(user.getLibrarySongs().get(i));
+        }
+        changeCenterPanel(PLAYLIST, user.newPlaylist(text, songs));
+    }
+
+    public String getPlayListName(int index) {
+        return user.getPlaylists().get(index).getName();
     }
 }

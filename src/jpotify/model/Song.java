@@ -1,6 +1,9 @@
 package jpotify.model;
 
-import com.mpatric.mp3agic.*;
+import com.mpatric.mp3agic.ID3v2;
+import com.mpatric.mp3agic.InvalidDataException;
+import com.mpatric.mp3agic.Mp3File;
+import com.mpatric.mp3agic.UnsupportedTagException;
 import helper.FileHelper;
 import helper.TagReader;
 
@@ -8,8 +11,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.Objects;
 
@@ -51,7 +52,8 @@ public class Song implements Serializable, Comparable<Song> {
                 title = tag.getTitle();
                 album = tag.getAlbum();
                 artist = tag.getArtist();
-            } else {
+            }
+            if (title == null) {
                 String name = address.getName();
                 title = name.substring(0, name.lastIndexOf('.'));
             }

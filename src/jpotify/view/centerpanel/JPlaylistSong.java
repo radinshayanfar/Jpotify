@@ -68,7 +68,7 @@ public class JPlaylistSong extends JPanel implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-
+        controller.playSelectedSong(Integer.parseInt(index.getText())-1);
     }
 
     @Override

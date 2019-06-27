@@ -13,7 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Vector;
 
-public class PlaylistBar extends JPanel {
+public class PlaylistBar extends JPanel  {
 
     private MainController controller;
     private static final int ELEMENTS_SIZE = 15;
@@ -63,6 +63,8 @@ public class PlaylistBar extends JPanel {
 
         playLists.addActionListener(new PlayListHandler());
 
+        addPlaylist.addActionListener(new PlayListHandler());
+
         this.setVisible(true);
     }
 
@@ -75,17 +77,15 @@ public class PlaylistBar extends JPanel {
         this.revalidate();
     }
 
-    public void refreshList(Object [] newItem){
-        for ( Object o : newItem )
-            refreshList(o);
-    }
-
 
     private class PlayListHandler implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-//            controller.changeCenterPanel(MainController.PLAYLIST);
-            //TODO
+            if(e.getSource().equals(playLists))
+                controller.changeCenterPanel(MainController.PLAYLIST, playLists.getSelectedIndex());
+            if(e.getSource().equals(addPlaylist)){
+                controller.createNewPlaylistFrame();
+            }
         }
     }
 
