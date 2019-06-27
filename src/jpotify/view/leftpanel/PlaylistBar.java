@@ -29,7 +29,7 @@ public class PlaylistBar extends JPanel implements ActionListener {
         this.setLayout(new BorderLayout());
         this.setVisible(true);
 
-        Border outerB = BorderFactory.createMatteBorder(50, 15, 5, 0, Color.BLACK);
+        Border outerB = BorderFactory.createMatteBorder(5, 15, 5, 0, Color.BLACK);
         Border whiteLineB = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.lightGray);
         Border inerB = BorderFactory.createMatteBorder(0, 0, 5, 0, Color.BLACK);
         Border complexB = BorderFactory.createCompoundBorder(whiteLineB, inerB);
@@ -59,11 +59,13 @@ public class PlaylistBar extends JPanel implements ActionListener {
         for (int i = 0 ; i < items.size() ; i++){
             panel.add(new PlaylistItem(i, items.get(i)));
         }
-        JScrollPane scrollBar = new JScrollPane(panel);
+        JScrollPane scrollPane = new JScrollPane(panel);
         panel.setBackground(Color.black);
-        this.add(scrollBar, BorderLayout.CENTER);
-
-
+        this.add(scrollPane, BorderLayout.CENTER);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.getViewport().getView().setBackground(Color.BLACK);
+        scrollPane.setBorder(null);
+//        scrollPane.getVerticalScrollBar().View.setMaximumSize(new Dimension(3,50));
         this.setVisible(true);
     }
 

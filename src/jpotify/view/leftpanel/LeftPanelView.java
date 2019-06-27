@@ -27,7 +27,7 @@ public class LeftPanelView extends JPanel {
         libraryBar = new LibraryBar(controller);
         this.add(libraryBar, BorderLayout.NORTH);
 
-        playlistBar = new PlaylistBar(controller, controller.getPlayListNames());
+        playlistBar = new PlaylistBar(controller, controller.getPlayLists());
         this.add(playlistBar, BorderLayout.CENTER);
         artworkPanel = new ImagePanel("./assets/sample.png", new Dimension(ImagePanel.ARTWORK_MODE, ImagePanel.ARTWORK_MODE));
         this.add( artworkPanel, BorderLayout.SOUTH);
@@ -60,6 +60,13 @@ public class LeftPanelView extends JPanel {
         this.remove(artworkPanel);
         artworkPanel = new ImagePanel(img, new Dimension(ImagePanel.ARTWORK_MODE, ImagePanel.ARTWORK_MODE));
         this.add(artworkPanel, BorderLayout.SOUTH);
+        this.revalidate();
+    }
+    public void refreshPlaylistBar(){
+//        this.invalidate();
+        this.remove(playlistBar);
+        playlistBar = new PlaylistBar(controller, controller.getPlayLists());
+        this.add(playlistBar, BorderLayout.CENTER);
         this.revalidate();
     }
 }

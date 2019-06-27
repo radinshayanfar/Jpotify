@@ -35,6 +35,8 @@ public class RightPanelView extends JPanel {
         friendsBarView = new FriendsBarView(controller);
         scrollPane = new JScrollPane(friendsBarView, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         this.add(scrollPane, BorderLayout.CENTER);
+        scrollPane.setBorder(null);
+//        scrollPane.setPreferredSize(new Di);
 
         ArrayList<Friend> friends = new ArrayList<>();
         Friend f1 = new Friend(controller,"maryam","offline", "jh");

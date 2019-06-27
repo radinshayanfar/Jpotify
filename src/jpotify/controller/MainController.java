@@ -317,6 +317,11 @@ public class MainController {
     public void removePlaylist() {
         user.removePlaylist();
         System.out.println("T1");
+//        TODO tell him to check
+        player.stop();
+        user.setCurrentSelectedListInGUI(null);
+//
         mainView.getCenterPanelView().displayPanel(BLANPAGE, 0);
+        mainView.getLeftPanelView().refreshPlaylistBar();
     }
 }
