@@ -7,11 +7,10 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.Vector;
+import java.util.HashMap;
 
 public class PlaylistBar extends JPanel implements ActionListener {
 
@@ -19,11 +18,11 @@ public class PlaylistBar extends JPanel implements ActionListener {
     private static final int ELEMENTS_SIZE = 15;
     private JScrollPane scrollPane = new JScrollPane();
     private JComboBox playLists;
-    private Vector<String> items = new Vector<>();
+    private HashMap<Integer, String> items;
     private JButton addPlaylist = new JButton();
-    private PlayListHandler playListHandler = new PlayListHandler();
+    private JPanel panel;
 
-    public PlaylistBar(MainController mainController, Vector<String> items) {
+    public PlaylistBar(MainController mainController, HashMap<Integer, String>items) {
         controller = mainController;
         this.setPreferredSize(new Dimension(LeftPanelView.WIDTH, LeftPanelView.ELEMENTS_HEIGHT));
         this.setBackground(Color.BLACK);
@@ -52,39 +51,29 @@ public class PlaylistBar extends JPanel implements ActionListener {
         addPlaylist.setForeground(Color.lightGray);
         addPlaylist.setBorder(BorderFactory.createMatteBorder(5, 0, 10, 0, Color.BLACK));
         this.add(addPlaylist, BorderLayout.SOUTH);
-
-
-        this.items = items;
-        playLists = new JComboBox(items);
-        playLists.setForeground(Color.white);
-        playLists.setBackground(Color.black);
-        playLists.setPreferredSize(new Dimension(LeftPanelView.WIDTH, 30));
-
-        JPanel panel = new JPanel();
-        panel.setBackground(Color.black);
-        this.add(panel, BorderLayout.CENTER);
-        panel.setLayout(new BorderLayout());
-        panel.add(playLists, BorderLayout.NORTH);
-
-        playLists.addActionListener(playListHandler);
-
         addPlaylist.addActionListener(this);
+
+        panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        this.items = items;
+        for (int i = 0 ; i < items.size() ; i++){
+            panel.add(new PlaylistItem(i, items.get(i)));
+        }
+        JScrollPane scrollBar = new JScrollPane(panel);
+        panel.setBackground(Color.black);
+        this.add(scrollBar, BorderLayout.CENTER);
+
 
         this.setVisible(true);
     }
 
-    public JComboBox getPlayLists() {
-        return playLists;
-    }
-
-    public void refreshList(String newItem) {
-        items.add(newItem);
-        playLists = new JComboBox(items);
-        playLists.addActionListener(playListHandler);
-        System.out.println("Test: " + playLists.getItemCount());
-        playLists.setForeground(Color.white);
-        playLists.setBackground(Color.black);
-        playLists.setPreferredSize(new Dimension(LeftPanelView.WIDTH, 30));
+    public void refreshList(int index, String newItem) {
+        PlaylistItem p = new PlaylistItem(index, newItem);
+        panel.add(p);
+//        p.focusGained(requestFocus());
+        //TODO you can create a list of the items, set them all black and the selected one blue
+        //TODO get all the inputs and fields of a focusEvent and make them happen yourself :)
+        panel.revalidate();
         this.revalidate();
     }
 
@@ -93,12 +82,73 @@ public class PlaylistBar extends JPanel implements ActionListener {
         controller.createNewPlaylistFrame();
     }
 
-    private class PlayListHandler implements ActionListener {
+    private class PlaylistItem extends JPanel implements MouseListener, FocusListener{
+        private int index;
+        private JLabel playlistLabel = new JLabel();
+
+        public PlaylistItem(int index, String playlistName) {
+            this.index = index;
+            this.setBackground(Color.BLACK);
+            this.setMaximumSize(new Dimension(190,30 ));
+            playlistLabel.setText(playlistName);
+            this.add(playlistLabel);
+            playlistLabel.setForeground(Color.lightGray);
+            this.setBorder(BorderFactory.createMatteBorder(0,0,1,0, Color.WHITE));
+            this.addMouseListener(this);
+            this.addFocusListener(this);
+            this.setVisible(true);
+        }
+
         @Override
-        public void actionPerformed(ActionEvent e) {
-            System.out.println(playLists.getSelectedIndex());
-            controller.changeCenterPanel(MainController.PLAYLIST, playLists.getSelectedIndex());
+        public void mouseClicked(MouseEvent e) {
+            controller.changeCenterPanel(MainController.PLAYLIST, this.index);
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+
+        }
+
+        @Override
+        public void focusGained(FocusEvent e) {
+            this.setBackground(Color.blue);
+        }
+
+        @Override
+        public void focusLost(FocusEvent e) {
+            e.toString();
+            System.out.println(e.toString());
+            System.out.println(" "+e.getSource()+" "+e.getID()+" "+e.isTemporary()+" "+e.getOppositeComponent()+" "+e.getCause());
+            this.setBackground(Color.black);
         }
     }
+//    public void createNewPlaylist(String text, ArrayList<Integer> indexes) {
+//        ArrayList<Song> songs = new ArrayList<>();
+//        for (Integer i: indexes) {
+//            songs.add(user.getLibrarySongs().get(i));
+//        }
+//        int lastIndex = user.newPlaylist(text, songs);
+//        mainView.getLeftPanelView().getPlaylistBar().refreshList(lastIndex, text);
+//        changeCenterPanel(PLAYLIST, lastIndex);
+//////        for (Playlist p :
+//////                user.getPlaylists()) {
+//////            System.out.println(p.getName() + ": " + p.getSongs());
+//////        }
+//    }
 
 }

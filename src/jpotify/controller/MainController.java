@@ -15,8 +15,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Vector;
 
 public class MainController {
     public static final int JALBUM = 3,PLAYLIST = 2, MYSONG = 0, ALBUMS = 1, BLANPAGE = 4;
@@ -277,25 +277,24 @@ public class MainController {
             songs.add(user.getLibrarySongs().get(i));
         }
         int lastIndex = user.newPlaylist(text, songs);
-        mainView.getLeftPanelView().getPlaylistBar().refreshList(text);
-//        mainView.getLeftPanelView().getPlaylistBar().getPlayLists().setSelectedIndex(2);
-        mainView.getLeftPanelView().getPlaylistBar().revalidate();
+        mainView.getLeftPanelView().getPlaylistBar().refreshList(lastIndex, text);
         changeCenterPanel(PLAYLIST, lastIndex);
-//        for (Playlist p :
-//                user.getPlaylists()) {
-//            System.out.println(p.getName() + ": " + p.getSongs());
-//        }
+////        for (Playlist p :
+////                user.getPlaylists()) {
+////            System.out.println(p.getName() + ": " + p.getSongs());
+////        }
     }
 
     public String getPlayListName(int index) {
         return user.getPlaylists().get(index).getName();
     }
 
-    public Vector<String> getPlayListNames() {
-        Vector<String> ret = new Vector<>();
+    public HashMap<Integer, String> getPlayLists() {
+        HashMap<Integer, String> ret = new HashMap<>();
+        int i = 0;
         for (Playlist p: user.getPlaylists()) {
             System.out.println(p.getName());
-            ret.add(p.getName());
+            ret.put(i++,p.getName());
         }
         return ret;
     }
