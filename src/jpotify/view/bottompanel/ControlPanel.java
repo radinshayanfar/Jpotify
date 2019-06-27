@@ -2,6 +2,7 @@ package jpotify.view.bottompanel;
 
 
 import jpotify.controller.MainController;
+import jpotify.model.RepeatRule;
 import jpotify.view.centerpanel.CenterPanelView;
 
 import javax.imageio.ImageIO;
@@ -20,7 +21,7 @@ public class ControlPanel extends JPanel implements ActionListener, MouseListene
 
     private MainController controller;
     private Boolean playing = false;
-    private Boolean notShuffled = true;
+    private Boolean shuffled = false;
     private static final int REPEAT_ONE_SONG = 2, REPEAT = 1, NO_REPEAT = 0;
     private int repeatState;
     private ActionListener a = this;
@@ -54,14 +55,11 @@ public class ControlPanel extends JPanel implements ActionListener, MouseListene
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         if (actionEvent.getSource() == play) {
-            if (playing){
-                System.out.println("Pausing...");
+            if (playing) {
                 changePlayButton(true);
                 controller.pause(true);
                 return;
-            }
-            else if (controller.pause(false)) {
-                System.out.println("Playing...");
+            } else if (controller.pause(false)) {
                 changePlayButton(false);
                 return;
             }
@@ -73,7 +71,7 @@ public class ControlPanel extends JPanel implements ActionListener, MouseListene
         if (actionEvent.getSource() == previous) {
             controller.previousPressed();
         }
-        if (actionEvent.getSource().equals(repeat)) {
+        if (actionEvent.getSource() == repeat) {
             switch (repeatState) {
                 case REPEAT:
                     try {
@@ -99,34 +97,32 @@ public class ControlPanel extends JPanel implements ActionListener, MouseListene
                         e.printStackTrace();
                     }
                     break;
-                default:
-                    repeatState++;
-                    repeatState = repeatState % 3;
-                    System.out.println(repeatState);
-                    break;
             }
+            repeatState = ++repeatState % 3;
+            controller.setRepeat(repeatState == 0 ? RepeatRule.OFF : (repeatState == 1 ? RepeatRule.REPEAT : RepeatRule.REPEAT_ONE));
         }
 
-        if (actionEvent.getSource().equals(shuffle)) {
-            //TODO
-            if (notShuffled) {
-                notShuffled = false;
-                try {
-                    ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/icons/random.png")));
-                    shuffle.setIcon(new ImageIcon(icon.getImage().getScaledInstance(ICON + 15, ICON + 15, Image.SCALE_AREA_AVERAGING)));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                return;
-            } else {
+        if (actionEvent.getSource() == shuffle) {
+            System.out.println("Shuffle pressed");
+            if (shuffled) {
+                System.out.println("turn shuffle off");
+                controller.turnShuffleOff();
+                shuffled = false;
                 try {
                     ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/icons/shuffle.png")));
-                    shuffle.setIcon(new ImageIcon(icon.getImage().getScaledInstance(ICON + 15, ICON + 15, Image.SCALE_AREA_AVERAGING)));
+                    shuffle.setIcon(new ImageIcon(icon.getImage().getScaledInstance(ICON, ICON, Image.SCALE_AREA_AVERAGING)));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                notShuffled = true;
-                return;
+            } else if (controller.turnShuffleOn()) {
+                System.out.println("turn shuffle on");
+                shuffled = true;
+                try {
+                    ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/icons/random.png")));
+                    shuffle.setIcon(new ImageIcon(icon.getImage().getScaledInstance(ICON, ICON, Image.SCALE_AREA_AVERAGING)));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -135,7 +131,7 @@ public class ControlPanel extends JPanel implements ActionListener, MouseListene
         if (pause) {
             try {
                 ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/icons/play.png")));
-                play.setIcon(new ImageIcon(icon.getImage().getScaledInstance(ICON + 15 , ICON + 15, Image.SCALE_AREA_AVERAGING)));
+                play.setIcon(new ImageIcon(icon.getImage().getScaledInstance(ICON + 15, ICON + 15, Image.SCALE_AREA_AVERAGING)));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -214,14 +210,7 @@ public class ControlPanel extends JPanel implements ActionListener, MouseListene
                 e.printStackTrace();
             }
 
-            ArrayList<JButton> buttons = new ArrayList();
-            buttons.add(shuffle);
-            buttons.add(previous);
-            buttons.add(play);
-            buttons.add(next);
-            buttons.add(repeat);
-
-            for (JButton btn : buttons) {
+            for (JButton btn : new JButton[]{shuffle, previous, play, next, repeat}) {
                 btn.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
                 btn.setBackground(new Color(34, 34, 34));
                 btn.addActionListener(a);
