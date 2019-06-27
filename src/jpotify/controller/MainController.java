@@ -11,6 +11,7 @@ import jpotify.view.centerpanel.JPlaylistSong;
 import jpotify.view.centerpanel.JSong;
 import jpotify.view.leftpanel.CreateNewPlaylist;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -211,8 +212,9 @@ public class MainController {
     }
 
     public void deleteSongFromLibrary(int index) {
-        user.removeSongFromLibrary(index);
-        changeCenterPanel(MYSONG, 0);
+        if (user.removeSongFromLibrary(index)) {
+            changeCenterPanel(MYSONG, 0);
+        }
     }
 
     public ArrayList<JAlbum> getJAlbum() throws IOException {
