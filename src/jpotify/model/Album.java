@@ -43,4 +43,8 @@ public class Album extends SongList implements Comparable<Album> {
     private void doSort() {
         Collections.sort(songs);
     }
+
+    public void removeSong(Song song) {
+        songs.remove(song);
+    }
 }

@@ -159,8 +159,32 @@ public class User implements Serializable {
         song.setAlbumReference(albumReference);
     }
 
-    public void removeSong() {
-//        TODO: implement method
+    public boolean removeSongFromLibrary(int songIndex) {
+        if (currentList.current == getLibrarySongs().get(songIndex)) return false;
+        Song song = getLibrarySongs().get(songIndex);
+        for (int i = playlists.size() - 1; i >= 0; i--) {
+            playlists.get(i).removeSong(song);
+            if (playlists.get(i).getSongs().size() == 0)
+                playlists.remove(i);
+        }
+        Album songAlbum = song.getAlbumReference();
+        if (songAlbum != null) {
+            songAlbum.removeSong(song);
+            if (songAlbum.songs.size() == 0)
+                albums.remove(songAlbum.getName());
+        }
+        getLibrarySongs().remove(songIndex);
+        return true;
+    }
+
+    public boolean removeSongFromPlaylist(int playlistIndex, int songIndex) {
+        if (currentList.current == playlists.get(playlistIndex).getSongs().get(songIndex)) return false;
+        playlists.get(playlistIndex).removeSong(songIndex);
+        return true;
+    }
+
+    public void changePlaylistName(int playlistIndex, String newName) {
+        playlists.get(playlistIndex).setName(newName);
     }
 
     public List<Song> getLibrarySongs() {

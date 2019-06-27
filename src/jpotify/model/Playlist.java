@@ -75,4 +75,12 @@ public class Playlist extends SongList {
         ret.current = this.current;
         return ret;
     }
+
+    public void removeSong(int index) {
+        songs.remove(index);
+    }
+
+    public void removeSong(Song song) {
+        songs.remove(song);
+    }
 }
