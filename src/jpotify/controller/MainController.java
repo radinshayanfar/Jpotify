@@ -216,6 +216,7 @@ public class MainController {
 
 
     public void saveState() {
+        user.stopSong();
 //        Users users = new Users();
 //        users.addUser(user);
         try {
