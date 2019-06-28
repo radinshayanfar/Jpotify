@@ -7,10 +7,7 @@ import jpotify.model.Network.Server;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class User implements Serializable {
 
@@ -30,7 +27,7 @@ public class User implements Serializable {
     private static transient Server server;
     private static transient int myPort;
     private transient ArrayList<String> allowedIPs = new ArrayList<>();
-    private transient ArrayList<RemoteClient> remoteClients;
+    private transient HashSet<RemoteClient> remoteClients;
     private transient HashMap<RemoteClient, NetworkPlaylist> othersSharedPlaylists = new HashMap<>();
     private transient HashMap<RemoteClient, RecentlyPlayedPlaylist> othersRecentlyPlayed = new HashMap<>();
 
@@ -69,9 +66,9 @@ public class User implements Serializable {
         return playlists.get(1);
     }
 
-    public ArrayList<RemoteClient> getRemoteClients() {
+    public HashSet<RemoteClient> getRemoteClients() {
         if (remoteClients == null)
-            remoteClients = new ArrayList<>();
+            remoteClients = new HashSet<>();
         return remoteClients;
     }
 
@@ -383,13 +380,18 @@ public class User implements Serializable {
         remoteClients.add(client);
     }
 
+    public void addRemoteClient(String host, int port, String name) {
+        RemoteClient client = new RemoteClient(host, port, name);
+        remoteClients.add(client);
+    }
+
     public void addAndConnectRemoteClient(String host, int port) {
         RemoteClient client = new RemoteClient(host, port);
         remoteClients.add(client);
-        connectToClient(myPort, client);
+        client.setName(connectToClient(myPort, client));
     }
 
-    private void connectToClient(int myPort, RemoteClient client) {
+    private String connectToClient(int myPort, RemoteClient client) {
         try {
             URL url = new URL("http://" + client.getHost() + ":" + client.getPort() + "/connect");
             URLConnection connection = url.openConnection();
@@ -403,12 +405,15 @@ public class User implements Serializable {
             out.flush();
             out.close();
             ObjectInputStream in = new ObjectInputStream(connection.getInputStream());
-            RemoteClient namedClient = new RemoteClient(client.getHost(), client.getPort(), (String) in.readObject());
+            String userName = (String) in.readObject();
+            RemoteClient namedClient = new RemoteClient(client.getHost(), client.getPort(), userName);
             this.addSharedPlaylist(namedClient, new NetworkPlaylist(((Playlist) in.readObject()).getSongs(), client.getHost(), client.getPort()));
             this.addOthersRecentlyPlayed(namedClient, (RecentlyPlayedPlaylist) in.readObject());
             in.close();
+            return userName;
         } catch (IOException | ClassNotFoundException e) {
 //                e.printStackTrace();
         }
+        return null;
     }
 }

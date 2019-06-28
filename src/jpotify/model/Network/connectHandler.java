@@ -41,7 +41,7 @@ public class connectHandler implements HttpHandler, ChangeableUser {
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
-            user.addRemoteClient(host, port);
+            user.addRemoteClient(host, port, userName);
             RemoteClient connectedClient = new RemoteClient(host, port, userName);
             user.addSharedPlaylist(connectedClient, playlist);
             user.addOthersRecentlyPlayed(connectedClient, recentlyPlayedPlaylist);
