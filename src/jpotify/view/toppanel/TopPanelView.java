@@ -5,9 +5,12 @@ import jpotify.view.MainView;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class TopPanelView extends JPanel {
+public class TopPanelView extends JPanel implements ActionListener {
 
+    private JButton addUser;
     private MainController controller;
     static final int HEIGHT = 40;
 
@@ -30,8 +33,14 @@ public class TopPanelView extends JPanel {
         topRight.setBackground(Color.black);
         topRight.setPreferredSize(new Dimension(200, HEIGHT));
         this.add(topRight, BorderLayout.EAST);
-
+        addUser =  new JButton();
+        topRight.add(addUser);
+        addUser.addActionListener(this);
         setVisible(true);
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+    }
 }

@@ -42,13 +42,16 @@ public class FriendsBarView extends JPanel {
          setFriends(newF);
     }
 
+
     private class FriendHandler implements MouseListener{
 
         @Override
         public void mouseClicked(MouseEvent e) {
             Friend f = (Friend) e.getSource();
             System.out.println(f.getName());
-            System.out.println(f.getTitle());
+            System.out.println(f.getCurrentSongTitle());
+            //TODO Show Friends PlayList
+            controller.showFriendPlaylist(f.getName(), f.getHost(), f.getPort(), f.getCurrentSongTitle());
         }
 
         @Override

@@ -5,13 +5,14 @@ import jpotify.controller.MainController;
 import javax.swing.*;
 import java.awt.*;
 
-public class UsernameBar extends JPanel {
+public class UsernameBar extends JMenuBar {
     private MainController controller;
 
     public UsernameBar(MainController mainController) {
         controller = mainController;
-        setPreferredSize(new Dimension(500,40));
-        setBackground(new Color(14,14,14));
+        setPreferredSize(new Dimension(200,40));
+        setBackground(Color.red);
+        this.add(new JMenu());
         this.setVisible(true);
     }
 }

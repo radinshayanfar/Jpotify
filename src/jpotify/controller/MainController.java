@@ -10,6 +10,7 @@ import jpotify.view.centerpanel.JAlbum;
 import jpotify.view.centerpanel.JPlaylistSong;
 import jpotify.view.centerpanel.JSong;
 import jpotify.view.leftpanel.CreateNewPlaylist;
+import jpotify.view.rightpanel.Friend;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -337,5 +338,18 @@ public class MainController {
     public boolean turnShuffleOn() {
         //TOdo turn Shuffle on
         return false;
+    }
+
+    public void addNewUser(String name, String host, String port) {
+        //TODO create a new User, create a new user(then creates its friend in get connected users), Add Friend to the FriendsBarView, refresh everything
+    }
+
+    public void showFriendPlaylist(String fName, String name, int port, String currentSongTitle) {
+        //TODo gets name of a user and shows its playlist while starting his current song
+    }
+
+    public ArrayList<Friend> getConnectedUsers() {
+        //Todo gets all users and sends the re newed user list to the friendsbarvie *here we create Friends items*
+        return null;
     }
 }

@@ -6,7 +6,6 @@ import jpotify.view.MainView;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
-import java.util.ArrayList;
 
 public class RightPanelView extends JPanel {
     private MainController controller;
@@ -33,20 +32,22 @@ public class RightPanelView extends JPanel {
         this.add(label, BorderLayout.NORTH);
 
         friendsBarView = new FriendsBarView(controller);
+        friendsBarView.setFriends(controller.getConnectedUsers());
         scrollPane = new JScrollPane(friendsBarView, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         this.add(scrollPane, BorderLayout.CENTER);
         scrollPane.setBorder(null);
 //        scrollPane.setPreferredSize(new Di);
-
-        ArrayList<Friend> friends = new ArrayList<>();
-        Friend f1 = new Friend(controller,"maryam","offline", "jh");
-        Friend f2 = new Friend(controller,"Mohammaf", "online", "jjlk");
-        Friend f3 = new Friend(controller,"f","nazi", "online");
-        friends.add(f1);
-        friends.add(f2);
-        friends.add(f3);
-        friendsBarView.setFriends(friends);
+//
+//        ArrayList<Friend> friends = new ArrayList<>();
+//        Friend f1 = new Friend(controller,"maryam","offline", "jh");
+//        Friend f2 = new Friend(controller,"Mohammaf", "online", "jjlk");
+//        Friend f3 = new Friend(controller,"f","nazi", "online");
+//        friends.add(f1);
+//        friends.add(f2);
+//        friends.add(f3);
+//        friendsBarView.setFriends(friends);
 
         setVisible(true);
     }
+
 }
