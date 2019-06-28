@@ -1,6 +1,7 @@
 package jpotify.model.Network;
 
 import com.sun.net.httpserver.HttpServer;
+import jpotify.controller.MainController;
 import jpotify.model.User;
 
 import java.io.IOException;
@@ -16,10 +17,10 @@ public class Server {
     private updatePlaylistHandler updatePlaylistHandler;
     private getSongHandler getSongHandler;
 
-    public Server(User user, int port) throws IOException {
+    public Server(MainController controller, User user, int port) throws IOException {
         server = HttpServer.create(new InetSocketAddress(port), 0);
         connectHandler = new connectHandler(user);
-        updateRecentHandler = new updateRecentHandler(user);
+        updateRecentHandler = new updateRecentHandler(user, controller);
         updatePlaylistHandler = new updatePlaylistHandler(user);
         getSongHandler = new getSongHandler(user);
         server.createContext("/connect", connectHandler);

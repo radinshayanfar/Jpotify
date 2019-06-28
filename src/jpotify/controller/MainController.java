@@ -35,6 +35,8 @@ public class MainController {
         this.user = users.getUser(userIndex);
         user.setRepeatRule(RepeatRule.OFF);
 //        user.turnShuffleOn();
+        user.startHttpServer(this, 3245);
+//        System.out.println(user.getOthersSharedPlaylists().get(0).getSongs());
         mainView = new MainView(this);
     }
 
@@ -132,7 +134,7 @@ public class MainController {
     }
 
     public void songReachedEnd() {
-        user.stopSong();
+//        user.stopSong();
         Song nextSong = user.next();
         if (nextSong == null) {
             songListReachedEnd();
@@ -145,7 +147,7 @@ public class MainController {
 
     public void nextPressed() {
         if (player == null) return;
-        user.stopSong();
+//        user.stopSong();
         Song nextSong = user.forceNext();
         if (nextSong == null) {
             songListReachedEnd();
@@ -158,7 +160,7 @@ public class MainController {
 
     public void previousPressed() {
         if (player == null) return;
-        user.stopSong();
+//        user.stopSong();
         Song previousSong = user.previous();
         if (previousSong == null) {
             songListReachedEnd();
@@ -170,6 +172,7 @@ public class MainController {
     }
 
     private void songListReachedEnd() {
+        user.stopSong();
         if (player != null) {
             player.stop();
             player = null;
@@ -308,6 +311,9 @@ public class MainController {
 //            songs.add(user.getLibrarySongs().get(i));
             user.getPlaylists().get(index).addSong(user.getLibrarySongs().get(i));
         }
+        if (index == 1) {
+            user.tellOthersAboutMyShared();
+        }
 //        int lastIndex = user.newPlaylist(text, songs);
 //        mainView.getLeftPanelView().getPlaylistBar().refreshList();
 //        mainView.getLeftPanelView().getPlaylistBar().getPlayLists().setSelectedIndex(2);
@@ -340,8 +346,14 @@ public class MainController {
         return false;
     }
 
-    public void addNewUser(String name, String host, String port) {
+    public void addNewUser(String host, String port) {
         //TODO create a new User, create a new user(then creates its friend in get connected users), Add Friend to the FriendsBarView, refresh everything
+        user.addRemoteClient(host, Integer.parseInt(port));
+        refreshFriendsBar();
+    }
+
+    public void refreshFriendsBar() {
+        mainView.getRightPanelView().getFriendsBarView().setFriends(getConnectedUsers());
     }
 
     public void showFriendPlaylist(String fName, String name, int port, String currentSongTitle) {
@@ -350,6 +362,45 @@ public class MainController {
 
     public ArrayList<Friend> getConnectedUsers() {
         //Todo gets all users and sends the re newed user list to the friendsbarvie *here we create Friends items*
-        return null;
+        ArrayList<Friend> ret = new ArrayList<>();
+        for (RemoteClient r: user.getRemoteClients()) {
+            Friend f = new Friend(this, r.getHost(), r.getHost(), r.getPort());
+//            System.out.println(user.getOthersRecentlyPlayed().get(r));
+            Song song = user.getOthersRecentlyPlayed().get(r).getCurrentSong();
+            if( song != null) {
+                f.setCurrentSongTitle(song.getTitle());
+                f.setState("now playing");
+            }
+            else {
+                f.setCurrentSongTitle("");
+                f.setState("minutes ago");
+            }
+//            long s = Instant.now().toEpochMilli() - user.getOthersRecentlyPlayed().get(r).getCurrentSong().getLastPlayed();
+//            s = s/1000;
+////            f.setState(Integer.toString(s));
+            ret.add(f);
+        }
+       return ret;
+    }
+
+    public void deleteSongFromPlaylist(int songIndex) {
+        int playlistIndex = user.getPlaylists().indexOf(user.getCurrentSelectedListInGUI());
+        user.removeSongFromPlaylist(playlistIndex, songIndex);
+        if (playlistIndex == 1) {
+            user.tellOthersAboutMyShared();
+        }
+        mainView.getLeftPanelView().getPlaylistBar().revalidate();
+        changeCenterPanel(PLAYLIST, playlistIndex);
+    }
+
+    public void changePositionOfTheSongInPlaylist(boolean moveUp, int songIndex) {
+        int playlistIndex = user.getPlaylists().indexOf(user.getCurrentSelectedListInGUI());
+        if (moveUp) {
+            user.getPlaylists().get(playlistIndex).moveUp(songIndex);
+        } else {
+            user.getPlaylists().get(playlistIndex).moveDown(songIndex);
+        }
+        mainView.getLeftPanelView().getPlaylistBar().revalidate();
+        changeCenterPanel(PLAYLIST, playlistIndex);
     }
 }

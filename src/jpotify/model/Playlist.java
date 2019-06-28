@@ -1,6 +1,5 @@
 package jpotify.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -60,8 +59,9 @@ public class Playlist extends SongList {
     }
 
     public void moveUp(int index) {
-        if (index > 0)
+        if (index > 0) {
             Collections.swap(songs, index, index - 1);
+        }
     }
 
     public void moveDown(int index) {

@@ -25,7 +25,7 @@ public class getSongHandler implements HttpHandler, ChangeableUser {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         Map<String, String> params = StringHelper.queryToMap(exchange.getRequestURI().getQuery());
-        if (params.containsKey("i") && user.getHosts().contains(exchange.getRemoteAddress().getHostString())) {
+        if (params.containsKey("i") && user.getAllowedIPs().contains(exchange.getRemoteAddress().getHostString())) {
             int index = Integer.valueOf(params.get("i"));
             Headers h = exchange.getResponseHeaders();
             h.add("Content-Type", "audio/mpeg");

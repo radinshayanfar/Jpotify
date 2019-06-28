@@ -17,15 +17,15 @@ public class CreateNewUserFrame extends JFrame implements MouseListener {
 
         controller = mainController;
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        this.setLayout(new GridLayout(4,2));
+        this.setLayout(new GridLayout(3,2));
         this.setSize(300, 150);
         this.setLocation((int) (Toolkit.getDefaultToolkit().getScreenSize().width / 2 - this.getSize().getWidth() / 2)
                 , (int) (Toolkit.getDefaultToolkit().getScreenSize().height / 2 - this.getSize().getHeight() / 2));
 
-        name = new JLabel("name");
-        this.add(name);
-        nameF = new JTextField();
-        this.add(nameF);
+//        name = new JLabel("name");
+//        this.add(name);
+//        nameF = new JTextField();
+//        this.add(nameF);
         ip = new JLabel("ip");
         this.add(ip);
         ipF = new JTextField();
@@ -49,7 +49,7 @@ public class CreateNewUserFrame extends JFrame implements MouseListener {
         if (e.getSource().equals(cancel))
             this.dispose();
         if (e.getSource().equals(ok)){
-            controller.addNewUser(nameF.getText(), ipF.getText(), portF.getText());
+            controller.addNewUser(ipF.getText(), portF.getText());
         }
     }
 

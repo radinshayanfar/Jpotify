@@ -21,7 +21,7 @@ public class Friend extends JPanel {
     private String host;
     private int port;
 
-    public Friend(MainController mainController, String Name, String State, String Song, String host, int port) {
+    public Friend(MainController mainController, String Name, String host, int port) {
         controller = mainController;
         this.setPreferredSize(new Dimension(FriendsBarView.WIDTH, FriendsBarView.FRIEND_HEIGHT));
         this.setMaximumSize(new Dimension(FriendsBarView.WIDTH, FriendsBarView.FRIEND_HEIGHT));
@@ -31,8 +31,8 @@ public class Friend extends JPanel {
         this.port = port;
         this.host = host;
         name.setText(Name);
-        currentSongTitle.setText(Song);
-        state.setText(State);
+        currentSongTitle.setText("");
+        state.setText("online");
 
         ArrayList<JLabel> buttons = new ArrayList<>();
         buttons.add(name);
@@ -55,6 +55,16 @@ public class Friend extends JPanel {
         }
 
         this.setVisible(true);
+    }
+
+    public void setCurrentSongTitle(String nowPlaying){
+        currentSongTitle.setText(nowPlaying);
+        this.revalidate();
+    }
+
+    public void setState(String s){
+        state.setText(s);
+        this.revalidate();
     }
 
     public String getCurrentSongTitle() {

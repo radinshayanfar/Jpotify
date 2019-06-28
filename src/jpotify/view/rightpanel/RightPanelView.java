@@ -8,6 +8,10 @@ import javax.swing.border.Border;
 import java.awt.*;
 
 public class RightPanelView extends JPanel {
+    public FriendsBarView getFriendsBarView() {
+        return friendsBarView;
+    }
+
     private MainController controller;
     private FriendsBarView friendsBarView;
     static final int WIDTH = 200;
@@ -33,20 +37,10 @@ public class RightPanelView extends JPanel {
 
         friendsBarView = new FriendsBarView(controller);
         friendsBarView.setFriends(controller.getConnectedUsers());
-        scrollPane = new JScrollPane(friendsBarView, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane = new JScrollPane(friendsBarView);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         this.add(scrollPane, BorderLayout.CENTER);
         scrollPane.setBorder(null);
-//        scrollPane.setPreferredSize(new Di);
-//
-//        ArrayList<Friend> friends = new ArrayList<>();
-//        Friend f1 = new Friend(controller,"maryam","offline", "jh");
-//        Friend f2 = new Friend(controller,"Mohammaf", "online", "jjlk");
-//        Friend f3 = new Friend(controller,"f","nazi", "online");
-//        friends.add(f1);
-//        friends.add(f2);
-//        friends.add(f3);
-//        friendsBarView.setFriends(friends);
-
         setVisible(true);
     }
 

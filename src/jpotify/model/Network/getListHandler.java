@@ -25,7 +25,7 @@ public class getListHandler implements HttpHandler {
 
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        if (user.getHosts().contains(exchange.getRemoteAddress().getHostString())) {
+        if (user.getAllowedIPs().contains(exchange.getRemoteAddress().getHostString())) {
             try {
                 exchange.sendResponseHeaders(200, 0);
                 ObjectOutputStream out = new ObjectOutputStream(exchange.getResponseBody());

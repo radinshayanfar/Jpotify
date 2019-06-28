@@ -28,6 +28,7 @@ public class FriendsBarView extends JPanel {
     public void setFriends(ArrayList<Friend> friends){
          this.invalidate();
          this.removeAll();
+         if(friends == null) return;
          for (Friend f : friends){
              this.add(f);
              f.addMouseListener(fh);

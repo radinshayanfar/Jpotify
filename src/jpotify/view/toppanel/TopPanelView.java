@@ -3,12 +3,15 @@ package jpotify.view.toppanel;
 import jpotify.controller.MainController;
 import jpotify.view.MainView;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.IOException;
 
-public class TopPanelView extends JPanel implements ActionListener {
+public class TopPanelView extends JPanel implements MouseListener {
 
     private JButton addUser;
     private MainController controller;
@@ -33,14 +36,45 @@ public class TopPanelView extends JPanel implements ActionListener {
         topRight.setBackground(Color.black);
         topRight.setPreferredSize(new Dimension(200, HEIGHT));
         this.add(topRight, BorderLayout.EAST);
-        addUser =  new JButton();
+
+        addUser =  new JButton("Connect a Friend");
+        try {
+            ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/icon.png")));
+            addUser.setIcon(new ImageIcon(icon.getImage().getScaledInstance(30, 30, Image.SCALE_AREA_AVERAGING)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        addUser.setPreferredSize(topRight.getPreferredSize());
+        addUser.setBackground(Color.BLACK);
+        addUser.setForeground(Color.white);
+        addUser.setBorder(null);
         topRight.add(addUser);
-        addUser.addActionListener(this);
+        addUser.addMouseListener(this);
         setVisible(true);
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void mouseClicked(MouseEvent e) {
+        new CreateNewUserFrame(controller);
+    }
 
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        addUser.setForeground(new Color(149,0,22));
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        addUser.setForeground(Color.white);
     }
 }

@@ -17,8 +17,9 @@ public class JPlaylistSong extends JPanel implements MouseListener {
     private MainController controller;
     private JLabel album,artist, title, index;
     private JButton delete = new JButton();
+    private JButton moveUp, moveDown;
     private final static int HEIGHT = 40;
-    private Dimension dimension = new Dimension(CenterPanelView.WIDTH - 100, HEIGHT);
+    private Dimension dimension = new Dimension(CenterPanelView.WIDTH+100, HEIGHT);
 
     public JPlaylistSong(MainController mainController, int playListIndex, int index, String title, String artist, String album) {
         this.controller = mainController;
@@ -54,6 +55,16 @@ public class JPlaylistSong extends JPanel implements MouseListener {
         delete.setMaximumSize(new Dimension(20, HEIGHT));
         delete.setBorder(null);
         delete.setBackground(new Color(14,14,14));
+        this.add(delete);
+
+        moveUp = new JButton("moveUp");
+        moveDown = new JButton("moveDown");
+        moveUp.setPreferredSize(new Dimension(30,30));
+        moveDown.setPreferredSize(new Dimension(30,30));
+        this.add(moveUp);
+        this.add(moveDown);
+        moveUp.addMouseListener(this);
+        moveDown.addMouseListener(this);
 
         this.addMouseListener(this);
 
@@ -70,8 +81,19 @@ public class JPlaylistSong extends JPanel implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        System.out.println(index.getText() + "playlist songs");
-        controller.playSelectedSong(Integer.parseInt(index.getText())-1);
+
+        if(e.getSource().equals(this)){
+             System.out.println(index.getText() + "playlist songs");
+            controller.playSelectedSong(Integer.parseInt(index.getText())-1);
+        }
+        if (e.getSource().equals(delete))
+            controller.deleteSongFromPlaylist(Integer.parseInt(index.getText())-1);
+        if (e.getSource().equals(moveDown)) {
+            controller.changePositionOfTheSongInPlaylist(false, Integer.parseInt(index.getText()) - 1);
+        }
+        if (e.getSource().equals(moveUp)) {
+            controller.changePositionOfTheSongInPlaylist(true, Integer.parseInt(index.getText()) - 1);
+        }
     }
 
     @Override

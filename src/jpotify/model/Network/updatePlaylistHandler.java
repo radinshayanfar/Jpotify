@@ -23,7 +23,7 @@ public class updatePlaylistHandler implements HttpHandler, ChangeableUser {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         String host = exchange.getRemoteAddress().getHostString();
-        if (user.getHosts().contains(exchange.getRemoteAddress().getHostString())) {
+        if (user.getAllowedIPs().contains(exchange.getRemoteAddress().getHostString())) {
             ObjectInputStream in = new ObjectInputStream(exchange.getRequestBody());
             int port = in.readInt();
             NetworkPlaylist playlist = null;
