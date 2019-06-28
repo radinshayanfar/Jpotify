@@ -2,9 +2,8 @@ package jpotify.model.Network;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import jpotify.model.NetworkPlaylist;
-import jpotify.model.Playlist;
-import jpotify.model.User;
+import jpotify.controller.MainController;
+import jpotify.model.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -13,9 +12,11 @@ import java.io.ObjectOutputStream;
 public class connectHandler implements HttpHandler, ChangeableUser {
 
     private User user;
+    private MainController controller;
 
-    public connectHandler(User user) {
+    public connectHandler(User user, MainController controller) {
         this.user = user;
+        this.controller = controller;
     }
 
     @Override
@@ -30,12 +31,16 @@ public class connectHandler implements HttpHandler, ChangeableUser {
             ObjectInputStream in = new ObjectInputStream(exchange.getRequestBody());
             int port = in.readInt();
             NetworkPlaylist playlist = null;
+            RecentlyPlayedPlaylist recentlyPlayedPlaylist = null;
             try {
                 playlist = new NetworkPlaylist(((Playlist) in.readObject()).getSongs(), host, port);
+                recentlyPlayedPlaylist = (RecentlyPlayedPlaylist) in.readObject();
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
-            user.addSharedPlaylist(playlist);
+            user.addRemoteClient(host, port);
+            user.addSharedPlaylist(new RemoteClient(host, port), playlist);
+            user.addOthersRecentlyPlayed(new RemoteClient(host, port), recentlyPlayedPlaylist);
             in.close();
             exchange.sendResponseHeaders(200, 0);
             ObjectOutputStream out = new ObjectOutputStream(exchange.getResponseBody());
@@ -43,6 +48,7 @@ public class connectHandler implements HttpHandler, ChangeableUser {
             out.writeObject(user.getRecentlyPlayed());
             out.flush();
             out.close();
+            controller.refreshFriendsBar();
         }
         exchange.sendResponseHeaders(403, 0);
         exchange.close();

@@ -31,7 +31,7 @@ public class User implements Serializable {
     private static transient int myPort;
     private transient ArrayList<String> allowedIPs = new ArrayList<>();
     private transient ArrayList<RemoteClient> remoteClients;
-    private transient ArrayList<NetworkPlaylist> othersSharedPlaylists = new ArrayList<>();
+    private transient HashMap<RemoteClient, NetworkPlaylist> othersSharedPlaylists = new HashMap<>();
     private transient HashMap<RemoteClient, RecentlyPlayedPlaylist> othersRecentlyPlayed = new HashMap<>();
 
     {
@@ -224,31 +224,27 @@ public class User implements Serializable {
         return playlists.size() - 1;
     }
 
-    public void addSharedPlaylist(NetworkPlaylist playlist) {
+    public void addSharedPlaylist(RemoteClient remoteClient, NetworkPlaylist playlist) {
         if (playlist == null)
             return;
-        int i = getOthersSharedPlaylists().indexOf(playlist);
-        if (i == -1)
-            othersSharedPlaylists.add(playlist);
-        else
-            othersSharedPlaylists.set(i, playlist);
+        getOthersSharedPlaylists().put(remoteClient, playlist);
     }
 
-    public void removeSharedPlaylist(int index) {
-        if (othersSharedPlaylists == null)
-            othersSharedPlaylists = new ArrayList<>();
-        othersSharedPlaylists.remove(index);
-    }
+//    public void removeSharedPlaylist(int index) {
+//        if (othersSharedPlaylists == null)
+//            othersSharedPlaylists = new ArrayList<>();
+//        othersSharedPlaylists.remove(index);
+//    }
 
-    public void removeSharedPlaylist(NetworkPlaylist playlist) {
-        if (othersSharedPlaylists == null)
-            othersSharedPlaylists = new ArrayList<>();
-        othersSharedPlaylists.remove(playlist);
-    }
+//    public void removeSharedPlaylist(NetworkPlaylist playlist) {
+//        if (othersSharedPlaylists == null)
+//            othersSharedPlaylists = new HashMap<>();
+//        othersSharedPlaylists.remove(playlist);
+//    }
 
-    public ArrayList<NetworkPlaylist> getOthersSharedPlaylists() {
+    public HashMap<RemoteClient, NetworkPlaylist> getOthersSharedPlaylists() {
         if (othersSharedPlaylists == null)
-            othersSharedPlaylists = new ArrayList<>();
+            othersSharedPlaylists = new HashMap<>();
         return othersSharedPlaylists;
     }
 
@@ -396,10 +392,11 @@ public class User implements Serializable {
             ObjectOutputStream out = new ObjectOutputStream(connection.getOutputStream());
             out.writeInt(myPort);
             out.writeObject(getSharedPlaylist());
+            out.writeObject(getRecentlyPlayed());
             out.flush();
             out.close();
             ObjectInputStream in = new ObjectInputStream(connection.getInputStream());
-            this.addSharedPlaylist(new NetworkPlaylist(((Playlist) in.readObject()).getSongs(), client.getHost(), client.getPort()));
+            this.addSharedPlaylist(client, new NetworkPlaylist(((Playlist) in.readObject()).getSongs(), client.getHost(), client.getPort()));
             this.addOthersRecentlyPlayed(client, (RecentlyPlayedPlaylist) in.readObject());
             in.close();
         } catch (IOException | ClassNotFoundException e) {

@@ -23,6 +23,7 @@ public class updatePlaylistHandler implements HttpHandler, ChangeableUser {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         String host = exchange.getRemoteAddress().getHostString();
+        System.out.println("shared changed!");
         if (user.getAllowedIPs().contains(exchange.getRemoteAddress().getHostString())) {
             ObjectInputStream in = new ObjectInputStream(exchange.getRequestBody());
             int port = in.readInt();
@@ -33,7 +34,7 @@ public class updatePlaylistHandler implements HttpHandler, ChangeableUser {
                 e.printStackTrace();
             }
             System.out.println(playlist.getSongs());
-            user.addSharedPlaylist(playlist);
+            user.addSharedPlaylist(new RemoteClient(host, port), playlist);
             exchange.sendResponseHeaders(200, 0);
             exchange.close();
         }

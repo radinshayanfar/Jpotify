@@ -36,14 +36,6 @@ public class FriendsBarView extends JPanel {
          this.revalidate();
     }
 
-    public void setFriendsList(Friend f){
-         ArrayList<Friend> newF = new ArrayList<>();
-         newF.add(f);
-         newF.addAll(friends);
-         setFriends(newF);
-    }
-
-
     private class FriendHandler implements MouseListener{
 
         @Override
@@ -52,7 +44,7 @@ public class FriendsBarView extends JPanel {
             System.out.println(f.getName());
             System.out.println(f.getCurrentSongTitle());
             //TODO Show Friends PlayList
-            controller.showFriendPlaylist(f.getName(), f.getHost(), f.getPort(), f.getCurrentSongTitle());
+            controller.showFriendPlaylist(f.getName(), f.getHost(), f.getPort());
         }
 
         @Override

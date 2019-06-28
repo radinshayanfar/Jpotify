@@ -11,6 +11,7 @@ import jpotify.view.centerpanel.JPlaylistSong;
 import jpotify.view.centerpanel.JSong;
 import jpotify.view.leftpanel.CreateNewPlaylist;
 import jpotify.view.rightpanel.Friend;
+import jpotify.view.rightpanel.PlaylistList;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -359,8 +360,13 @@ public class MainController {
         mainView.getRightPanelView().getFriendsBarView().setFriends(getConnectedUsers());
     }
 
-    public void showFriendPlaylist(String fName, String name, int port, String currentSongTitle) {
-        //TODo gets name of a user and shows its playlist while starting his current song
+    public void showFriendPlaylist(String name, String host, int port) {
+        List<Song> songs = user.getOthersSharedPlaylists().get(new RemoteClient(host, port)).getSongs();
+        ArrayList<String> songsNames = new ArrayList();
+        for (Song s: songs)
+            songsNames.add(s.getTitle());
+        PlaylistList playlist = new PlaylistList(this, name, songsNames);
+        playlist.setVisible(true);
     }
 
     public ArrayList<Friend> getConnectedUsers() {

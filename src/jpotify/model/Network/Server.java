@@ -19,7 +19,7 @@ public class Server {
 
     public Server(MainController controller, User user, int port) throws IOException {
         server = HttpServer.create(new InetSocketAddress(port), 0);
-        connectHandler = new connectHandler(user);
+        connectHandler = new connectHandler(user, controller);
         updateRecentHandler = new updateRecentHandler(user, controller);
         updatePlaylistHandler = new updatePlaylistHandler(user);
         getSongHandler = new getSongHandler(user);
