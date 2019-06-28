@@ -405,7 +405,7 @@ public class User implements Serializable {
             ObjectInputStream in = new ObjectInputStream(connection.getInputStream());
             RemoteClient namedClient = new RemoteClient(client.getHost(), client.getPort(), (String) in.readObject());
             this.addSharedPlaylist(namedClient, new NetworkPlaylist(((Playlist) in.readObject()).getSongs(), client.getHost(), client.getPort()));
-            this.addOthersRecentlyPlayed(namedClientt, (RecentlyPlayedPlaylist) in.readObject());
+            this.addOthersRecentlyPlayed(namedClient, (RecentlyPlayedPlaylist) in.readObject());
             in.close();
         } catch (IOException | ClassNotFoundException e) {
 //                e.printStackTrace();
