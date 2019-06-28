@@ -18,10 +18,14 @@ public class PlaylistList extends JFrame implements ActionListener {
     private JButton downloadBtn = new JButton("Download Single");
     private ListHandler listHandler = new ListHandler();
     private JList songsList;
+    private String host;
+    private int port;
 
-    public PlaylistList(MainController mainController, String playlistName, ArrayList<String> playlistSong) throws HeadlessException {
+    public PlaylistList(MainController mainController, String playlistName, ArrayList<String> playlistSong, String host, int port) throws HeadlessException {
         controller = mainController;
 
+        this.port = port;
+        this.host = host;
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setLayout(new BorderLayout());
         this.setSize(300, 400);
@@ -73,7 +77,7 @@ public class PlaylistList extends JFrame implements ActionListener {
         public void valueChanged(ListSelectionEvent e) {
             System.out.println(songsList.getSelectedIndex() + "play");
             songsList.getSelectedIndex();
-            //TODO play the song
+            controller.playSelectedSongFromNetwork(host, port, songsList.getSelectedIndex() );
         }
     }
 }

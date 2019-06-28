@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class MainController {
-    public static final int JALBUM = 3, PLAYLIST = 2, MYSONG = 0, ALBUMS = 1, BLANPAGE = 4;
+    public static final int JALBUM = 3, PLAYLIST = 2, MYSONG = 0, ALBUMS = 1, BLANPAGE = 4, NETWORK =5;
     //    public static final int PLAY_BUTTON=1;
     private MainView mainView;
     private Users users;
@@ -53,6 +53,10 @@ public class MainController {
     }
 
     public void setCurrentMode(int mode, int index) {
+        setCurrentMode(mode, index, null, 0);
+    }
+
+    public void setCurrentMode(int mode, int index, String host, int port){
         this.currentMode = mode;
         switch (mode) {
             case JALBUM:
@@ -64,6 +68,8 @@ public class MainController {
             case PLAYLIST:
                 user.setCurrentSelectedListInGUI(user.getPlaylists().get(index));
                 break;
+            case NETWORK :
+                user.setCurrentSelectedListInGUI(user.getOthersSharedPlaylists().get(new RemoteClient(host, port)));
         }
     }
 
@@ -76,6 +82,17 @@ public class MainController {
         Song song = user.playSong(index);
         playSongWithCustomPlayer(song);
         GUIChangeForSongPlay(song);
+    }
+
+    public void playSelectedSongFromNetwork(String host, int port, int index) {
+        user.setCurrentList();
+        try {
+            Song song = user.playSongFromNetwork(index, host, port);
+            playSongWithCustomPlayer(song);
+            GUIChangeForSongPlay(song);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void GUIChangeForSongPlay(Song song) {
@@ -365,7 +382,7 @@ public class MainController {
         ArrayList<String> songsNames = new ArrayList();
         for (Song s: songs)
             songsNames.add(s.getTitle());
-        PlaylistList playlist = new PlaylistList(this, name, songsNames);
+        PlaylistList playlist = new PlaylistList(this, name, songsNames, host, port);
         playlist.setVisible(true);
     }
 
@@ -418,4 +435,6 @@ public class MainController {
         mainView.getLeftPanelView().getPlaylistBar().revalidate();
         changeCenterPanel(PLAYLIST, playlistIndex);
     }
+
+
 }

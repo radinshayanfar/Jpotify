@@ -398,6 +398,7 @@ public class User implements Serializable {
             out.writeInt(myPort);
             out.writeObject(getSharedPlaylist());
             out.writeObject(getRecentlyPlayed());
+            System.out.println(getRecentlyPlayed().songs);
             out.flush();
             out.close();
             ObjectInputStream in = new ObjectInputStream(connection.getInputStream());

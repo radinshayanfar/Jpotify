@@ -43,8 +43,8 @@ public class FriendsBarView extends JPanel {
             Friend f = (Friend) e.getSource();
             System.out.println(f.getName());
             System.out.println(f.getCurrentSongTitle());
-            //TODO Show Friends PlayList
             controller.showFriendPlaylist(f.getName(), f.getHost(), f.getPort());
+            controller.setCurrentMode(MainController.NETWORK, 0, f.getHost(), f.getPort());
         }
 
         @Override
