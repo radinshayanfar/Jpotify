@@ -381,6 +381,11 @@ public class User implements Serializable {
     public void addRemoteClient(String host, int port) {
         RemoteClient client = new RemoteClient(host, port);
         remoteClients.add(client);
+    }
+
+    public void addAndConnectRemoteClient(String host, int port) {
+        RemoteClient client = new RemoteClient(host, port);
+        remoteClients.add(client);
         connectToClient(myPort, client);
     }
 

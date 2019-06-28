@@ -27,6 +27,7 @@ public class connectHandler implements HttpHandler, ChangeableUser {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         String host = exchange.getRemoteAddress().getHostString();
+        System.out.println("someone is trying to connect" + host);
         if (user.getAllowedIPs().contains(exchange.getRemoteAddress().getHostString())) {
             ObjectInputStream in = new ObjectInputStream(exchange.getRequestBody());
             int port = in.readInt();

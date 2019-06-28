@@ -352,7 +352,7 @@ public class MainController {
 
     public void addNewUser(String host, String port) {
         //TODO create a new User, create a new user(then creates its friend in get connected users), Add Friend to the FriendsBarView, refresh everything
-        user.addRemoteClient(host, Integer.parseInt(port));
+        user.addAndConnectRemoteClient(host, Integer.parseInt(port));
         refreshFriendsBar();
     }
 
