@@ -30,6 +30,7 @@ public class MainController {
     private int volume = 0;
     private int currentMode;
     private int saveIndex;
+    private boolean muted = false;
 
     public MainController(Users users, int userIndex) {
         this.users = users;
@@ -203,7 +204,8 @@ public class MainController {
             if (player != null)
                 player.stop();
             player = new CustomPlayer(song.getAddress(), this);
-            player.setVolume(volume);
+            if (muted) player.setVolume(-80);
+            else player.setVolume(volume);
             player.play();
         } catch (JavaLayerException | IOException | InvalidDataException | UnsupportedTagException e) {
             e.printStackTrace();
@@ -228,6 +230,7 @@ public class MainController {
 
     public void changeVolume(int value) {
         volume = value;
+        muted = false;
         if (player != null)
             player.setVolume(value);
     }
@@ -438,4 +441,16 @@ public class MainController {
     }
 
 
+    public void muteVolume() {
+        muted = !muted;
+        if (muted) {
+            if (player != null)
+                player.setVolume(-80);
+            mainView.getBottomPanelView().getVolumeControlPanelView().getVolumeSlider().setValue(-80);
+        } else {
+            if (player != null)
+                player.setVolume(volume);
+            mainView.getBottomPanelView().getVolumeControlPanelView().getVolumeSlider().setValue(volume);
+        }
+    }
 }

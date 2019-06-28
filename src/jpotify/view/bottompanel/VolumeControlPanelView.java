@@ -19,12 +19,12 @@ public class VolumeControlPanelView extends JPanel implements ActionListener, Ch
     private MainController controller;
     private JButton mute = new JButton();
     private JLabel volumeDown = new JLabel();
-    private JLabel volumeUp= new  JLabel();
+    private JLabel volumeUp = new JLabel();
     private JSlider volumeSlider = new JSlider(JSlider.HORIZONTAL, -20, 4, 0);
 
     public VolumeControlPanelView(MainController mainController) {
         controller = mainController;
-        this.setBackground(new Color(34,34,34));
+        this.setBackground(new Color(34, 34, 34));
         this.setLayout(new FlowLayout(FlowLayout.CENTER));
         this.setBorder(BorderFactory.createEmptyBorder(30, 0, 0, 0));
 //        Mute Button
@@ -35,7 +35,7 @@ public class VolumeControlPanelView extends JPanel implements ActionListener, Ch
             e.printStackTrace();
         }
         mute.setPreferredSize(new Dimension(ELEMENTS_SIZE + 10, ELEMENTS_SIZE + 10));
-        mute.setBackground(new Color(34,34,34));
+        mute.setBackground(new Color(34, 34, 34));
         this.add(mute);
         mute.addActionListener(this);
 
@@ -46,13 +46,13 @@ public class VolumeControlPanelView extends JPanel implements ActionListener, Ch
         } catch (IOException e) {
             e.printStackTrace();
         }
-        volumeDown.setPreferredSize(new Dimension(ELEMENTS_SIZE , ELEMENTS_SIZE + 5));
-        volumeDown.setBackground(new Color(34,34,34));
+        volumeDown.setPreferredSize(new Dimension(ELEMENTS_SIZE, ELEMENTS_SIZE + 5));
+        volumeDown.setBackground(new Color(34, 34, 34));
         this.add(volumeDown);
 
 //        Volume Slider
         volumeSlider.setPreferredSize(new Dimension(95, ELEMENTS_SIZE + 10));
-        volumeSlider.setBackground(new Color(34,34,34));
+        volumeSlider.setBackground(new Color(34, 34, 34));
         this.add(volumeSlider);
         volumeSlider.addChangeListener(this);
 
@@ -63,18 +63,23 @@ public class VolumeControlPanelView extends JPanel implements ActionListener, Ch
         } catch (IOException e) {
             e.printStackTrace();
         }
-        volumeUp.setPreferredSize(new Dimension(ELEMENTS_SIZE , ELEMENTS_SIZE + 5));
+        volumeUp.setPreferredSize(new Dimension(ELEMENTS_SIZE, ELEMENTS_SIZE + 5));
         this.add(volumeUp);
-        this.setBackground(new Color(34,34,34));
+        this.setBackground(new Color(34, 34, 34));
+    }
+
+    public JSlider getVolumeSlider() {
+        return volumeSlider;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        controller.muteVolume();
     }
 
     @Override
     public void stateChanged(ChangeEvent e) {
-        controller.changeVolume(volumeSlider.getValue());
+        if (((JSlider) e.getSource()).getValueIsAdjusting())
+            controller.changeVolume(volumeSlider.getValue());
     }
 }
