@@ -31,14 +31,15 @@ public class updateRecentHandler implements HttpHandler, ChangeableUser {
         if (user.getAllowedIPs().contains(exchange.getRemoteAddress().getHostString())) {
             ObjectInputStream in = new ObjectInputStream(exchange.getRequestBody());
             int port = in.readInt();
+            String userName = null;
             RecentlyPlayedPlaylist playlist = null;
             try {
+                userName = (String) in.readObject();
                 playlist = (RecentlyPlayedPlaylist) in.readObject();
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
-            System.out.println(playlist.getCurrentSong());
-            user.addOthersRecentlyPlayed(new RemoteClient(host, port), playlist);
+            user.addOthersRecentlyPlayed(new RemoteClient(host, port, userName), playlist);
             exchange.sendResponseHeaders(200, 0);
             exchange.close();
             controller.refreshFriendsBar();

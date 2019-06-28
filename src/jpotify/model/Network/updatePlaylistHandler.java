@@ -27,14 +27,16 @@ public class updatePlaylistHandler implements HttpHandler, ChangeableUser {
         if (user.getAllowedIPs().contains(exchange.getRemoteAddress().getHostString())) {
             ObjectInputStream in = new ObjectInputStream(exchange.getRequestBody());
             int port = in.readInt();
+            String userName = null;
             NetworkPlaylist playlist = null;
             try {
+                userName = (String) in.readObject();
                 playlist = new NetworkPlaylist(((Playlist) in.readObject()).getSongs(), host, port);
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
             System.out.println(playlist.getSongs());
-            user.addSharedPlaylist(new RemoteClient(host, port), playlist);
+            user.addSharedPlaylist(new RemoteClient(host, port, userName), playlist);
             exchange.sendResponseHeaders(200, 0);
             exchange.close();
         }

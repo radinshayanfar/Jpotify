@@ -339,6 +339,7 @@ public class User implements Serializable {
                 connection.setDoOutput(true);
                 ObjectOutputStream out = new ObjectOutputStream(connection.getOutputStream());
                 out.writeInt(r.getPort());
+                out.writeObject(name);
                 out.writeObject(getRecentlyPlayed());
                 out.flush();
                 out.close();
@@ -358,6 +359,7 @@ public class User implements Serializable {
                 connection.setDoOutput(true);
                 ObjectOutputStream out = new ObjectOutputStream(connection.getOutputStream());
                 out.writeInt(r.getPort());
+                out.writeObject(name);
                 out.writeObject(getSharedPlaylist());
                 out.flush();
                 out.close();
@@ -401,7 +403,6 @@ public class User implements Serializable {
             out.writeObject(name);
             out.writeObject(getSharedPlaylist());
             out.writeObject(getRecentlyPlayed());
-            System.out.println(getRecentlyPlayed().songs);
             out.flush();
             out.close();
             ObjectInputStream in = new ObjectInputStream(connection.getInputStream());

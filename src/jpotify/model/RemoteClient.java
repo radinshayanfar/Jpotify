@@ -47,4 +47,13 @@ public class RemoteClient {
     public int hashCode() {
         return Objects.hash(host, port);
     }
+
+    @Override
+    public String toString() {
+        return "RemoteClient{" +
+                "host='" + host + '\'' +
+                ", port=" + port +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }
