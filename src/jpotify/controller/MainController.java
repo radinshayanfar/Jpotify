@@ -390,7 +390,7 @@ public class MainController {
         //Todo gets all users and sends the re newed user list to the friendsbarvie *here we create Friends items*
         ArrayList<Friend> ret = new ArrayList<>();
         for (RemoteClient r : user.getRemoteClients()) {
-            Friend f = new Friend(this, r.getHost(), r.getHost(), r.getPort());
+            Friend f = new Friend(this, r.getName(), r.getHost(), r.getPort());
 //            System.out.println(user.getOthersRecentlyPlayed().get(r));
             Song song = user.getOthersRecentlyPlayed().get(r).getCurrentSong();
             if (song != null) {

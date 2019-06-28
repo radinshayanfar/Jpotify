@@ -5,10 +5,17 @@ import java.util.Objects;
 public class RemoteClient {
     private String host;
     private int port;
+    private String name;
 
     public RemoteClient(String host, int port) {
         this.host = host;
         this.port = port;
+    }
+
+    public RemoteClient(String host, int port, String name) {
+        this.host = host;
+        this.port = port;
+        this.name = name;
     }
 
     public String getHost() {
@@ -17,6 +24,10 @@ public class RemoteClient {
 
     public int getPort() {
         return port;
+    }
+
+    public String getName() {
+        return name;
     }
 
     @Override

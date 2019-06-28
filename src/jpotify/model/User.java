@@ -396,14 +396,16 @@ public class User implements Serializable {
             connection.setDoOutput(true);
             ObjectOutputStream out = new ObjectOutputStream(connection.getOutputStream());
             out.writeInt(myPort);
+            out.writeObject(name);
             out.writeObject(getSharedPlaylist());
             out.writeObject(getRecentlyPlayed());
             System.out.println(getRecentlyPlayed().songs);
             out.flush();
             out.close();
             ObjectInputStream in = new ObjectInputStream(connection.getInputStream());
-            this.addSharedPlaylist(client, new NetworkPlaylist(((Playlist) in.readObject()).getSongs(), client.getHost(), client.getPort()));
-            this.addOthersRecentlyPlayed(client, (RecentlyPlayedPlaylist) in.readObject());
+            RemoteClient namedClient = new RemoteClient(client.getHost(), client.getPort(), (String) in.readObject());
+            this.addSharedPlaylist(namedClient, new NetworkPlaylist(((Playlist) in.readObject()).getSongs(), client.getHost(), client.getPort()));
+            this.addOthersRecentlyPlayed(namedClientt, (RecentlyPlayedPlaylist) in.readObject());
             in.close();
         } catch (IOException | ClassNotFoundException e) {
 //                e.printStackTrace();

@@ -31,20 +31,24 @@ public class connectHandler implements HttpHandler, ChangeableUser {
         if (user.getAllowedIPs().contains(exchange.getRemoteAddress().getHostString())) {
             ObjectInputStream in = new ObjectInputStream(exchange.getRequestBody());
             int port = in.readInt();
+            String userName = null;
             NetworkPlaylist playlist = null;
             RecentlyPlayedPlaylist recentlyPlayedPlaylist = null;
             try {
+                userName = (String) in.readObject();
                 playlist = new NetworkPlaylist(((Playlist) in.readObject()).getSongs(), host, port);
                 recentlyPlayedPlaylist = (RecentlyPlayedPlaylist) in.readObject();
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
             user.addRemoteClient(host, port);
-            user.addSharedPlaylist(new RemoteClient(host, port), playlist);
-            user.addOthersRecentlyPlayed(new RemoteClient(host, port), recentlyPlayedPlaylist);
+            RemoteClient connectedClient = new RemoteClient(host, port, userName);
+            user.addSharedPlaylist(connectedClient, playlist);
+            user.addOthersRecentlyPlayed(connectedClient, recentlyPlayedPlaylist);
             in.close();
             exchange.sendResponseHeaders(200, 0);
             ObjectOutputStream out = new ObjectOutputStream(exchange.getResponseBody());
+            out.writeObject(user.getName());
             out.writeObject(user.getSharedPlaylist());
             out.writeObject(user.getRecentlyPlayed());
             out.flush();
