@@ -23,6 +23,7 @@ public class TopPanelView extends JPanel {
         searchContainer.setBackground(new Color(14,14,14));
         searchContainer.setLayout(new FlowLayout(FlowLayout.CENTER));
         searchContainer.add(new SearchBar(controller));
+        searchContainer.setBorder(BorderFactory.createEmptyBorder(4, 0,0,0));
         this.add(searchContainer, BorderLayout.CENTER);
 
         JPanel topRight = new JPanel();
