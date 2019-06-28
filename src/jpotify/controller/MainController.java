@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class MainController {
-    public static final int JALBUM = 3,PLAYLIST = 2, MYSONG = 0, ALBUMS = 1, BLANPAGE = 4;
+    public static final int JALBUM = 3, PLAYLIST = 2, MYSONG = 0, ALBUMS = 1, BLANPAGE = 4;
     //    public static final int PLAY_BUTTON=1;
     private MainView mainView;
     private Users users;
@@ -51,9 +51,9 @@ public class MainController {
         }
     }
 
-    public void setCurrentMode(int mode, int index){
+    public void setCurrentMode(int mode, int index) {
         this.currentMode = mode;
-        switch (mode){
+        switch (mode) {
             case JALBUM:
                 user.setCurrentSelectedListInGUI(user.getAlbums().get(index));
                 break;
@@ -66,7 +66,7 @@ public class MainController {
         }
     }
 
-    public int getCurrentMode(){
+    public int getCurrentMode() {
         return currentMode;
     }
 
@@ -197,7 +197,6 @@ public class MainController {
     }
 
 
-
     public void saveState() {
 //        Users users = new Users();
 //        users.addUser(user);
@@ -224,7 +223,7 @@ public class MainController {
         List<Album> albums = user.getAlbums();
         ArrayList<JAlbum> jAlbums = new ArrayList<>();
         for (int i = 0; i < albums.size(); i++) {
-            jAlbums.add(new JAlbum(this, albums.get(i).getName(), albums.get(i).getTitles() ,albums.get(i).getArtwork(), i));
+            jAlbums.add(new JAlbum(this, albums.get(i).getName(), albums.get(i).getTitles(), albums.get(i).getArtwork(), i));
         }
         return jAlbums;
     }
@@ -232,8 +231,8 @@ public class MainController {
     public ArrayList<JPlaylistSong> getJPlaylistSong(int index) {
         ArrayList<JPlaylistSong> ret = new ArrayList<>();
         int i = 0;
-        for (Song s: user.getPlaylists().get(index).getSongs()) {
-            ret.add(new JPlaylistSong(this,index,i++,s.getTitle(),s.getArtist(),s.getAlbum()));
+        for (Song s : user.getPlaylists().get(index).getSongs()) {
+            ret.add(new JPlaylistSong(this, index, i++, s.getTitle(), s.getArtist(), s.getAlbum()));
         }
         return ret;
     }
@@ -241,7 +240,7 @@ public class MainController {
     public ArrayList<JSong> getJSongs(int mode, int index) throws IOException {
         ArrayList<JSong> jSongs = new ArrayList<>();
         List<Song> songs = null;
-        switch (mode){
+        switch (mode) {
             case MYSONG:
                 songs = user.getLibrarySongs();
                 break;
@@ -271,14 +270,14 @@ public class MainController {
 
     public ArrayList<String> getLibrarySongsNames() {
         ArrayList<String> songNames = new ArrayList<>();
-        for (Song s: user.getLibrarySongs())
+        for (Song s : user.getLibrarySongs())
             songNames.add(s.getTitle());
         return songNames;
     }
 
     public void createNewPlaylist(String text, ArrayList<Integer> indexes) {
         ArrayList<Song> songs = new ArrayList<>();
-        for (Integer i: indexes) {
+        for (Integer i : indexes) {
             songs.add(user.getLibrarySongs().get(i));
         }
         int lastIndex = user.newPlaylist(text, songs);
@@ -294,12 +293,16 @@ public class MainController {
         return user.getPlaylists().get(index).getName();
     }
 
+    public boolean isPlaylistChangeable(int index) {
+        return user.getPlaylists().get(index).isChangeable();
+    }
+
     public HashMap<Integer, String> getPlayLists() {
         HashMap<Integer, String> ret = new HashMap<>();
         int i = 0;
-        for (Playlist p: user.getPlaylists()) {
+        for (Playlist p : user.getPlaylists()) {
             System.out.println(p.getName());
-            ret.put(i++,p.getName());
+            ret.put(i++, p.getName());
         }
         return ret;
     }
@@ -307,7 +310,7 @@ public class MainController {
     public void addSongToPlaylist(ArrayList<Integer> indexes) {
 //        ArrayList<Song> songs = new ArrayList<>();
         int index = user.getPlaylists().indexOf(user.getCurrentSelectedListInGUI());
-        for (Integer i: indexes) {
+        for (Integer i : indexes) {
 //            songs.add(user.getLibrarySongs().get(i));
             user.getPlaylists().get(index).addSong(user.getLibrarySongs().get(i));
         }
@@ -363,15 +366,14 @@ public class MainController {
     public ArrayList<Friend> getConnectedUsers() {
         //Todo gets all users and sends the re newed user list to the friendsbarvie *here we create Friends items*
         ArrayList<Friend> ret = new ArrayList<>();
-        for (RemoteClient r: user.getRemoteClients()) {
+        for (RemoteClient r : user.getRemoteClients()) {
             Friend f = new Friend(this, r.getHost(), r.getHost(), r.getPort());
 //            System.out.println(user.getOthersRecentlyPlayed().get(r));
             Song song = user.getOthersRecentlyPlayed().get(r).getCurrentSong();
-            if( song != null) {
+            if (song != null) {
                 f.setCurrentSongTitle(song.getTitle());
                 f.setState("now playing");
-            }
-            else {
+            } else {
                 f.setCurrentSongTitle("");
                 f.setState("minutes ago");
             }
@@ -380,7 +382,7 @@ public class MainController {
 ////            f.setState(Integer.toString(s));
             ret.add(f);
         }
-       return ret;
+        return ret;
     }
 
     public void deleteSongFromPlaylist(int songIndex) {
@@ -400,6 +402,13 @@ public class MainController {
         } else {
             user.getPlaylists().get(playlistIndex).moveDown(songIndex);
         }
+        mainView.getLeftPanelView().getPlaylistBar().revalidate();
+        changeCenterPanel(PLAYLIST, playlistIndex);
+    }
+
+    public void changePlaylistName(String newName) {
+        int playlistIndex = user.getPlaylists().indexOf(user.getCurrentSelectedListInGUI());
+        user.getPlaylists().get(playlistIndex).setName(newName);
         mainView.getLeftPanelView().getPlaylistBar().revalidate();
         changeCenterPanel(PLAYLIST, playlistIndex);
     }

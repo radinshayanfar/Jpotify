@@ -98,7 +98,7 @@ public class CenterPanelView extends JPanel {
             System.out.println("playlist");
             this.removeAll();
             ArrayList<JPlaylistSong> playlistSongs = controller.getJPlaylistSong(index);
-            playlistPanel = new PlaylistPanel(controller, controller.getPlayListName(index), playlistSongs);
+            playlistPanel = new PlaylistPanel(controller, controller.getPlayListName(index), playlistSongs, controller.isPlaylistChangeable(index));
             playlistPanel.setVisible(true);
             scrollPane = new JScrollPane(playlistPanel);
             this.add(scrollPane);

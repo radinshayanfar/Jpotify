@@ -13,20 +13,20 @@ import java.util.ArrayList;
 
 public class PlaylistPanel extends JPanel implements MouseListener {
     private MainController controller;
-    private SongsPanel songsPanel;
-    private JPlaylistSong songs;
     private JPanel playlistList;
     private JPanel controlPanel;
     private JPanel infoPanel;
     private JButton edit, add, delete, playAll, moveUp, moveDown, deleteSong;
     private JLabel label;
+    private boolean changable;
 
-    public PlaylistPanel(MainController mainController, String name, ArrayList<JPlaylistSong> songs) {
+    public PlaylistPanel(MainController mainController, String name, ArrayList<JPlaylistSong> songs, boolean changable) {
         controller = mainController;
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setPreferredSize(new Dimension(CenterPanelView.ELEMENTS, CenterPanelView.ELEMENTS));
         this.setBackground(Color.cyan);
         this.setVisible(true);
+        this.changable = changable;
         setInfoPanel(name);
         setControlPanel();
         setPlaylistList(songs);
@@ -40,16 +40,18 @@ public class PlaylistPanel extends JPanel implements MouseListener {
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
         infoPanel.setMaximumSize(new Dimension(CenterPanelView.WIDTH, 50));
         label = new JLabel(name);
-        delete = new JButton("delete");
         add = new JButton("add song");
-        edit = new JButton("edit name");
         this.add(label);
-        this.add(edit);
-        edit.addMouseListener(this);
         this.add(add);
         add.addMouseListener(this);
-        this.add(delete);
-        delete.addMouseListener(this);
+        if (changable){
+            edit = new JButton("edit name");
+            edit.addMouseListener(this);
+            this.add(edit);
+            delete = new JButton("delete");
+            this.add(delete);
+            delete.addMouseListener(this);
+        }
         this.setVisible(true);
     }
 
@@ -90,6 +92,41 @@ public class PlaylistPanel extends JPanel implements MouseListener {
         if (e.getSource() == delete){
             controller.removePlaylist();
         }
+        if (e.getSource()== edit){
+            changePlaylistNamePrepration();
+        }
+    }
+
+    private void changePlaylistNamePrepration() {
+        JFrame frame = new JFrame();
+        JLabel enterName = new JLabel("Enter Name:");
+        JTextField newName = new JTextField();
+        JButton ok = new JButton("ok");
+        JButton cancel = new JButton("cancel");
+        frame.setLayout(new GridLayout(2,2));
+        frame.setLocation((int) (Toolkit.getDefaultToolkit().getScreenSize().width / 2 - this.getSize().getWidth() / 2)
+                , (int) (Toolkit.getDefaultToolkit().getScreenSize().height / 2 - this.getSize().getHeight() / 2));
+        frame.add(enterName);
+        frame.add(newName);
+        frame.add(cancel);
+        frame.add(ok);
+        ok.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String ret = newName.getText();
+                if (ret != null)
+                    if(ret.equals(label.getText())) {
+                        controller.changePlaylistName(ret);
+                        frame.dispose();
+                    }
+            }
+        });
+        cancel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.dispose();
+            }
+        });
     }
 
     @Override
