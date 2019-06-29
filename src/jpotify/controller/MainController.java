@@ -43,6 +43,10 @@ public class MainController {
         mainView = new MainView(this);
     }
 
+    /**
+     * Adds songs to library
+     * @param files array of files to be added
+     */
     public void addSongToLibrary(File... files) {
         for (File f :
                 files) {
@@ -54,10 +58,22 @@ public class MainController {
         }
     }
 
+    /**
+     * Sets GUI current state
+     * @param mode current mode
+     * @param index playlist index
+     */
     public void setCurrentMode(int mode, int index) {
         setCurrentMode(mode, index, null, 0);
     }
 
+    /**
+     * Sets GUI current state
+     * @param mode current mode
+     * @param index playlist index
+     * @param host friend's host
+     * @param port friend's port
+     */
     public void setCurrentMode(int mode, int index, String host, int port) {
         this.currentMode = mode;
         switch (mode) {
@@ -79,6 +95,10 @@ public class MainController {
         return currentMode;
     }
 
+    /**
+     * Plays selected song
+     * @param index song index
+     */
     public void playSelectedSong(int index) {
         user.setCurrentList();
         Song song = user.playSong(index);
@@ -88,6 +108,12 @@ public class MainController {
         GUIChangeForSongPlay(song);
     }
 
+    /**
+     * Plays selected song from friend
+     * @param host friend's host
+     * @param port friend's port
+     * @param index song index
+     */
     public void playSelectedSongFromNetwork(String host, int port, int index) {
         user.setCurrentList();
         try {
@@ -99,12 +125,19 @@ public class MainController {
         }
     }
 
+    /**
+     * Changes GUI bottom panel for Song playing
+     * @param song Song to be played
+     */
     private void GUIChangeForSongPlay(Song song) {
         mainView.changeArtwork(song.getArtwork());
         mainView.getBottomPanelView().getSongInfoLabel().setSongInfo(song.getTitle(), song.getArtist(), song.getAlbum());
         mainView.getBottomPanelView().getControlPanel().changePlayButton(false);
     }
 
+    /**
+     * Changes GUI bottom panel for song stop
+     */
     private void GUIChangeForSongStop() {
         try {
             mainView.changeArtwork(FileHelper.loadSampleArtwork());
@@ -116,6 +149,12 @@ public class MainController {
         updateJSlider(0, 0, 0);
     }
 
+    /**
+     * Updates bottom panel slider state in GUI
+     * @param state JSlider value
+     * @param timeSpent Time spent from song
+     * @param timeLeft Time left from song
+     */
     public void updateJSlider(int state, int timeSpent, int timeLeft) {
         mainView.getBottomPanelView().getControlPanel().getControlBar().setValue(state);
         mainView.getBottomPanelView().getControlPanel().getTimeSpent().setText(timeSpent / 60 + ":" + timeSpent % 60);
@@ -124,6 +163,11 @@ public class MainController {
         mainView.getBottomPanelView().getControlPanel().revalidate();
     }
 
+    /**
+     * Pauses song
+     * @param pause pause or not?
+     * @return true if state changed
+     */
     public boolean pause(boolean pause) {
         if (player == null) return false;
         if (pause) player.pause();
@@ -131,16 +175,27 @@ public class MainController {
         return true;
     }
 
+    /**
+     * pauses player for seek
+     */
     public void pausePlayerForSeek() {
         if (player != null)
             player.pause();
     }
 
+    /**
+     * resumes player after seek
+     */
     public void resumePlayerForSeek() {
         if (player != null && mainView.getBottomPanelView().getControlPanel().isPlaying())
             player.resume();
     }
 
+    /**
+     * Changes song position
+     * @param value song position from 0 to 100
+     * @return if was changed
+     */
     public boolean songSliderChanged(int value) {
         if (player == null) return false;
         try {
