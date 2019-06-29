@@ -74,9 +74,11 @@ public class JPlaylistSong extends JPanel implements MouseListener {
             btn.addMouseListener(this);
             btn.setMaximumSize(new Dimension(20, 20));
             btn.setBorder(null);
+            btn.setBorderPainted(false);
             btn.setBackground(new Color(14,14,14));
             this.add(btn);
         }
+        delete.setBorder(BorderFactory.createEmptyBorder(0,0,0,20));
 
         this.addMouseListener(this);
 

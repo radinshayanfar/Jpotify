@@ -25,9 +25,9 @@ public class PlaylistPanel extends JPanel implements MouseListener {
         this.changable = changable;
         this.setLayout(new BorderLayout());
         this.setPreferredSize(new Dimension(CenterPanelView.WIDTH, CenterPanelView.WIDTH));
-        this.setBackground(new Color(14,14,14));
+        this.setBackground(new Color(14, 14, 14));
         this.setVisible(true);
-        this.setBorder(BorderFactory.createEmptyBorder(5,10,0,0));
+        this.setBorder(BorderFactory.createEmptyBorder(5, 10, 0, 0));
         setInfoPanel(name);
         setPlaylistList(songs);
         this.add(infoPanel, BorderLayout.NORTH);
@@ -38,13 +38,13 @@ public class PlaylistPanel extends JPanel implements MouseListener {
 
     private void setInfoPanel(String name) {
         infoPanel = new JPanel();
-        infoPanel.setBackground(new Color(14, 14,14));
-        infoPanel.setLayout(new GridLayout(2,1));
+        infoPanel.setBackground(new Color(14, 14, 14));
+        infoPanel.setLayout(new GridLayout(2, 1));
         infoPanel.setPreferredSize(new Dimension(PANELWIDTH, 60));
         infoPanel.setMaximumSize(new Dimension(CenterPanelView.WIDTH, 60));
 
         label = new JLabel(name);
-        label.setForeground(new Color(149,0,22));
+        label.setForeground(new Color(149, 0, 22));
         label.setBackground(Color.BLACK);
         label.setFont(new Font("Arial", Font.PLAIN, 16));
         infoPanel.add(label);
@@ -60,8 +60,8 @@ public class PlaylistPanel extends JPanel implements MouseListener {
         controlPanel.setBackground(Color.BLACK);
         controlPanel.setVisible(true);
         controlPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-        controlPanel.setPreferredSize(new Dimension(PANELWIDTH,30));
-        controlPanel.setBorder(BorderFactory.createMatteBorder(1,0,1,0,new Color(149,0,22)));
+        controlPanel.setPreferredSize(new Dimension(PANELWIDTH, 30));
+        controlPanel.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 0, new Color(149, 0, 22)));
         controlPanel.setMaximumSize(new Dimension(CenterPanelView.WIDTH, 30));
 
         playAll = new JButton("Play All");
@@ -69,17 +69,17 @@ public class PlaylistPanel extends JPanel implements MouseListener {
         edit = new JButton("Edit Playlist Name");
         delete = new JButton("delete Playlist");
 
-        JButton [] buttons;
+        JButton[] buttons;
         if (changable)
             buttons = new JButton[]{playAll, add, edit, delete};
         else
             buttons = new JButton[]{playAll, add};
 
-        for (JButton button: buttons) {
+        for (JButton button : buttons) {
             button.setBackground(Color.BLACK);
             button.setForeground(Color.LIGHT_GRAY);
             button.setBorderPainted(false);
-            button.setBorder(BorderFactory.createMatteBorder(1,0,1,0,new Color(149,0,22)));
+            button.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 0, new Color(149, 0, 22)));
             button.setPreferredSize(buttonDimention);
             controlPanel.add(button);
             button.addMouseListener(this);
@@ -94,7 +94,7 @@ public class PlaylistPanel extends JPanel implements MouseListener {
         playlistList.setLayout(new BoxLayout(playlistList, BoxLayout.Y_AXIS));
         playlistList.setPreferredSize(new Dimension(PANELWIDTH, MainView.HEIGHT));
         playlistList.setMaximumSize(new Dimension(CenterPanelView.WIDTH, MainView.HEIGHT));
-        playlistList.setBackground(new Color(14,14,14));
+        playlistList.setBackground(new Color(14, 14, 14));
         playlistList.setBorder(null);
         for (JPlaylistSong song : songs) {
             playlistList.add(song);
@@ -110,16 +110,16 @@ public class PlaylistPanel extends JPanel implements MouseListener {
         if (e.getSource() == add) {
             new AddSongToPlayList(controller.getLibrarySongsNames());
         }
-        if (e.getSource() == delete){
+        if (e.getSource() == delete) {
             controller.removePlaylist();
         }
-        if (e.getSource()== edit){
+        if (e.getSource() == edit) {
             System.out.println("edit");
-            changePlaylistNamePrepration();
+            changePlaylistNamePreparation();
         }
     }
 
-    private void changePlaylistNamePrepration() {
+    private void changePlaylistNamePreparation() {
         JFrame frame = new JFrame();
         frame.setVisible(true);
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -127,8 +127,8 @@ public class PlaylistPanel extends JPanel implements MouseListener {
         JTextField newName = new JTextField();
         JButton ok = new JButton("ok");
         JButton cancel = new JButton("cancel");
-        frame.setLayout(new GridLayout(2,2));
-        frame.setPreferredSize(new Dimension(200,100));
+        frame.setLayout(new GridLayout(2, 2));
+        frame.setSize(new Dimension(200, 100));
         frame.setLocation((int) (Toolkit.getDefaultToolkit().getScreenSize().width / 2 - this.getSize().getWidth() / 2)
                 , (int) (Toolkit.getDefaultToolkit().getScreenSize().height / 2 - this.getSize().getHeight() / 2));
         frame.add(enterName);
@@ -139,11 +139,15 @@ public class PlaylistPanel extends JPanel implements MouseListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String ret = newName.getText();
-                if (ret != null)
-                    if(ret.equals(label.getText())) {
+                if (!ret.equals("")) {
+                    if (!ret.equals(label.getText())) {
                         controller.changePlaylistName(ret);
                         frame.dispose();
-                    }
+                    } else
+                        JOptionPane.showMessageDialog(null, "Please Enter a New Name", "Warning", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Please Fill the Name Field", "Warning", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
         cancel.addActionListener(new ActionListener() {

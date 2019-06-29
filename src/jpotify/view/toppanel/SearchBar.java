@@ -28,7 +28,7 @@ public class SearchBar extends JPanel implements ActionListener {
         textField.setPreferredSize(this.getPreferredSize());
 
         try {
-            ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/icons/liked.png")));
+            ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/search.png")));
             searchLabel.setIcon(new ImageIcon(icon.getImage().getScaledInstance(20, 20, Image.SCALE_AREA_AVERAGING)));
         } catch (IOException e) {
             e.printStackTrace();

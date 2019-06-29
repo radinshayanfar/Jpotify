@@ -436,7 +436,7 @@ public class MainController {
     public void changePlaylistName(String newName) {
         int playlistIndex = user.getPlaylists().indexOf(user.getCurrentSelectedListInGUI());
         user.getPlaylists().get(playlistIndex).setName(newName);
-        mainView.getLeftPanelView().getPlaylistBar().revalidate();
+        mainView.getLeftPanelView().refreshPlaylistBar();
         changeCenterPanel(PLAYLIST, playlistIndex);
     }
 
