@@ -28,6 +28,7 @@ public class PlaylistList extends JPanel implements ActionListener {
         this.setLayout(new BorderLayout());
         name.setText(playlistName);
         this.add(name, BorderLayout.NORTH);
+        this.setBackground(new Color(14,14,14));
 
         songsList = new JList(playlistSong.toArray());
         songsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -39,8 +40,10 @@ public class PlaylistList extends JPanel implements ActionListener {
         buttonPanel.setLayout(new GridLayout(1,1));
         buttonPanel.setPreferredSize(new Dimension(300,30));
         buttonPanel.add(downloadBtn);
-
         downloadBtn.addActionListener(this);
+        downloadBtn.setBackground(new Color(149,0,22));
+        downloadBtn.setBorderPainted(false);
+        downloadBtn.setForeground(Color.WHITE);
         this.add(buttonPanel, BorderLayout.SOUTH);
 
         this.setVisible(false);

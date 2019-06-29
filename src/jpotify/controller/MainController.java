@@ -118,7 +118,6 @@ public class MainController {
 
     public void updateJSlider(int state, int timeSpent, int timeLeft) {
         mainView.getBottomPanelView().getControlPanel().getControlBar().setValue(state);
-
         mainView.getBottomPanelView().getControlPanel().getTimeSpent().setText(timeSpent / 60 + ":" + timeSpent % 60);
         mainView.getBottomPanelView().getControlPanel().getTimeLeft().setText("-"+timeLeft/60 + ":" + timeLeft%60);
         mainView.getBottomPanelView().getControlPanel().getSliderPanel().revalidate();
@@ -227,6 +226,7 @@ public class MainController {
             e.printStackTrace();
         }
         user.stopHttpServer();
+        FileHelper.deleteTemporaryDirectory();
     }
 
     public void changeVolume(int value) {
