@@ -25,6 +25,7 @@ public class Friend extends JPanel {
         controller = mainController;
         this.setPreferredSize(new Dimension(FriendsBarView.WIDTH, FriendsBarView.FRIEND_HEIGHT));
         this.setMaximumSize(new Dimension(FriendsBarView.WIDTH, FriendsBarView.FRIEND_HEIGHT));
+        this.setMinimumSize(new Dimension(FriendsBarView.WIDTH, FriendsBarView.FRIEND_HEIGHT));
         this.setBackground(Color.BLACK);
         this.setLayout(new GridLayout(2,2));
         this.setBorder(BorderFactory.createMatteBorder(0, 0,1,0, new Color(157,219,185)));

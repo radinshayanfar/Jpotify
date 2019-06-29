@@ -2,6 +2,7 @@ package jpotify.view.centerpanel;
 
 import jpotify.controller.MainController;
 import jpotify.view.MainView;
+import jpotify.view.rightpanel.PlaylistList;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -17,6 +18,7 @@ public class CenterPanelView extends JPanel {
     private AlbumsPanel albumsPanel;
     private PlaylistPanel playlistPanel;
     private JScrollPane scrollPane;
+    private PlaylistList networkList;
     private JAlbum jAlbum;
     private SongsPanel albumSongPanel;
 
@@ -108,6 +110,17 @@ public class CenterPanelView extends JPanel {
             System.out.println("blank page");
             this.removeAll();
             this.add(new CenterPanelView(controller));
+            this.revalidate();
+        }
+        else if(mode == MainController.NETWORK){
+            System.out.println("network");
+            this.removeAll();
+            networkList = controller.getNetworkPlaylist();
+//            ArrayList<JPlaylistSong> playlistSongs = controller.getJPlaylistSong(index);
+//            playlistPanel = new PlaylistPanel(controller, controller.getPlayListName(index), playlistSongs, controller.isPlaylistChangeable(index));
+//            playlistPanel.setVisible(true);
+////            scrollPane = new JScrollPane(playlistPanel);
+            this.add(networkList);
             this.revalidate();
         }
     }

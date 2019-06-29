@@ -31,6 +31,7 @@ public class MainController {
     private int currentMode;
     private int saveIndex;
     private boolean muted = false;
+    private PlaylistList curentFriend;
 
     public MainController(Users users, int userIndex) {
         this.users = users;
@@ -388,6 +389,12 @@ public class MainController {
             songsNames.add(s.getTitle());
         PlaylistList playlist = new PlaylistList(this, name, songsNames, host, port);
         playlist.setVisible(true);
+        curentFriend = playlist;
+        changeCenterPanel(NETWORK, 0);
+    }
+
+    public PlaylistList getNetworkPlaylist() {
+        return curentFriend;
     }
 
     public ArrayList<Friend> getConnectedUsers() {

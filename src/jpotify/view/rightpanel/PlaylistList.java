@@ -10,7 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class PlaylistList extends JFrame implements ActionListener {
+public class PlaylistList extends JPanel implements ActionListener {
 
     private MainController controller;
     private JLabel name = new JLabel();
@@ -26,7 +26,7 @@ public class PlaylistList extends JFrame implements ActionListener {
 
         this.port = port;
         this.host = host;
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+//        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setLayout(new BorderLayout());
         this.setSize(300, 400);
         this.setLocation((int) (Toolkit.getDefaultToolkit().getScreenSize().width / 2 - this.getSize().getWidth() / 2)
