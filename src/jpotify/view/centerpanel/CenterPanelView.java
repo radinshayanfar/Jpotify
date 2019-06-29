@@ -19,7 +19,6 @@ public class CenterPanelView extends JPanel {
     private PlaylistPanel playlistPanel;
     private JScrollPane scrollPane;
     private PlaylistList networkList;
-    private JAlbum jAlbum;
     private SongsPanel albumSongPanel;
 
     public CenterPanelView(MainController mainController) {
@@ -33,25 +32,6 @@ public class CenterPanelView extends JPanel {
         this.setBorder(BorderFactory.createCompoundBorder(border1, border2));
 
         setVisible(true);
-//
-//        songsPanel = new SongsPanel(controller);
-//        albumsPanel = new AlbumsPanel(controller);
-//        playlistPanel = new PlaylistPanel(controller);
-    }
-
-    public void setSongsPanel(SongsPanel s){
-        songsPanel = s;
-    }
-    public void setAlbumsPanel(AlbumsPanel a){
-        albumsPanel = a;
-    }
-
-    public SongsPanel getSongsPanel() {
-        return songsPanel;
-    }
-
-    public AlbumsPanel getAlbumsPanel() {
-        return albumsPanel;
     }
 
     public void displayPanel(int mode, int index)  {
@@ -116,19 +96,9 @@ public class CenterPanelView extends JPanel {
             System.out.println("network");
             this.removeAll();
             networkList = controller.getNetworkPlaylist();
-//            ArrayList<JPlaylistSong> playlistSongs = controller.getJPlaylistSong(index);
-//            playlistPanel = new PlaylistPanel(controller, controller.getPlayListName(index), playlistSongs, controller.isPlaylistChangeable(index));
-//            playlistPanel.setVisible(true);
-////            scrollPane = new JScrollPane(playlistPanel);
             this.add(networkList);
             this.revalidate();
         }
     }
 
-    private void removeAllPanels(){
-//        this.invalidate();
-        this.remove(albumsPanel);
-        this.remove(playlistPanel);
-        this.remove(songsPanel);
-    }
 }

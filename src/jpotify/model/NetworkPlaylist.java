@@ -1,6 +1,7 @@
 package jpotify.model;
 
 import helper.FileHelper;
+import helper.StringHelper;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,7 +46,7 @@ public class NetworkPlaylist extends Playlist {
     private Song getSong(Song ret) {
         if (ret == null) return null;
         try {
-            ret = new Song(new File(FileHelper.downloadSongToTemporaryDirectory(host, port, shuffledOriginal.indexOf(ret))));
+            ret = new Song(new File(FileHelper.downloadSong("data/tmp/", StringHelper.randomString(10), host, port, shuffledOriginal.indexOf(ret))));
             return ret;
         } catch (IOException e) {
             e.printStackTrace();

@@ -60,6 +60,11 @@ public class Song implements Serializable, Comparable<Song> {
                 String name = address.getName();
                 title = name.substring(0, name.lastIndexOf('.'));
             }
+            if (artist == null) {
+                artist = "";
+            }
+            if (album == null)
+                album = "";
         } catch (IOException | UnsupportedTagException | InvalidDataException e) {
             e.printStackTrace();
         }

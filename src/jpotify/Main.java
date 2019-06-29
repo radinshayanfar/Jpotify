@@ -5,6 +5,7 @@ import jpotify.controller.MainController;
 import jpotify.model.User;
 import jpotify.model.Users;
 
+import javax.swing.*;
 import java.io.IOException;
 
 public class Main {
@@ -15,6 +16,11 @@ public class Main {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
             e.printStackTrace();
         }
+        try {
+            FileHelper.createDataDirectories();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Users users;
         try {
             users = FileHelper.loadUsers();
@@ -22,6 +28,7 @@ public class Main {
             users = new Users();
             users.addUser(new User("Radin"));
         }
+
         new MainController(users, 0);
 
     }

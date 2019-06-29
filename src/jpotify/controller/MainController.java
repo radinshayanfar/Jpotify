@@ -82,6 +82,8 @@ public class MainController {
     public void playSelectedSong(int index) {
         user.setCurrentList();
         Song song = user.playSong(index);
+        if (user.isShuffled())
+            user.shuffleCurrentSelected();
         playSongWithCustomPlayer(song);
         GUIChangeForSongPlay(song);
     }
@@ -111,20 +113,17 @@ public class MainController {
         }
         mainView.getBottomPanelView().getSongInfoLabel().setSongInfo("", "", "");
         mainView.getBottomPanelView().getControlPanel().changePlayButton(true);
-        updateJSlider(0);
+        updateJSlider(0, 0, 0);
     }
 
-    public void updateJSlider(int state) {
+    public void updateJSlider(int state, int timeSpent, int timeLeft) {
         mainView.getBottomPanelView().getControlPanel().getControlBar().setValue(state);
+
+        mainView.getBottomPanelView().getControlPanel().getTimeSpent().setText(timeSpent / 60 + ":" + timeSpent % 60);
+        mainView.getBottomPanelView().getControlPanel().getTimeLeft().setText("-"+timeLeft/60 + ":" + timeLeft%60);
+        mainView.getBottomPanelView().getControlPanel().getSliderPanel().revalidate();
         mainView.getBottomPanelView().getControlPanel().revalidate();
     }
-
-//    public void controlButtonHandler(int mode) {
-//        switch (mode) {
-//            case PLAY_BUTTON:
-//                mainView.getBottomPanelView().getControlPanel().changeButton(mode);
-//        }
-//    }
 
     public boolean pause(boolean pause) {
         if (player == null) return false;
@@ -361,16 +360,19 @@ public class MainController {
     }
 
     public void setRepeat(RepeatRule repeatRule) {
-        //TODO Set repeat
+        user.setRepeatRule(repeatRule);
     }
 
     public void turnShuffleOff() {
-        //TODO turn shuffle off
+        user.turnShuffleOff();
+        user.unshuffleCurrentSelected();
     }
 
     public boolean turnShuffleOn() {
-        //TOdo turn Shuffle on
-        return false;
+        if (user.turnShuffleOn()) {
+            user.shuffleCurrentSelected();
+        }
+        return true;
     }
 
     public void addNewUser(String host, String port) {
@@ -385,7 +387,7 @@ public class MainController {
 
     public void showFriendPlaylist(String name, String host, int port) {
         List<Song> songs = user.getOthersSharedPlaylists().get(new RemoteClient(host, port)).getSongs();
-        ArrayList<String> songsNames = new ArrayList();
+        ArrayList<String> songsNames = new ArrayList<>();
         for (Song s : songs)
             songsNames.add(s.getTitle());
         PlaylistList playlist = new PlaylistList(this, name, songsNames, host, port);
@@ -463,5 +465,17 @@ public class MainController {
                 player.setVolume(volume);
             mainView.getBottomPanelView().getVolumeControlPanelView().getVolumeSlider().setValue(volume);
         }
+    }
+
+    public String downloadSong(String host, int port, int selectedIndex) {
+        Song song = user.getOthersSharedPlaylists().get(new RemoteClient(host, port)).getSongs().get(selectedIndex);
+        String name = song.getAddress().getName();
+        name = name.substring(0, name.lastIndexOf('.'));
+        try {
+            return "Downloaded to " + FileHelper.downloadSong("./Downloads/", name, host, port, selectedIndex);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "Download Failed";
     }
 }

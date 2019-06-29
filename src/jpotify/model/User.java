@@ -1,6 +1,7 @@
 package jpotify.model;
 
 import helper.FileHelper;
+import helper.StringHelper;
 import jpotify.controller.MainController;
 import jpotify.model.Network.Server;
 
@@ -32,12 +33,6 @@ public class User implements Serializable {
     private transient HashMap<RemoteClient, RecentlyPlayedPlaylist> othersRecentlyPlayed = new HashMap<>();
 
     {
-        try {
-            FileHelper.createDataDirectories();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         try {
             allowedIPs = FileHelper.ipFileToArrayList("ip_list.txt");
         } catch (FileNotFoundException e) {
@@ -138,7 +133,7 @@ public class User implements Serializable {
      */
     public Song playSongFromNetwork(int index, String host, int port) throws IOException {
         currentList.current = currentList.songs.get(index);
-        return new Song(new File(FileHelper.downloadSongToTemporaryDirectory(host, port, index)));
+        return new Song(new File(FileHelper.downloadSong("data/tmp/", StringHelper.randomString(10), host, port, index)));
     }
 
     /**

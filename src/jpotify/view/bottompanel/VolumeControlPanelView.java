@@ -36,6 +36,7 @@ public class VolumeControlPanelView extends JPanel implements ActionListener, Ch
         }
         mute.setPreferredSize(new Dimension(ELEMENTS_SIZE + 10, ELEMENTS_SIZE + 10));
         mute.setBackground(new Color(34, 34, 34));
+        mute.setBorderPainted(false);
         this.add(mute);
         mute.addActionListener(this);
 

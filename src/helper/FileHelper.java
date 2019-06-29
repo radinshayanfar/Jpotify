@@ -31,6 +31,7 @@ final public class FileHelper {
     public static void createDataDirectories() throws IOException {
         Files.createDirectories(Paths.get("data"));
         Files.createDirectories(Paths.get("data/tmp"));
+        Files.createDirectories(Paths.get("Downloads"));
     }
 
     public static void deleteTemporaryDirectory() {
@@ -47,10 +48,10 @@ final public class FileHelper {
         return (Users) in.readObject();
     }
 
-    public static String downloadSongToTemporaryDirectory(String host, int port, int index) throws IOException {
+    public static String downloadSong(String saveTo, String name, String host, int port, int index) throws IOException {
         URL url = new URL("http://" + host + ":" + port + "/getSong?i=" + index);
         ReadableByteChannel rbc = Channels.newChannel(url.openStream());
-        String fileName = "data/tmp/" + StringHelper.randomString(10) + ".mp3";
+        String fileName = saveTo + name + ".mp3";
         FileOutputStream fos = new FileOutputStream(fileName);
         fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
 

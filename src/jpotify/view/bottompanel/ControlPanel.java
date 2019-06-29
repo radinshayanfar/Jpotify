@@ -22,7 +22,7 @@ public class ControlPanel extends JPanel implements ActionListener, MouseListene
     private Boolean playing = false;
     private Boolean shuffled = false;
     private static final int REPEAT_ONE_SONG = 2, REPEAT = 1, NO_REPEAT = 0;
-    private int repeatState;
+    private int repeatState = 0;
     private ActionListener a = this;
     private static final int ICON = 40;
     private JButton play = new JButton();
@@ -30,12 +30,11 @@ public class ControlPanel extends JPanel implements ActionListener, MouseListene
     private JButton previous = new JButton();
     private JButton repeat = new JButton();
     private JButton shuffle = new JButton();
+    private JPanel sliderPanel;
     private JSlider controlBar = new JSlider(JSlider.HORIZONTAL, 0, 100, 0);
     private ButtonPanel btnPanel = new ButtonPanel();
-
-    public JSlider getControlBar() {
-        return controlBar;
-    }
+    private JLabel timeSpent = new JLabel("00:00");
+    private JLabel timeLeft = new JLabel("00:00");
 
     public ControlPanel(MainController mainController) {
         controller = mainController;
@@ -44,11 +43,20 @@ public class ControlPanel extends JPanel implements ActionListener, MouseListene
         this.setPreferredSize(new Dimension(CenterPanelView.WIDTH, BottomPanelView.HEIGHT));
         this.add(btnPanel, BorderLayout.NORTH);
         repeatState = 0;
+        sliderPanel = new JPanel(new BorderLayout());
+        sliderPanel.setPreferredSize(new Dimension(CenterPanelView.WIDTH , 30));
+        sliderPanel.setBackground(new Color(34,34,34));
+        sliderPanel.add(timeSpent, BorderLayout.WEST);
+        sliderPanel.add(timeLeft, BorderLayout.EAST);
+        timeLeft.setForeground(Color.lightGray);
+        timeSpent.setForeground(Color.lightGray);
         controlBar.setBackground(new Color(34, 34, 34));
-        controlBar.setPreferredSize(new Dimension(CenterPanelView.WIDTH - 500, 20));
-        this.setVisible(true);
+        controlBar.setPreferredSize(sliderPanel.getPreferredSize());
         controlBar.addMouseListener(this);
-        this.add(controlBar, BorderLayout.SOUTH);
+        sliderPanel.add(controlBar, BorderLayout.CENTER);
+        sliderPanel.setVisible(true);
+        this.setVisible(true);
+        this.add(sliderPanel, BorderLayout.SOUTH);
     }
 
     @Override
@@ -71,10 +79,11 @@ public class ControlPanel extends JPanel implements ActionListener, MouseListene
             controller.previousPressed();
         }
         if (actionEvent.getSource() == repeat) {
+            repeatState = ++repeatState % 3;
             switch (repeatState) {
                 case REPEAT:
                     try {
-                        ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/icons/like.png")));
+                        ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/icons/1.png")));
                         repeat.setIcon(new ImageIcon(icon.getImage().getScaledInstance(ICON, ICON, Image.SCALE_AREA_AVERAGING)));
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -82,7 +91,7 @@ public class ControlPanel extends JPanel implements ActionListener, MouseListene
                     break;
                 case REPEAT_ONE_SONG:
                     try {
-                        ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/icons/play.png")));
+                        ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/icons/2.png")));
                         repeat.setIcon(new ImageIcon(icon.getImage().getScaledInstance(ICON, ICON, Image.SCALE_AREA_AVERAGING)));
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -90,19 +99,17 @@ public class ControlPanel extends JPanel implements ActionListener, MouseListene
                     break;
                 case NO_REPEAT:
                     try {
-                        ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/icons/play.png")));
+                        ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/icons/0.png")));
                         repeat.setIcon(new ImageIcon(icon.getImage().getScaledInstance(ICON, ICON, Image.SCALE_AREA_AVERAGING)));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                     break;
             }
-            repeatState = ++repeatState % 3;
             controller.setRepeat(repeatState == 0 ? RepeatRule.OFF : (repeatState == 1 ? RepeatRule.REPEAT : RepeatRule.REPEAT_ONE));
         }
 
         if (actionEvent.getSource() == shuffle) {
-            System.out.println("Shuffle pressed");
             if (shuffled) {
                 System.out.println("turn shuffle off");
                 controller.turnShuffleOff();
@@ -144,6 +151,22 @@ public class ControlPanel extends JPanel implements ActionListener, MouseListene
             }
             playing = true;
         }
+    }
+
+    public JPanel getSliderPanel() {
+        return sliderPanel;
+    }
+
+    public JLabel getTimeSpent() {
+        return timeSpent;
+    }
+
+    public JLabel getTimeLeft() {
+        return timeLeft;
+    }
+
+    public JSlider getControlBar() {
+        return controlBar;
     }
 
     @Override
@@ -191,7 +214,7 @@ public class ControlPanel extends JPanel implements ActionListener, MouseListene
                 e.printStackTrace();
             }
             try {
-                ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/icons/like.png")));
+                ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/icons/0.png")));
                 repeat.setIcon(new ImageIcon(icon.getImage().getScaledInstance(ICON, ICON, Image.SCALE_AREA_AVERAGING)));
             } catch (IOException e) {
                 e.printStackTrace();
@@ -217,7 +240,6 @@ public class ControlPanel extends JPanel implements ActionListener, MouseListene
                 btn.setBorderPainted(false);
                 this.add(btn);
             }
-            shuffle.addActionListener(a);
         }
     }
 

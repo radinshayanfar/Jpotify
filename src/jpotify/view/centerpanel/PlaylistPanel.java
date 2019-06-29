@@ -67,7 +67,7 @@ public class PlaylistPanel extends JPanel implements MouseListener {
         playAll = new JButton("Play All");
         add = new JButton("Add New Song");
         edit = new JButton("Edit Playlist Name");
-        delete = new JButton("delete Playlist");
+        delete = new JButton("Delete Playlist");
 
         JButton[] buttons;
         if (changable)
