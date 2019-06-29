@@ -17,9 +17,10 @@ public class JPlaylistSong extends JPanel implements MouseListener {
     private MainController controller;
     private JLabel album,artist, title, index;
     private JButton delete = new JButton();
-    private JButton moveUp, moveDown;
-    private final static int HEIGHT = 40;
-    private Dimension dimension = new Dimension(CenterPanelView.WIDTH+100, HEIGHT);
+    private JButton moveUp = new JButton();
+    private JButton moveDown = new JButton();
+    private final static int SONGHEIGHT = 60;
+    private Dimension dimension = new Dimension(CenterPanelView.WIDTH, SONGHEIGHT);
 
     public JPlaylistSong(MainController mainController, int playListIndex, int index, String title, String artist, String album) {
         this.controller = mainController;
@@ -31,40 +32,51 @@ public class JPlaylistSong extends JPanel implements MouseListener {
         this.album = new JLabel(album);
 
         this.setBackground(new Color(14,14,14));
-        this.setLayout(new FlowLayout());
-        this.setPreferredSize(dimension);
+        this.setLayout(new FlowLayout(FlowLayout.LEFT));
+//        this.setPreferredSize(dimension);
         this.setMaximumSize(dimension);
+        this.setMinimumSize(dimension);
 
         this.add(this.index);
         this.index.setForeground(Color.lightGray);
-        this.index.setPreferredSize(new Dimension(20, HEIGHT));
-        for (JLabel l: new JLabel[]{this.title,this.album,this.artist}) {
-            l.setPreferredSize(new Dimension(200,HEIGHT));
+        this.index.setPreferredSize(new Dimension(20, 10));
+        for (JLabel l: new JLabel[]{this.title,this.artist,this.album}) {
+            l.setPreferredSize(new Dimension(100,SONGHEIGHT));
+            l.setMaximumSize(new Dimension(100,SONGHEIGHT));
             l.setForeground(Color.lightGray);
+//            l.setBorder(BorderFactory.createMatteBorder(0,1,0,0, Color.lightGray));
             this.add(l);
         }
+        this.album.setPreferredSize(new Dimension(220,SONGHEIGHT));
+        this.artist.setPreferredSize(new Dimension(220,SONGHEIGHT));
         mySetBorder(new Color(14,14,14));
 
         try {
             ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/Remove.png")));
-            delete.setIcon(new ImageIcon(icon.getImage().getScaledInstance(10, 10, Image.SCALE_AREA_AVERAGING)));
+            delete.setIcon(new ImageIcon(icon.getImage().getScaledInstance(15, 15, Image.SCALE_AREA_AVERAGING)));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        delete.addMouseListener(this);
-        delete.setMaximumSize(new Dimension(20, HEIGHT));
-        delete.setBorder(null);
-        delete.setBackground(new Color(14,14,14));
-        this.add(delete);
+        try {
+            ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/up.png")));
+            moveUp.setIcon(new ImageIcon(icon.getImage().getScaledInstance(15, 15, Image.SCALE_AREA_AVERAGING)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/down.png")));
+            moveDown.setIcon(new ImageIcon(icon.getImage().getScaledInstance(15, 15, Image.SCALE_AREA_AVERAGING)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        moveUp = new JButton("moveUp");
-        moveDown = new JButton("moveDown");
-        moveUp.setPreferredSize(new Dimension(30,30));
-        moveDown.setPreferredSize(new Dimension(30,30));
-        this.add(moveUp);
-        this.add(moveDown);
-        moveUp.addMouseListener(this);
-        moveDown.addMouseListener(this);
+        for (JButton btn: new JButton[]{delete,moveUp,moveDown}) {
+            btn.addMouseListener(this);
+            btn.setMaximumSize(new Dimension(20, 20));
+            btn.setBorder(null);
+            btn.setBackground(new Color(14,14,14));
+            this.add(btn);
+        }
 
         this.addMouseListener(this);
 
@@ -72,11 +84,11 @@ public class JPlaylistSong extends JPanel implements MouseListener {
     }
 
     private void mySetBorder(Color c){
-        Border outerB = BorderFactory.createMatteBorder(0,0,5,0, c);
+        Border outerB = BorderFactory.createMatteBorder(0,0,20,0, c);
         Border whiteLineB = BorderFactory.createMatteBorder(0,0,1,0, Color.lightGray);
         Border inerB = BorderFactory.createMatteBorder(0,5,5,5, c);
         Border complexB = BorderFactory.createCompoundBorder(whiteLineB, inerB);
-        this.setBorder(BorderFactory.createCompoundBorder(outerB, complexB));
+        this.setBorder(BorderFactory.createCompoundBorder(complexB, outerB));
     }
 
     @Override

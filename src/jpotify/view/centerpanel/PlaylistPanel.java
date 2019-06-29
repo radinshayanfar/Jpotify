@@ -3,110 +3,99 @@ package jpotify.view.centerpanel;
 import jpotify.controller.MainController;
 import jpotify.view.MainView;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class PlaylistPanel extends JPanel implements MouseListener {
-    public final int PANELWIDTH = 600;
+    public static final int PANELWIDTH = 400;
     private MainController controller;
     private JPanel playlistList, controlPanel, infoPanel;
     private JButton edit, add, delete, playAll;
     private JLabel label;
+    private Dimension buttonDimention = new Dimension(100, 21);
     private boolean changable;
 
     public PlaylistPanel(MainController mainController, String name, ArrayList<JPlaylistSong> songs, boolean changable) {
         controller = mainController;
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        this.setPreferredSize(new Dimension(CenterPanelView.WIDTH, CenterPanelView.WIDTH));
-        this.setBackground(Color.BLACK);
-        this.setVisible(true);
         this.changable = changable;
+        this.setLayout(new BorderLayout());
+        this.setPreferredSize(new Dimension(CenterPanelView.WIDTH, CenterPanelView.WIDTH));
+        this.setBackground(new Color(14,14,14));
+        this.setVisible(true);
+        this.setBorder(BorderFactory.createEmptyBorder(5,10,0,0));
         setInfoPanel(name);
-        setControlPanel();
         setPlaylistList(songs);
-        this.add(infoPanel);
-        this.add(controlPanel);
+        this.add(infoPanel, BorderLayout.NORTH);
+        this.add(playlistList, BorderLayout.CENTER);
+//        this.add(controlPanel);
         this.add(new JScrollPane(playlistList));
     }
 
     private void setInfoPanel(String name) {
         infoPanel = new JPanel();
-        infoPanel.setLayout(new BorderLayout());
-        infoPanel.setPreferredSize(new Dimension(PANELWIDTH, 50));
-        infoPanel.setMaximumSize(new Dimension(CenterPanelView.WIDTH, 50));
+        infoPanel.setBackground(new Color(14, 14,14));
+        infoPanel.setLayout(new GridLayout(2,1));
+        infoPanel.setPreferredSize(new Dimension(PANELWIDTH, 60));
+        infoPanel.setMaximumSize(new Dimension(CenterPanelView.WIDTH, 60));
+
         label = new JLabel(name);
         label.setForeground(new Color(149,0,22));
         label.setBackground(Color.BLACK);
-        label.setFont(new Font("Arial", Font.PLAIN, 14));
-        this.add(label, BorderLayout.WEST);
-        if (changable){
-            JPanel panel = new JPanel();
-            panel.setBackground(Color.BLACK);
-            panel.setVisible(true);
-            panel.setLayout(new FlowLayout());
-            panel.setPreferredSize(new Dimension(100,50));
-            this.add(panel, BorderLayout.EAST);
-            edit = new JButton("edit name");
-            try {
-                ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/icons/forwards.png")));
-                edit.setIcon(new ImageIcon(icon.getImage().getScaledInstance(10, 10, Image.SCALE_AREA_AVERAGING)));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            edit.addMouseListener(this);
-            edit.setBorderPainted(false);
-            panel.add(edit);
+        label.setFont(new Font("Arial", Font.PLAIN, 16));
+        infoPanel.add(label);
+        setControlPanel();
+        infoPanel.add(controlPanel);
 
-            delete = new JButton("delete");
-            try {
-                ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/icons/play.png")));
-                edit.setIcon(new ImageIcon(icon.getImage().getScaledInstance(10, 10, Image.SCALE_AREA_AVERAGING)));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            delete.addMouseListener(this);
-            delete.setBorderPainted(false);
-            panel.add(delete);
-        }
         this.setVisible(true);
     }
 
     private void setControlPanel() {
-        controlPanel = new JPanel();
-        controlPanel.setLayout(new BorderLayout());
-        controlPanel.setBackground(Color.BLACK);
-        controlPanel.setBorder(BorderFactory.createMatteBorder(1,0,1,0,new Color(149,0,22)));
-        controlPanel.setMaximumSize(new Dimension(CenterPanelView.WIDTH, 50));
-        playAll = new JButton("Play All");
-        playAll.setBackground(Color.BLACK);
-        playAll.setBorderPainted(false);
-        playAll.setBorder(null);
-        playAll.setForeground(Color.LIGHT_GRAY);
-        controlPanel.add(playAll, BorderLayout.WEST);
-        playAll.addMouseListener(this);
 
-        add = new JButton("Add Song");
-        add.setBackground(Color.BLACK);
-        add.setBorderPainted(false);
-        add.setBorder(null);
-        add.setForeground(Color.LIGHT_GRAY);
-        controlPanel.add(add, BorderLayout.WEST);
-        add.addMouseListener(this);
+        controlPanel = new JPanel();
+        controlPanel.setBackground(Color.BLACK);
+        controlPanel.setVisible(true);
+        controlPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+        controlPanel.setPreferredSize(new Dimension(PANELWIDTH,30));
+        controlPanel.setBorder(BorderFactory.createMatteBorder(1,0,1,0,new Color(149,0,22)));
+        controlPanel.setMaximumSize(new Dimension(CenterPanelView.WIDTH, 30));
+
+        playAll = new JButton("Play All");
+        add = new JButton("Add New Song");
+        edit = new JButton("Edit Playlist Name");
+        delete = new JButton("delete Playlist");
+
+        JButton [] buttons;
+        if (changable)
+            buttons = new JButton[]{playAll, add, edit, delete};
+        else
+            buttons = new JButton[]{playAll, add};
+
+        for (JButton button: buttons) {
+            button.setBackground(Color.BLACK);
+            button.setForeground(Color.LIGHT_GRAY);
+            button.setBorderPainted(false);
+            button.setBorder(BorderFactory.createMatteBorder(1,0,1,0,new Color(149,0,22)));
+            button.setPreferredSize(buttonDimention);
+            controlPanel.add(button);
+            button.addMouseListener(this);
+        }
+
+        infoPanel.add(controlPanel);
         controlPanel.setVisible(true);
     }
 
     private void setPlaylistList(ArrayList<JPlaylistSong> songs) {
         playlistList = new JPanel();
         playlistList.setLayout(new BoxLayout(playlistList, BoxLayout.Y_AXIS));
-        playlistList.setMaximumSize(new Dimension(CenterPanelView.WIDTH, MainView.HEIGHT - 150));
+        playlistList.setPreferredSize(new Dimension(PANELWIDTH, MainView.HEIGHT));
+        playlistList.setMaximumSize(new Dimension(CenterPanelView.WIDTH, MainView.HEIGHT));
+        playlistList.setBackground(new Color(14,14,14));
+        playlistList.setBorder(null);
         for (JPlaylistSong song : songs) {
             playlistList.add(song);
             song.setVisible(true);
@@ -139,6 +128,7 @@ public class PlaylistPanel extends JPanel implements MouseListener {
         JButton ok = new JButton("ok");
         JButton cancel = new JButton("cancel");
         frame.setLayout(new GridLayout(2,2));
+        frame.setPreferredSize(new Dimension(200,100));
         frame.setLocation((int) (Toolkit.getDefaultToolkit().getScreenSize().width / 2 - this.getSize().getWidth() / 2)
                 , (int) (Toolkit.getDefaultToolkit().getScreenSize().height / 2 - this.getSize().getHeight() / 2));
         frame.add(enterName);

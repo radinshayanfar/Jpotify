@@ -36,7 +36,7 @@ public class JAlbum extends JPanel implements MouseListener {
         this.setBackground(new Color(14, 14, 14));
         Image image = ImageIO.read(new ByteArrayInputStream(img));
         artwork = new ImagePanel(image, DIMENSION);
-        artwork.setBorder(BorderFactory.createMatteBorder(BORDER, BORDER, BORDER, BORDER, Color.cyan));
+        artwork.setBorder(BorderFactory.createMatteBorder(BORDER, BORDER, BORDER, BORDER, new Color(149,0,22)));
         this.add(artwork, BorderLayout.WEST);
         this.add(infoPanel, BorderLayout.CENTER);
         mySetBorder(new Color(14, 14, 14));
@@ -104,7 +104,7 @@ public class JAlbum extends JPanel implements MouseListener {
 
     private void mySetBorder(Color c) {
         Border outerB = BorderFactory.createMatteBorder(0, 15, 5, 0, c);
-        Border whiteLineB = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.cyan);
+        Border whiteLineB = BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(149,0,22));
         Border inerB = BorderFactory.createMatteBorder(0, 0, 5, 0, c);
         Border complexB = BorderFactory.createCompoundBorder(whiteLineB, inerB);
         this.setBorder(BorderFactory.createCompoundBorder(outerB, complexB));

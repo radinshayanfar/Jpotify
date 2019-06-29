@@ -98,8 +98,8 @@ public class PlaylistBar extends JPanel implements MouseListener {
     @Override
     public void mouseEntered(MouseEvent e) {
         if(e.getSource().equals(addPlaylist)){
-            addPlaylist.setBackground(Color.LIGHT_GRAY);
-            addPlaylist.label.setForeground(Color.BLACK);
+            addPlaylist.setBackground(new Color(149,0,22));
+            addPlaylist.label.setForeground(Color.white);
         }
         else {
             PlaylistItem p = (PlaylistItem) e.getSource();
@@ -127,6 +127,7 @@ public class PlaylistBar extends JPanel implements MouseListener {
 
         public PlaylistItem(int index, String playlistName, MouseListener mouseListener) {
             this.index = index;
+            this.setLayout(new FlowLayout(FlowLayout.LEFT));
             this.setBackground(Color.BLACK);
             this.setMaximumSize(new Dimension(190,30 ));
             playlistLabel.setText(playlistName);
@@ -154,7 +155,7 @@ public class PlaylistBar extends JPanel implements MouseListener {
         public void mySetBorder(Color c){
             Border outerB = BorderFactory.createMatteBorder(0,15,5,5, Color.BLACK);
             Border whiteLineB = BorderFactory.createMatteBorder(0,0,1,0, Color.white);
-            Border inerB = BorderFactory.createMatteBorder(0,0,5,0, c);
+            Border inerB = BorderFactory.createMatteBorder(0,10,5,0, c);
             Border complexB = BorderFactory.createCompoundBorder(whiteLineB, inerB);
             this.setBorder(BorderFactory.createCompoundBorder(outerB, complexB));
         }

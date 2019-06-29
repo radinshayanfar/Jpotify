@@ -19,16 +19,19 @@ public class CreateNewPlaylist extends JFrame implements ActionListener {
 
     public CreateNewPlaylist(MainController mainController, ArrayList<String> mySongs) throws HeadlessException {
         controller = mainController;
-        this.songs = mySongs;
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        this.setLayout(new BorderLayout());
-        this.setSize(300, 400);
-        this.setLocation((int) (Toolkit.getDefaultToolkit().getScreenSize().width / 2 - this.getSize().getWidth() / 2)
+        songs = mySongs;
+        setBackground(Color.BLACK);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLayout(new BorderLayout());
+        setSize(300, 400);
+        setLocation((int) (Toolkit.getDefaultToolkit().getScreenSize().width / 2 - this.getSize().getWidth() / 2)
                 , (int) (Toolkit.getDefaultToolkit().getScreenSize().height / 2 - this.getSize().getHeight() / 2));
 
         JPanel upPanel = new JPanel();
         upPanel.setLayout(new GridLayout(2,2));
         JLabel nameLabel = new JLabel("Choose Name:");
+        nameLabel.setBackground(Color.BLACK);
+        nameLabel.setForeground(new Color(149,0,22));
 //        JLabel sondLabel = new JLabel("Choose Songs");
         this.add(upPanel, BorderLayout.NORTH);
         upPanel.add(nameLabel);
@@ -36,8 +39,9 @@ public class CreateNewPlaylist extends JFrame implements ActionListener {
 //        upPanel.add(sondLabel);
 
         songsList = new JList(mySongs.toArray());
+        songsList.setBackground(new Color(14,14,14));
+        songsList.setForeground(Color.white);
         JScrollPane scrollPane = new JScrollPane(songsList);
-//        songsList.setSelectionMode();
         this.add(scrollPane, BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel();
