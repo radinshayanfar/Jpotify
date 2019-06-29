@@ -14,6 +14,9 @@ public class RecentlyPlayedPlaylist extends SongList {
         return songs;
     }
 
+    /**
+     * Removes current playing song from Recently Played List
+     */
     public void removeCurrentSong() {
         this.current = null;
     }

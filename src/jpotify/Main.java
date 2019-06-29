@@ -5,7 +5,6 @@ import jpotify.controller.MainController;
 import jpotify.model.User;
 import jpotify.model.Users;
 
-import javax.swing.*;
 import java.io.IOException;
 
 public class Main {

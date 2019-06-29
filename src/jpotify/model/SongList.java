@@ -9,6 +9,11 @@ public class SongList implements Serializable {
     protected List<Song> songs = new ArrayList<>();
     protected Song current = null;
 
+    /**
+     * Returns next song in the list for playing.
+     * @param rule Repeat rule that affects next song that is returned.
+     * @return next Song
+     */
     public Song next(RepeatRule rule) {
         if (current == null) {
             /*if (songs.size() > 0)
@@ -28,6 +33,11 @@ public class SongList implements Serializable {
         }
     }
 
+    /**
+     * Returns previous song in the list for playing.
+     * @param rule Repeat rule that affects previous song that is returned.
+     * @return previous Song
+     */
     public Song previous(RepeatRule rule) {
         if (current == null) {
             /*if (songs.size() > 0)
