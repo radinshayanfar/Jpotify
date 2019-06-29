@@ -35,10 +35,10 @@ public class Album extends SongList implements Comparable<Album> {
         return songs;
     }
 
-    public String getTitles(){
+    public String getTitles() {
         StringBuilder ret = new StringBuilder();
-        for (int i = 0 ; i < 3 && i != songs.size() ; i++){
-            ret.append(songs.get(i).getTitle() + ", ");
+        for (int i = 0; i < 3 && i != songs.size(); i++) {
+            ret.append(songs.get(i).getTitle()).append(", ");
         }
         ret.delete(ret.length() - 2, ret.length());
         if (songs.size() > 3)
@@ -60,6 +60,6 @@ public class Album extends SongList implements Comparable<Album> {
 
     @Override
     public String toString() {
-        return "Album{+"+ getName() +"}";
+        return "Album{+" + getName() + "}";
     }
 }

@@ -148,7 +148,7 @@ public class CustomPlayer {
             int position = lastSeekPosition + player.getPosition();
             if (position - lastInvokedTimePosition >= 1000) {
 //                System.out.println(position);
-                controller.updateJSlider((int) ((double)position / duration * 100));
+                controller.updateJSlider((int) ((double) position / duration * 100));
                 lastInvokedTimePosition = position;
 //                System.err.println(lastInvokedTimePosition);
             }

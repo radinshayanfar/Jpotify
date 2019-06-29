@@ -429,6 +429,9 @@ public class MainController {
         } else {
             user.getPlaylists().get(playlistIndex).moveDown(songIndex);
         }
+        if (playlistIndex == 1) {
+            user.tellOthersAboutMyShared();
+        }
         mainView.getLeftPanelView().getPlaylistBar().revalidate();
         changeCenterPanel(PLAYLIST, playlistIndex);
     }

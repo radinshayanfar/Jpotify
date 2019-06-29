@@ -13,7 +13,8 @@ public class SongList implements Serializable {
         if (current == null) {
             /*if (songs.size() > 0)
                 return current = songs.get(0);
-            else*/ return null;
+            else*/
+            return null;
         }
         if (rule == RepeatRule.REPEAT_ONE)
             return current;
@@ -31,7 +32,8 @@ public class SongList implements Serializable {
         if (current == null) {
             /*if (songs.size() > 0)
                 return current = songs.get(songs.size() - 1);
-            else*/ return null;
+            else*/
+            return null;
         }
         if (rule == RepeatRule.REPEAT_ONE)
             return current;

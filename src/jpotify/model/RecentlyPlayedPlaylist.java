@@ -7,7 +7,7 @@ public class RecentlyPlayedPlaylist extends SongList {
 
     public void setCurrentSong(Song currentSong) {
         songs.add(0, currentSong);
-         this.current = currentSong;
+        this.current = currentSong;
     }
 
     public List<Song> getSongs() {
