@@ -97,8 +97,9 @@ public class User implements Serializable {
 
     /**
      * Adds or replaces a friend recently played song to list
+     *
      * @param remoteClient friends info (host, ip, name)
-     * @param otherList friends new list
+     * @param otherList    friends new list
      */
     public void addOthersRecentlyPlayed(RemoteClient remoteClient, RecentlyPlayedPlaylist otherList) {
         if (otherList == null)
@@ -110,6 +111,7 @@ public class User implements Serializable {
 
     /**
      * Plays a song from current list
+     *
      * @param index song index in the current list
      * @return Song object that should be played by Jlayer
      */
@@ -127,9 +129,10 @@ public class User implements Serializable {
 
     /**
      * Fetches song from network and plays it
+     *
      * @param index song index in the current list
-     * @param host which song should be fetched from
-     * @param port which song should be fetched from
+     * @param host  which song should be fetched from
+     * @param port  which song should be fetched from
      * @return Song object that should be played by Jlayer
      * @throws IOException if cannot fetch song
      */
@@ -140,6 +143,7 @@ public class User implements Serializable {
 
     /**
      * Plays song object
+     *
      * @param song song to be played
      */
     public void playSong(Song song) {
@@ -160,6 +164,7 @@ public class User implements Serializable {
 
     /**
      * Adds new Song to library
+     *
      * @param song Song to be added
      */
     public void addSong(Song song) {
@@ -180,6 +185,7 @@ public class User implements Serializable {
 
     /**
      * Removes Song from library
+     *
      * @param songIndex song index in library
      */
     public boolean removeSongFromLibrary(int songIndex) {
@@ -200,8 +206,9 @@ public class User implements Serializable {
 
     /**
      * Removes song from selected playlist
+     *
      * @param playlistIndex playlist index which song should be removed from it
-     * @param songIndex song index in playlist
+     * @param songIndex     song index in playlist
      * @return true if was able to delete song. false if song is currently playing and cannot be deleted
      */
     public boolean removeSongFromPlaylist(int playlistIndex, int songIndex) {
@@ -212,8 +219,9 @@ public class User implements Serializable {
 
     /**
      * Changes selected playlist name
+     *
      * @param playlistIndex playlist index which name should be changed
-     * @param newName new name for selected playlist
+     * @param newName       new name for selected playlist
      */
     public void changePlaylistName(int playlistIndex, String newName) {
         playlists.get(playlistIndex).setName(newName);
@@ -236,6 +244,7 @@ public class User implements Serializable {
 
     /**
      * Search for an album name returns it's index
+     *
      * @param name album name
      * @return album index
      */
@@ -266,7 +275,8 @@ public class User implements Serializable {
 
     /**
      * Creates new playlist
-     * @param name playlist name
+     *
+     * @param name  playlist name
      * @param songs playlist songs
      * @return playlist index in list
      */
@@ -278,8 +288,9 @@ public class User implements Serializable {
 
     /**
      * Adds or replaces a friend shared playlist
+     *
      * @param remoteClient Friends info (ip, port, name)
-     * @param playlist Friends shared playlist
+     * @param playlist     Friends shared playlist
      */
     public void addSharedPlaylist(RemoteClient remoteClient, NetworkPlaylist playlist) {
         if (playlist == null)
@@ -320,6 +331,7 @@ public class User implements Serializable {
 
     /**
      * Change selected list in GUI
+     *
      * @param currentSelectedListInGUI
      */
     public void setCurrentSelectedListInGUI(SongList currentSelectedListInGUI) {
@@ -355,6 +367,7 @@ public class User implements Serializable {
 
     /**
      * turns shuffling on
+     *
      * @return true if current selected list is playlist and can be shuffled
      */
     public boolean turnShuffleOn() {
@@ -383,6 +396,7 @@ public class User implements Serializable {
 
     /**
      * Next song in list. return current playing again if repeat is on
+     *
      * @return next Song
      */
     public Song next() {
@@ -391,6 +405,7 @@ public class User implements Serializable {
 
     /**
      * Next song in list
+     *
      * @return next Song
      */
     public Song forceNext() {
@@ -399,6 +414,7 @@ public class User implements Serializable {
 
     /**
      * Previous song in list
+     *
      * @return previous Song
      */
     public Song previous() {
@@ -409,8 +425,9 @@ public class User implements Serializable {
 
     /**
      * Starts HTTP Server for networking
+     *
      * @param controller Controller object to be called later
-     * @param port Server running port
+     * @param port       Server running port
      */
     public void startHttpServer(MainController controller, int port) {
         myPort = port;
@@ -493,6 +510,7 @@ public class User implements Serializable {
 
     /**
      * Adds friend to list
+     *
      * @param host friend's host
      * @param port friend's port
      * @param name friend's name
@@ -504,6 +522,7 @@ public class User implements Serializable {
 
     /**
      * Adds friend to list and tries to connect to him/her
+     *
      * @param host friend's host
      * @param port friend's port
      * @param name friend's name
@@ -516,6 +535,7 @@ public class User implements Serializable {
 
     /**
      * Starts connection to friend
+     *
      * @param myPort current user running port
      * @param client friends info (host, port)
      * @return friends name
