@@ -1,25 +1,26 @@
 package jpotify.view.leftpanel;
 
 import jpotify.controller.MainController;
-import jpotify.view.MainView;
+import jpotify.view.ButtonPanel;
+import jpotify.view.ImagePanel;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.*;
-import java.io.File;
-import java.io.IOException;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.HashMap;
 
-public class PlaylistBar extends JPanel implements ActionListener {
+public class PlaylistBar extends JPanel implements MouseListener {
 
     private MainController controller;
     private static final int ELEMENTS_SIZE = 15;
     private JScrollPane scrollPane = new JScrollPane();
     private JComboBox playLists;
     private HashMap<Integer, String> items;
-    private JButton addPlaylist = new JButton();
+    private ButtonPanel addPlaylist;
     private JPanel panel;
 
     public PlaylistBar(MainController mainController, HashMap<Integer, String>items) {
@@ -29,35 +30,28 @@ public class PlaylistBar extends JPanel implements ActionListener {
         this.setLayout(new BorderLayout());
         this.setVisible(true);
 
-        Border outerB = BorderFactory.createMatteBorder(5, 15, 5, 0, Color.BLACK);
-        Border whiteLineB = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.lightGray);
-        Border inerB = BorderFactory.createMatteBorder(0, 0, 5, 0, Color.BLACK);
-        Border complexB = BorderFactory.createCompoundBorder(whiteLineB, inerB);
         //playlist label
-        JLabel playlistLabel = new JLabel("Playlists         ");
+        Border outerB = BorderFactory.createMatteBorder(5, 15, 5, 5, Color.black);
+        Border whiteLineB = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.lightGray);
+        Border inerB = BorderFactory.createMatteBorder(0, 0, 5, 0, Color.black);
+        Border complexB = BorderFactory.createCompoundBorder(whiteLineB,inerB);
+        JLabel playlistLabel = new JLabel("Playlists       ");
+//        playlistLabel.setMaximumSize(new Dimension(180, 50));
         playlistLabel.setFont(new Font("Arial", Font.PLAIN, 20));
         playlistLabel.setForeground(Color.white);
         playlistLabel.setBorder(BorderFactory.createCompoundBorder(outerB, complexB));
         this.add(playlistLabel, BorderLayout.NORTH);
 
-        try {
-            ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/Add.png")));
-            addPlaylist.setIcon(new ImageIcon(icon.getImage().getScaledInstance(MainView.ICON + 30, MainView.ICON + 30, Image.SCALE_AREA_AVERAGING)));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        addPlaylist.setText("Create a New Playlist");
-        addPlaylist.setBackground(Color.BLACK);
-        addPlaylist.setForeground(Color.lightGray);
-        addPlaylist.setBorder(BorderFactory.createMatteBorder(5, 0, 10, 0, Color.BLACK));
+        addPlaylist = new ButtonPanel("Create a New Playlist", new Dimension(this.getWidth(), 40), this, new ImagePanel("./assets/addd.png", new Dimension(18,18)));
+        addPlaylist.setBorder(BorderFactory.createEmptyBorder(8,10,0,0));
         this.add(addPlaylist, BorderLayout.SOUTH);
-        addPlaylist.addActionListener(this);
+
 
         panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         this.items = items;
         for (int i = 0 ; i < items.size() ; i++){
-            panel.add(new PlaylistItem(i, items.get(i)));
+            panel.add(new PlaylistItem(i, items.get(i),this));
         }
         JScrollPane scrollPane = new JScrollPane(panel);
         panel.setBackground(Color.black);
@@ -70,7 +64,7 @@ public class PlaylistBar extends JPanel implements ActionListener {
     }
 
     public void refreshList(int index, String newItem) {
-        PlaylistItem p = new PlaylistItem(index, newItem);
+        PlaylistItem p = new PlaylistItem(index, newItem, this);
         panel.add(p);
 //        p.focusGained(requestFocus());
         //TODO you can create a list of the items, set them all black and the selected one blue
@@ -79,78 +73,91 @@ public class PlaylistBar extends JPanel implements ActionListener {
         this.revalidate();
     }
 
+
     @Override
-    public void actionPerformed(ActionEvent e) {
-        controller.createNewPlaylistFrame();
+    public void mouseClicked(MouseEvent e) {
+        if(e.getSource().equals(addPlaylist)){
+            controller.createNewPlaylistFrame();
+        }
+        else{
+            PlaylistItem p = (PlaylistItem)e.getSource();
+            controller.changeCenterPanel(MainController.PLAYLIST, p.index);
+        }
     }
 
-    private class PlaylistItem extends JPanel implements MouseListener, FocusListener{
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        if(e.getSource().equals(addPlaylist)){
+            addPlaylist.setBackground(Color.LIGHT_GRAY);
+            addPlaylist.label.setForeground(Color.BLACK);
+        }
+        else {
+            PlaylistItem p = (PlaylistItem) e.getSource();
+            p.setBackground(new Color(14,14,14));
+            p.mySetBorder(new Color(14,14,14));
+        }
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        if(e.getSource().equals(addPlaylist)){
+            addPlaylist.setBackground(Color.black);
+            addPlaylist.label.setForeground(Color.lightGray);
+        }
+        else{
+            PlaylistItem p = (PlaylistItem) e.getSource();
+            p.setBackground(Color.black);
+            p.mySetBorder(Color.BLACK);
+        }
+    }
+
+    private class PlaylistItem extends JPanel implements FocusListener{
         private int index;
         private JLabel playlistLabel = new JLabel();
 
-        public PlaylistItem(int index, String playlistName) {
+        public PlaylistItem(int index, String playlistName, MouseListener mouseListener) {
             this.index = index;
             this.setBackground(Color.BLACK);
             this.setMaximumSize(new Dimension(190,30 ));
             playlistLabel.setText(playlistName);
             this.add(playlistLabel);
             playlistLabel.setForeground(Color.lightGray);
-            this.setBorder(BorderFactory.createMatteBorder(0,0,1,0, Color.WHITE));
-            this.addMouseListener(this);
+            this.mySetBorder(Color.BLACK);
+            this.addMouseListener(mouseListener);
             this.addFocusListener(this);
             this.setVisible(true);
         }
 
         @Override
-        public void mouseClicked(MouseEvent e) {
-            controller.changeCenterPanel(MainController.PLAYLIST, this.index);
-        }
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
-
-        }
-
-        @Override
         public void focusGained(FocusEvent e) {
-            this.setBackground(Color.blue);
+            System.out.println("GAINED");
         }
 
         @Override
         public void focusLost(FocusEvent e) {
-            e.toString();
+            System.out.println("LOST");
             System.out.println(e.toString());
             System.out.println(" "+e.getSource()+" "+e.getID()+" "+e.isTemporary()+" "+e.getOppositeComponent()+" "+e.getCause());
             this.setBackground(Color.black);
         }
-    }
-//    public void createNewPlaylist(String text, ArrayList<Integer> indexes) {
-//        ArrayList<Song> songs = new ArrayList<>();
-//        for (Integer i: indexes) {
-//            songs.add(user.getLibrarySongs().get(i));
-//        }
-//        int lastIndex = user.newPlaylist(text, songs);
-//        mainView.getLeftPanelView().getPlaylistBar().refreshList(lastIndex, text);
-//        changeCenterPanel(PLAYLIST, lastIndex);
-//////        for (Playlist p :
-//////                user.getPlaylists()) {
-//////            System.out.println(p.getName() + ": " + p.getSongs());
-//////        }
-//    }
 
+        public void mySetBorder(Color c){
+            Border outerB = BorderFactory.createMatteBorder(0,15,5,5, Color.BLACK);
+            Border whiteLineB = BorderFactory.createMatteBorder(0,0,1,0, Color.white);
+            Border inerB = BorderFactory.createMatteBorder(0,0,5,0, c);
+            Border complexB = BorderFactory.createCompoundBorder(whiteLineB, inerB);
+            this.setBorder(BorderFactory.createCompoundBorder(outerB, complexB));
+        }
+
+    }
 }

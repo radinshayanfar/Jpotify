@@ -14,7 +14,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 
 public class ControlPanel extends JPanel implements ActionListener, MouseListener {
@@ -213,7 +212,9 @@ public class ControlPanel extends JPanel implements ActionListener, MouseListene
             for (JButton btn : new JButton[]{shuffle, previous, play, next, repeat}) {
                 btn.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
                 btn.setBackground(new Color(34, 34, 34));
+                btn.setForeground(new Color(34, 34, 34));
                 btn.addActionListener(a);
+                btn.setBorderPainted(false);
                 this.add(btn);
             }
             shuffle.addActionListener(a);

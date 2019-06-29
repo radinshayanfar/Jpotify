@@ -1,27 +1,23 @@
 package jpotify.view.leftpanel;
 
 import jpotify.controller.MainController;
-import jpotify.view.MainView;
+import jpotify.view.ButtonPanel;
+import jpotify.view.ImagePanel;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
-import java.io.IOException;
 
-public class LibraryBar extends JPanel {
+public class LibraryBar extends JPanel implements MouseListener {
 
     private MainController controller;
     private static final int ELEMENTS_SIZE = 15;
-    private JButton addSong = new JButton();
-    private JButton songs = new JButton();
-    private JButton albums = new JButton();
+    private Dimension dimension = new Dimension(18,18);
+    private ButtonPanel addSong, songs, albums;
     private JFileChooser fileChooser = new JFileChooser();
-    private ButtonListener buttonListener = new ButtonListener();
 
     public LibraryBar(MainController mainController) {
         controller = mainController;
@@ -32,85 +28,65 @@ public class LibraryBar extends JPanel {
         this.setSize(new Dimension(LeftPanelView.WIDTH, LeftPanelView.ELEMENTS_HEIGHT + 100));
         this.setMinimumSize(new Dimension(LeftPanelView.WIDTH, LeftPanelView.ELEMENTS_HEIGHT + 100));
 
-        Border outerB = BorderFactory.createMatteBorder(0, 15, 5, 0, Color.black);
-        Border whiteLineB = BorderFactory.createMatteBorder(0, 0, 1, 0, Color.lightGray);
-        Border inerB = BorderFactory.createMatteBorder(0, 0, 5, 0, Color.black);
-        Border complexB = BorderFactory.createCompoundBorder(whiteLineB, inerB);
-
-        //home
-        JLabel home = new JLabel("Home                ");
-        home.setFont(new Font("Arial", Font.PLAIN, 20));
-        home.setForeground(Color.white);
-        home.setBorder(BorderFactory.createCompoundBorder(outerB, complexB));
-        this.add(home);
-
-        try {
-            ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/Add.png")));
-            addSong.setIcon(new ImageIcon(icon.getImage().getScaledInstance(MainView.ICON, MainView.ICON, Image.SCALE_AREA_AVERAGING)));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        addSong.setText("Add Song");
-        addSong.setBackground(Color.BLACK);
-        addSong.setForeground(Color.lightGray);
-        addSong.setBorder(BorderFactory.createMatteBorder(5, 20, 0, 0, Color.BLACK));
-        addSong.addActionListener(buttonListener);
+        this.setBorder(BorderFactory.createEmptyBorder(0, 15, 0,0));
+        Dimension panelDimention = new Dimension(200, 40);
+        addSong = new ButtonPanel("Add Song to Library", panelDimention, this, new ImagePanel("./assets/Add.png",dimension));
         this.add(addSong);
-
-        try {
-            ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/Music Note.png")));
-            songs.setIcon(new ImageIcon(icon.getImage().getScaledInstance(MainView.ICON, MainView.ICON, Image.SCALE_AREA_AVERAGING)));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        songs.setText("My music");
-        songs.setBackground(Color.BLACK);
-        songs.setForeground(Color.lightGray);
+        songs = new ButtonPanel("My music", panelDimention, this, new ImagePanel("./assets/Music Note.png",dimension));
+//        songs.setBorder(BorderFactory.createEmptyBorder(0, 0,0,0));
         this.add(songs);
-        songs.addActionListener(buttonListener);
-        songs.setBorder(BorderFactory.createMatteBorder(5, 30, 0, 0, Color.BLACK));
-
-        try {
-            ImageIcon icon = new ImageIcon(ImageIO.read(new File("./assets/Album.png")));
-            albums.setIcon(new ImageIcon(icon.getImage().getScaledInstance(MainView.ICON, MainView.ICON, Image.SCALE_AREA_AVERAGING)));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        albums.setText("Albums");
-        albums.setBackground(Color.BLACK);
-        albums.setForeground(Color.lightGray);
+        albums = new ButtonPanel("Albums", panelDimention, this, new ImagePanel("./assets/sampleAlbum.png", dimension));
         this.add(albums);
-        albums.addActionListener(buttonListener);
-        albums.setBorder(BorderFactory.createMatteBorder(5, 30, 0, 0, Color.BLACK));
+//        albums.setBorder(BorderFactory.createEmptyBorder(0, 0,0,0));
 
         this.setPreferredSize(new Dimension(LeftPanelView.WIDTH, 100));
         this.setVisible(true);
     }
 
-    private class ButtonListener implements ActionListener {
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if (e.getSource().equals(addSong)) {
-                System.out.println("works correctly");
-                FileNameExtensionFilter filter = new FileNameExtensionFilter("Mp3 File", "mp3");
-                fileChooser.setFileFilter(filter);
-                fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-                fileChooser.setMultiSelectionEnabled(true);
-                int f = fileChooser.showOpenDialog(null);
-                if (f == JFileChooser.CANCEL_OPTION) {
-                } else if (f == JFileChooser.APPROVE_OPTION) {
-                    File[] files = fileChooser.getSelectedFiles();
-                    controller.addSongToLibrary(files);
-                }
-                controller.changeCenterPanel(MainController.MYSONG, 0);
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        if (e.getSource().equals(addSong)) {
+            System.out.println("works correctly");
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("Mp3 File", "mp3");
+            fileChooser.setFileFilter(filter);
+            fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+            fileChooser.setMultiSelectionEnabled(true);
+            int f = fileChooser.showOpenDialog(null);
+            if (f == JFileChooser.CANCEL_OPTION) {
+            } else if (f == JFileChooser.APPROVE_OPTION) {
+                File[] files = fileChooser.getSelectedFiles();
+                controller.addSongToLibrary(files);
             }
-            if (e.getSource().equals(songs)) {
-                controller.changeCenterPanel(MainController.MYSONG, 0);
-            }
-            if (e.getSource().equals(albums)) {
-                controller.changeCenterPanel(MainController.ALBUMS, 0);
-            }
+            controller.changeCenterPanel(MainController.MYSONG, 0);
+        }
+        if (e.getSource().equals(songs)) {
+            controller.changeCenterPanel(MainController.MYSONG, 0);
+        }
+        if (e.getSource().equals(albums)) {
+            controller.changeCenterPanel(MainController.ALBUMS, 0);
         }
     }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+        ButtonPanel b = (ButtonPanel) e.getSource();
+        b.setBackground(new Color(14,14,14));
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        ButtonPanel b = (ButtonPanel) e.getSource();
+        b.setBackground(Color.BLACK);
+    }
+
 }
