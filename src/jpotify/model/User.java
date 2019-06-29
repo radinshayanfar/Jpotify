@@ -257,7 +257,7 @@ public class User implements Serializable {
         return -1;
     }
 
-    private SongList getCurrentList() {
+    public SongList getCurrentList() {
         if (currentList == null)
             currentList = new SongList();
         return currentList;
