@@ -58,17 +58,29 @@ public class Playlist extends SongList {
         }
     }
 
+    /**
+     * Changes playlist songs order. moves selected song up in list
+     * @param index index of song to be moved up in playlist
+     */
     public void moveUp(int index) {
         if (index > 0) {
             Collections.swap(songs, index, index - 1);
         }
     }
 
+    /**
+     * Changes playlist songs order. moves selected song down in list
+     * @param index index of song to be moved down in playlist
+     */
     public void moveDown(int index) {
         if (index < songs.size() - 1)
             Collections.swap(songs, index, index + 1);
     }
 
+    /**
+     * Returns shuffled version of playlist
+     * @return shuffled playlist object
+     */
     public Playlist getShuffled() {
         Playlist ret = new Playlist(new ArrayList<>(songs));
         Collections.shuffle(ret.songs);

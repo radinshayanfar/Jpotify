@@ -95,6 +95,12 @@ public class User implements Serializable {
         return othersRecentlyPlayed;
     }
 
+    /**
+     * Adds or replaces a friend recently played song to list
+     *
+     * @param remoteClient friends info (host, ip, name)
+     * @param otherList    friends new list
+     */
     public void addOthersRecentlyPlayed(RemoteClient remoteClient, RecentlyPlayedPlaylist otherList) {
         if (otherList == null)
             return;
@@ -103,6 +109,12 @@ public class User implements Serializable {
         othersRecentlyPlayed.put(remoteClient, otherList);
     }
 
+    /**
+     * Plays a song from current list
+     *
+     * @param index song index in the current list
+     * @return Song object that should be played by Jlayer
+     */
     public Song playSong(int index) {
         if (currentList instanceof NetworkPlaylist) throw new Error("Don't use this method over network!");
         Song ret = currentList.songs.get(index);
@@ -115,11 +127,25 @@ public class User implements Serializable {
         return ret;
     }
 
+    /**
+     * Fetches song from network and plays it
+     *
+     * @param index song index in the current list
+     * @param host  which song should be fetched from
+     * @param port  which song should be fetched from
+     * @return Song object that should be played by Jlayer
+     * @throws IOException if cannot fetch song
+     */
     public Song playSongFromNetwork(int index, String host, int port) throws IOException {
         currentList.current = currentList.songs.get(index);
         return new Song(new File(FileHelper.downloadSongToTemporaryDirectory(host, port, index)));
     }
 
+    /**
+     * Plays song object
+     *
+     * @param song song to be played
+     */
     public void playSong(Song song) {
         song.updateLastPlayed();
         if (getSharedPlaylist().getSongs().contains(song)) {
@@ -128,11 +154,19 @@ public class User implements Serializable {
         }
     }
 
+    /**
+     * Stops current playing song
+     */
     public void stopSong() {
         getRecentlyPlayed().removeCurrentSong();
         tellOthersAboutMyRecent();
     }
 
+    /**
+     * Adds new Song to library
+     *
+     * @param song Song to be added
+     */
     public void addSong(Song song) {
         if (library.songs.contains(song)) return;
         library.songs.add(song);
@@ -149,6 +183,11 @@ public class User implements Serializable {
         song.setAlbumReference(albumReference);
     }
 
+    /**
+     * Removes Song from library
+     *
+     * @param songIndex song index in library
+     */
     public boolean removeSongFromLibrary(int songIndex) {
         if (getCurrentList().current == getLibrarySongs().get(songIndex)) return false;
         Song song = getLibrarySongs().get(songIndex);
@@ -165,12 +204,25 @@ public class User implements Serializable {
         return true;
     }
 
+    /**
+     * Removes song from selected playlist
+     *
+     * @param playlistIndex playlist index which song should be removed from it
+     * @param songIndex     song index in playlist
+     * @return true if was able to delete song. false if song is currently playing and cannot be deleted
+     */
     public boolean removeSongFromPlaylist(int playlistIndex, int songIndex) {
         if (getCurrentList().current == playlists.get(playlistIndex).getSongs().get(songIndex)) return false;
         playlists.get(playlistIndex).removeSong(songIndex);
         return true;
     }
 
+    /**
+     * Changes selected playlist name
+     *
+     * @param playlistIndex playlist index which name should be changed
+     * @param newName       new name for selected playlist
+     */
     public void changePlaylistName(int playlistIndex, String newName) {
         playlists.get(playlistIndex).setName(newName);
     }
@@ -190,6 +242,12 @@ public class User implements Serializable {
         return ret;
     }
 
+    /**
+     * Search for an album name returns it's index
+     *
+     * @param name album name
+     * @return album index
+     */
     public int searchAlbums(String name) {
         List<Album> albums = getAlbums();
         for (Album a : albums) {
@@ -199,7 +257,7 @@ public class User implements Serializable {
         return -1;
     }
 
-    private SongList getCurrentList() {
+    public SongList getCurrentList() {
         if (currentList == null)
             currentList = new SongList();
         return currentList;
@@ -215,12 +273,25 @@ public class User implements Serializable {
         return ret;
     }
 
+    /**
+     * Creates new playlist
+     *
+     * @param name  playlist name
+     * @param songs playlist songs
+     * @return playlist index in list
+     */
     public int newPlaylist(String name, ArrayList<Song> songs) {
         Playlist newList = new Playlist(name, songs);
         playlists.add(newList);
         return playlists.size() - 1;
     }
 
+    /**
+     * Adds or replaces a friend shared playlist
+     *
+     * @param remoteClient Friends info (ip, port, name)
+     * @param playlist     Friends shared playlist
+     */
     public void addSharedPlaylist(RemoteClient remoteClient, NetworkPlaylist playlist) {
         if (playlist == null)
             return;
@@ -245,6 +316,9 @@ public class User implements Serializable {
         return othersSharedPlaylists;
     }
 
+    /**
+     * Deletes a playlist
+     */
     public void removePlaylist() {
         playlists.remove(getCurrentSelectedListInGUI());
     }
@@ -255,14 +329,25 @@ public class User implements Serializable {
 
 //    Shuffle, Repeat, Next and Previous, Set current list
 
+    /**
+     * Change selected list in GUI
+     *
+     * @param currentSelectedListInGUI
+     */
     public void setCurrentSelectedListInGUI(SongList currentSelectedListInGUI) {
         this.currentSelectedListInGUI = currentSelectedListInGUI;
     }
 
+    /**
+     * Sets current selected list in GUI for playing songs
+     */
     public void setCurrentList() {
         currentList = currentSelectedListInGUI;
     }
 
+    /**
+     * Shuffles playing playlist songs
+     */
     public void shuffleCurrentSelected() {
         if (currentList instanceof Playlist) {
             shuffledOriginal = (Playlist) currentList;
@@ -270,6 +355,9 @@ public class User implements Serializable {
         }
     }
 
+    /**
+     * Unshuffle recently shuffled list
+     */
     public void unshuffleCurrentSelected() {
         if (currentList instanceof Playlist && shuffledOriginal != null) {
             currentList = shuffledOriginal;
@@ -277,6 +365,11 @@ public class User implements Serializable {
         }
     }
 
+    /**
+     * turns shuffling on
+     *
+     * @return true if current selected list is playlist and can be shuffled
+     */
     public boolean turnShuffleOn() {
         if (currentList instanceof Playlist) {
             shuffledOriginal = (Playlist) currentList;
@@ -286,6 +379,9 @@ public class User implements Serializable {
         return false;
     }
 
+    /**
+     * turns shuffling off
+     */
     public void turnShuffleOff() {
         shuffled = false;
     }
@@ -298,20 +394,41 @@ public class User implements Serializable {
         this.repeatRule = repeatRule;
     }
 
+    /**
+     * Next song in list. return current playing again if repeat is on
+     *
+     * @return next Song
+     */
     public Song next() {
         return currentList.next(repeatRule);
     }
 
+    /**
+     * Next song in list
+     *
+     * @return next Song
+     */
     public Song forceNext() {
         return currentList.next(repeatRule == RepeatRule.REPEAT_ONE ? RepeatRule.REPEAT : repeatRule);
     }
 
+    /**
+     * Previous song in list
+     *
+     * @return previous Song
+     */
     public Song previous() {
         return currentList.previous(repeatRule);
     }
 
 //    Network methods
 
+    /**
+     * Starts HTTP Server for networking
+     *
+     * @param controller Controller object to be called later
+     * @param port       Server running port
+     */
     public void startHttpServer(MainController controller, int port) {
         myPort = port;
         if (server == null) {
@@ -323,13 +440,19 @@ public class User implements Serializable {
         } else {
             server.changeUser(this);
         }
-        startConnectionToOthers(port);
+//        startConnectionToOthers(port);
     }
 
+    /**
+     * Stops HTTP Server
+     */
     public void stopHttpServer() {
         server.stopServer();
     }
 
+    /**
+     * Updates other user recently played list after it changed
+     */
     private void tellOthersAboutMyRecent() {
         for (RemoteClient r :
                 getRemoteClients()) {
@@ -338,7 +461,8 @@ public class User implements Serializable {
                 URLConnection connection = url.openConnection();
                 connection.setDoOutput(true);
                 ObjectOutputStream out = new ObjectOutputStream(connection.getOutputStream());
-                out.writeInt(r.getPort());
+                out.writeInt(myPort);
+                out.writeObject(name);
                 out.writeObject(getRecentlyPlayed());
                 out.flush();
                 out.close();
@@ -349,6 +473,9 @@ public class User implements Serializable {
         }
     }
 
+    /**
+     * Updates other user shared list after it changed
+     */
     public void tellOthersAboutMyShared() {
         for (RemoteClient r :
                 getRemoteClients()) {
@@ -357,7 +484,8 @@ public class User implements Serializable {
                 URLConnection connection = url.openConnection();
                 connection.setDoOutput(true);
                 ObjectOutputStream out = new ObjectOutputStream(connection.getOutputStream());
-                out.writeInt(r.getPort());
+                out.writeInt(myPort);
+                out.writeObject(name);
                 out.writeObject(getSharedPlaylist());
                 out.flush();
                 out.close();
@@ -380,17 +508,38 @@ public class User implements Serializable {
         remoteClients.add(client);
     }
 
+    /**
+     * Adds friend to list
+     *
+     * @param host friend's host
+     * @param port friend's port
+     * @param name friend's name
+     */
     public void addRemoteClient(String host, int port, String name) {
         RemoteClient client = new RemoteClient(host, port, name);
         remoteClients.add(client);
     }
 
+    /**
+     * Adds friend to list and tries to connect to him/her
+     *
+     * @param host friend's host
+     * @param port friend's port
+     * @param name friend's name
+     */
     public void addAndConnectRemoteClient(String host, int port) {
         RemoteClient client = new RemoteClient(host, port);
         remoteClients.add(client);
         client.setName(connectToClient(myPort, client));
     }
 
+    /**
+     * Starts connection to friend
+     *
+     * @param myPort current user running port
+     * @param client friends info (host, port)
+     * @return friends name
+     */
     private String connectToClient(int myPort, RemoteClient client) {
         try {
             URL url = new URL("http://" + client.getHost() + ":" + client.getPort() + "/connect");
@@ -401,7 +550,6 @@ public class User implements Serializable {
             out.writeObject(name);
             out.writeObject(getSharedPlaylist());
             out.writeObject(getRecentlyPlayed());
-            System.out.println(getRecentlyPlayed().songs);
             out.flush();
             out.close();
             ObjectInputStream in = new ObjectInputStream(connection.getInputStream());

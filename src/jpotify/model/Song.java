@@ -34,6 +34,9 @@ public class Song implements Serializable, Comparable<Song> {
 
     }
 
+    /**
+     * Processes address and fill title, album and artists with song tags
+     */
     private void processId3Tags() {
         try {
             Mp3File mp3file = new Mp3File(address);
@@ -62,6 +65,9 @@ public class Song implements Serializable, Comparable<Song> {
         }
     }
 
+    /**
+     * Processes address and fill title, album and artists with song artwork
+     */
     private void processArtwork() {
         try {
             Mp3File mp3file = new Mp3File(address);
@@ -78,6 +84,9 @@ public class Song implements Serializable, Comparable<Song> {
         }
     }
 
+    /**
+     * Loads default artwork image for songs who doesn't have artwork or songs over network
+     */
     public void useDefaultArtwork() {
         try {
             artwork = FileHelper.loadSampleArtwork();
@@ -94,6 +103,9 @@ public class Song implements Serializable, Comparable<Song> {
         return artwork;
     }
 
+    /**
+     * Updates song last played time with current time
+     */
     public void updateLastPlayed() {
         lastPlayed = Instant.now().toEpochMilli();
     }

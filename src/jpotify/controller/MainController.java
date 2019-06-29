@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class MainController {
-    public static final int JALBUM = 3, PLAYLIST = 2, MYSONG = 0, ALBUMS = 1, BLANPAGE = 4, NETWORK =5;
+    public static final int JALBUM = 3, PLAYLIST = 2, MYSONG = 0, ALBUMS = 1, BLANPAGE = 4, NETWORK = 5;
     //    public static final int PLAY_BUTTON=1;
     private MainView mainView;
     private Users users;
@@ -58,7 +58,7 @@ public class MainController {
         setCurrentMode(mode, index, null, 0);
     }
 
-    public void setCurrentMode(int mode, int index, String host, int port){
+    public void setCurrentMode(int mode, int index, String host, int port) {
         this.currentMode = mode;
         switch (mode) {
             case JALBUM:
@@ -70,7 +70,7 @@ public class MainController {
             case PLAYLIST:
                 user.setCurrentSelectedListInGUI(user.getPlaylists().get(index));
                 break;
-            case NETWORK :
+            case NETWORK:
                 user.setCurrentSelectedListInGUI(user.getOthersSharedPlaylists().get(new RemoteClient(host, port)));
         }
     }
@@ -227,6 +227,7 @@ public class MainController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        user.stopHttpServer();
     }
 
     public void changeVolume(int value) {
@@ -350,11 +351,11 @@ public class MainController {
 
     public void removePlaylist() {
         user.removePlaylist();
-        System.out.println("T1");
-//        TODO tell him to check
-        player.stop();
-        user.setCurrentSelectedListInGUI(null);
-//
+        if (user.getCurrentSelectedListInGUI() == user.getCurrentList()) {
+            player.stop();
+            user.setCurrentSelectedListInGUI(null);
+            GUIChangeForSongStop();
+        }
         mainView.getCenterPanelView().displayPanel(BLANPAGE, 0);
         mainView.getLeftPanelView().refreshPlaylistBar();
     }
@@ -385,7 +386,7 @@ public class MainController {
     public void showFriendPlaylist(String name, String host, int port) {
         List<Song> songs = user.getOthersSharedPlaylists().get(new RemoteClient(host, port)).getSongs();
         ArrayList<String> songsNames = new ArrayList();
-        for (Song s: songs)
+        for (Song s : songs)
             songsNames.add(s.getTitle());
         PlaylistList playlist = new PlaylistList(this, name, songsNames, host, port);
         playlist.setVisible(true);
@@ -435,6 +436,9 @@ public class MainController {
             user.getPlaylists().get(playlistIndex).moveUp(songIndex);
         } else {
             user.getPlaylists().get(playlistIndex).moveDown(songIndex);
+        }
+        if (playlistIndex == 1) {
+            user.tellOthersAboutMyShared();
         }
         mainView.getLeftPanelView().getPlaylistBar().revalidate();
         changeCenterPanel(PLAYLIST, playlistIndex);

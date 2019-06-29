@@ -35,10 +35,14 @@ public class Album extends SongList implements Comparable<Album> {
         return songs;
     }
 
-    public String getTitles(){
+    /**
+     * Convert albums song to String to show in view
+     * @return Good String for show in view!
+     */
+    public String getTitles() {
         StringBuilder ret = new StringBuilder();
-        for (int i = 0 ; i < 3 && i != songs.size() ; i++){
-            ret.append(songs.get(i).getTitle() + ", ");
+        for (int i = 0; i < 3 && i != songs.size(); i++) {
+            ret.append(songs.get(i).getTitle()).append(", ");
         }
         ret.delete(ret.length() - 2, ret.length());
         if (songs.size() > 3)
@@ -50,6 +54,9 @@ public class Album extends SongList implements Comparable<Album> {
         return songs.get(0).getArtwork();
     }
 
+    /**
+     * Sorts songs in album by songs last played time
+     */
     private void doSort() {
         Collections.sort(songs);
     }
@@ -60,6 +67,6 @@ public class Album extends SongList implements Comparable<Album> {
 
     @Override
     public String toString() {
-        return "Album{+"+ getName() +"}";
+        return "Album{+" + getName() + "}";
     }
 }
