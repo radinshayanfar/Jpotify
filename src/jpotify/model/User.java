@@ -338,7 +338,7 @@ public class User implements Serializable {
                 URLConnection connection = url.openConnection();
                 connection.setDoOutput(true);
                 ObjectOutputStream out = new ObjectOutputStream(connection.getOutputStream());
-                out.writeInt(r.getPort());
+                out.writeInt(myPort);
                 out.writeObject(name);
                 out.writeObject(getRecentlyPlayed());
                 out.flush();
@@ -358,7 +358,7 @@ public class User implements Serializable {
                 URLConnection connection = url.openConnection();
                 connection.setDoOutput(true);
                 ObjectOutputStream out = new ObjectOutputStream(connection.getOutputStream());
-                out.writeInt(r.getPort());
+                out.writeInt(myPort);
                 out.writeObject(name);
                 out.writeObject(getSharedPlaylist());
                 out.flush();
